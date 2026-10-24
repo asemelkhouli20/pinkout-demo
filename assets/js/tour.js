@@ -125,14 +125,14 @@ export function initTour() {
     progress();
   };
 
-  /* ---------- World by world: one scroll, swipe or key press moves exactly one stop ---------- */
-  let animating = false, landedAt = -Infinity, run = 0;
+  /* ---------- World navigation: wheel, keys, touch swipes and zone picks move one stop ---------- */
+  let animating = false, run = 0;
   let queued = 0; // keyboard and touch can queue a step; wheel momentum never queues one
   const stopTop = (i) => stops[i].getBoundingClientRect().top + scrollY;
   const scrollToY = (y) => {
     const start = scrollY, dist = y - start;
     if (Math.abs(dist) < 2) return;
-    if (get('motion') !== 'full') { ++run; animating = false; scrollTo(0, y); landedAt = performance.now(); measure(); return; }
+    if (get('motion') !== 'full') { ++run; animating = false; scrollTo(0, y); measure(); return; }
     const dur = Math.min(1000, 620 + Math.abs(dist) * 0.08);
     const t0 = performance.now(), mine = ++run; // a newer move (a click on the plan, say) takes over from this one
     animating = true;
@@ -143,7 +143,6 @@ export function initTour() {
       scrollTo(0, start + dist * e);
       if (k < 1) { requestAnimationFrame(frame); return; }
       animating = false;
-      landedAt = performance.now();
       measure(); // the stop we landed on, before a queued move picks the next one
       if (queued) { const d = queued; queued = 0; step(d); }
     };
@@ -172,41 +171,80 @@ export function initTour() {
    *  tour looked stuck until the mouse moved.) */
   const overCard = (x, y, dir) => {
     const card = stops[Math.min(last, Math.max(0, Math.round(position)))]?.querySelector('.stop-card');
-    // only a card opened with "Details" scrolls its own text; otherwise a scroll always moves the tour
+    // only a card opened with "Details" scrolls its own text; otherwise scrolling moves the tour
     if (!card?.hasAttribute('data-open') || card.scrollHeight <= card.clientHeight + 2) return false;
     const r = card.getBoundingClientRect();
     if (x < r.left || x > r.right || y < r.top || y > r.bottom) return false;
-    return dir > 0 ? card.scrollTop + card.clientHeight < card.scrollHeight - 1 : card.scrollTop > 0;
+    const canScroll = dir > 0 ? card.scrollTop + card.clientHeight < card.scrollHeight - 1 : card.scrollTop > 0;
+    return canScroll ? card : null;
   };
-  /* Wheel and trackpad: one continuous wheel stream owns one stop, including its momentum.
-     Delta spikes, reversals and delivery gaps during animation cannot queue another move.
-     Re-arm only after landing AND a quiet interval; pointer movement is never involved. */
-  const QUIET = 300;
-  let lastWheel = -Infinity, wheelUsed = false;
+  /* One world per transition. The lock has a fixed deadline: incoming momentum never extends it.
+     After landing, a quiet new gesture or sustained deliberate input can move on. A fading tail or
+     isolated spike cannot queue a world. Pointer movement and stale wheel targets are irrelevant. */
+  const WHEEL_LOCK = 700, WHEEL_QUIET = 180;
+  let wheelUsed = false, wheelUntil = 0, wheelDir = 0, lastWheel = -Infinity, lastAmount = 0;
+  let intentDir = 0, intentSince = 0, intentDistance = 0, intentSamples = 0;
+  const clearWheelIntent = () => { intentDir = 0; intentDistance = 0; intentSamples = 0; };
   addEventListener('wheel', (e) => {
-    if (e.ctrlKey || (!e.deltaY && !e.deltaX)) return;
-    const now = performance.now(), quiet = now - lastWheel >= QUIET;
-    // Include subpixel and horizontal tail events: they still belong to this gesture.
+    if (e.ctrlKey || (!e.deltaY && !e.deltaX) || !e.cancelable || !live()) return;
+    const bounds = root.getBoundingClientRect();
+    if (!animating && (bounds.bottom <= 0 || bounds.top >= innerHeight)) {
+      wheelUsed = false;
+      clearWheelIntent();
+      return;
+    }
+    const now = performance.now(), quiet = now - lastWheel >= WHEEL_QUIET;
     lastWheel = now;
-    if (animating) {
+    const vertical = e.deltaY && Math.abs(e.deltaY) >= Math.abs(e.deltaX);
+    const dir = Math.sign(e.deltaY);
+    let delta = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1);
+    const amount = Math.abs(delta), previous = lastAmount;
+    lastAmount = amount;
+    if (animating || (wheelUsed && now < wheelUntil)) {
+      // Do not queue wheel input, or slide the deadline forward with every event.
       wheelUsed = true;
+      clearWheelIntent();
       e.preventDefault();
       return;
     }
-    if (wheelUsed) {
-      if (!quiet || now - landedAt < QUIET) {
+    if (!vertical) {
+      if (wheelUsed) e.preventDefault();
+      clearWheelIntent();
+      return;
+    }
+    if (wheelUsed && !quiet) {
+      // Small tails and deceleration carry no new intent. Count a bounded amount per event
+      // so a single large macOS momentum spike cannot trigger another world.
+      if (amount <= 4 || (dir === wheelDir && amount < previous * 0.98)) {
+        clearWheelIntent();
         e.preventDefault();
         return;
       }
-      wheelUsed = false;
+      if (intentDir !== dir) clearWheelIntent();
+      if (!intentSamples) { intentDir = dir; intentSince = now; }
+      intentDistance += Math.min(40, amount);
+      intentSamples++;
+      if (intentSamples < 3 || intentDistance < 120 || now - intentSince < 80) {
+        e.preventDefault();
+        return;
+      }
     }
-    if (!e.deltaY || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-    const dir = Math.sign(e.deltaY);
-    // Use the current card's geometry, never the browser's possibly stale wheel target.
-    // Once its text runs out, the same gesture can hand off to the tour exactly once.
-    if (overCard(e.clientX, e.clientY, dir)) return;
+    clearWheelIntent();
+    const card = overCard(e.clientX, e.clientY, dir);
+    if (card) {
+      // Scroll the card actually under the pointer, not an offscreen browser-latched target.
+      e.preventDefault();
+      const before = card.scrollTop;
+      card.scrollTop = Math.max(0, Math.min(card.scrollHeight - card.clientHeight, before + delta));
+      delta -= card.scrollTop - before;
+      if (Math.abs(delta) < 1) return;
+    }
     wheelUsed = step(dir);
-    if (wheelUsed) e.preventDefault();
+    if (wheelUsed) {
+      wheelDir = dir;
+      wheelUntil = now + WHEEL_LOCK;
+      e.preventDefault();
+    }
   }, { passive: false });
   addEventListener('keydown', (e) => {
     if (e.target.closest('input, textarea, select, button, a, [contenteditable], dialog')) return;

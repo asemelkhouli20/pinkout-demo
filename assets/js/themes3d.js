@@ -4,13 +4,13 @@
 //   colours — a few things change colour: the hall floor, balloons, stage beams and light pools, the LED screen, confetti, sparkle
 //   props   — its own things (a glowing dance floor, tents and a campfire, a torii gate, ghosts and pumpkins…)
 //   effect  — something always moving (cherry petals, fireflies, fog, projector dust, flickering lanterns…)
-// Themes follow the knowledge base's themed-day concepts (plus sport, gaming, anime and other fun days added for partners). Each theme takes over the Rose Hub activation stage (the
+// Themes follow the knowledge base's themed-day concepts (plus sport, gaming, anime, art, fashion, science, travel and other days added for partners). Each theme takes over the Rose Hub activation stage (the
 // "space for changing pop-ups", seen from the overview and the Rose Hub stop): the everyday tree and panels step aside
 // for the theme's centrepiece. More props sit in the passages, at PinkOut Live and around the hall (plan metres).
 // Each theme's props are built the first time it is picked; switching pops them in and out, and the light eases over.
 import * as THREE from './vendor/three.module.min.js?v=1';
 import { toX, toZ, U, W, D, back, LOOK } from './venue.js?v=32';
-import { particles, dotTexture } from './crowd.js?v=37';
+import { particles, dotTexture } from './crowd.js?v=38';
 
 const M = (m) => m / U;
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -960,6 +960,423 @@ const THEMES = {
       };
     },
   },
+
+  art: { // art day: a sunny studio, a giant palette and paintbrush on the hub stage, easels with fresh paintings, paint tubes
+    light: { sky: '#fff6ea', ground: '#6a4a6a', hemi: 0.5, sun: '#fff0dc', sunI: 2.0, fill: '#7ad7ff', fillI: 0.5, exposure: 0.9, bg: '#2a1a30' },
+    floors: { hub: '#fbeee0' },
+    mood: { beams: ['#ff5a5f', '#ffd23f', '#3fa9f5'], pools: ['#ff5a5f', '#ffd23f', '#3fa9f5'], screenHue: 0.1,
+      balloons: ['#ff5a5f', '#ffd23f', '#3fa9f5', '#5ad17a'], confetti: ['#ff5a5f', '#ffd23f', '#3fa9f5', '#5ad17a', '#b44cff'], sparkle: '#fff2a8', sparkleGain: 1.2 },
+    build(g, ctx) {
+      const PAINT = ['#ff5a5f', '#ffd23f', '#3fa9f5', '#5ad17a', '#b44cff', '#ff8fd8'];
+      const painting = (seed) => canvasTexture(128, (c, s) => {
+        c.fillStyle = '#fffaf2'; c.fillRect(0, 0, s, s);
+        for (let k = 0; k < 9; k++) { c.fillStyle = PAINT[(k + seed) % 6]; c.globalAlpha = 0.85; c.beginPath(); c.ellipse(((k * 37 + seed * 23) % 100) + 14, ((k * 53 + seed * 31) % 100) + 14, 10 + (k % 3) * 9, 6 + (k % 4) * 6, k, 0, Math.PI * 2); c.fill(); }
+        c.globalAlpha = 1; c.strokeStyle = '#2b1220'; c.lineWidth = 3; c.beginPath(); c.moveTo(10, 90 - seed * 4); c.bezierCurveTo(40, 20, 80, 120, 118, 40); c.stroke();
+      });
+      const wood = std('#c98d5b', { roughness: 0.8 });
+      for (let k = 0; k < 5; k++) { // easels facing the hall
+        const a = (k / 5) * Math.PI * 2 + 0.4, e = prop(g, ...onStage(a, 2.7), TOP, a);
+        [-0.35, 0.35].forEach((d) => part(e, GEO.box(0.06, 2.0, 0.06), wood, d, 0, 1.0).rotation.z = -d * 0.15);
+        part(e, GEO.box(0.06, 1.9, 0.06), wood, 0, -0.35, 0.95).rotation.x = -0.3;
+        part(e, GEO.box(1.0, 0.8, 0.05), std('#ffffff', { map: painting(k), roughness: 0.8 }), 0, 0.06, 1.4);
+        part(e, GEO.box(1.0, 0.06, 0.15), wood, 0, 0.06, 0.97);
+      }
+      const pal = prop(g, ...STAGE, TOP + 0.6);
+      const board = part(pal, GEO.cyl(1.5, 1.5, 0.08, 40), wood); board.scale.set(1.25, 1, 1);
+      part(prop(g, ...STAGE, TOP), GEO.cyl(0.15, 0.3, 0.6, 12), wood, 0, 0, 0.3);
+      PAINT.forEach((col, k) => { const a = (k / 6) * Math.PI * 1.6 + 0.6; const b = part(pal, GEO.sph(0.3, 14), std(col, { roughness: 0.3 }), Math.cos(a) * 1.35, Math.sin(a) * 1.05, 0.1); b.scale.set(1, 0.35, 1); });
+      const brush = prop(g, ...STAGE, TOP + 0.75); // the brush paints circles over the palette
+      const arm = new THREE.Group(); brush.add(arm);
+      const handle = new THREE.Mesh(GEO.cyl(0.07, 0.1, 2.4, 12), std('#2b1220', { roughness: 0.4 })); handle.position.set(M(0.7), M(1.4), 0); handle.rotation.z = 0.35; arm.add(handle);
+      const tip = new THREE.Mesh(GEO.cone(0.14, 0.4, 12), std('#ff5a5f', { roughness: 0.6 })); tip.rotation.z = Math.PI + 0.35; tip.position.set(M(0.27), M(0.15), 0); arm.add(tip);
+      SPOTS.forEach(([x, y], k) => { // giant paint tubes
+        const t = prop(g, x, y, 0.3, k * 1.7);
+        part(t, GEO.cyl(0.3, 0.3, 1.4, 16), std('#e8e8f0', { metalness: 0.5, roughness: 0.3 }), 0, 0, 0.7).rotation.z = Math.PI / 2;
+        part(t, GEO.cyl(0.31, 0.31, 0.6, 16), std(PAINT[k + 1]), 0, 0, 0.7).rotation.z = Math.PI / 2;
+        part(t, GEO.cyl(0.12, 0.15, 0.3, 12), std('#1b1b1f'), 0.85, 0, 0.7).rotation.z = Math.PI / 2;
+        const blob = part(t, GEO.sph(0.4, 14), std(PAINT[k + 1], { roughness: 0.2 }), 1.3, 0, -0.2); blob.scale.set(1.4, 0.3, 1);
+      });
+      let next = 0;
+      return {
+        step(dt, t, p) {
+          arm.rotation.y = t * 0.6;
+          tip.material.color.set(PAINT[Math.floor(t * 0.6 / (Math.PI / 3)) % 6]);
+          if (p > 0.9 && t > next) { next = t + 0.8; ctx.live.burst(new THREE.Vector3(toX(STAGE[0]), M(1.6), toZ(STAGE[1])), ['drop', 'heart', 'sparkle'], 2); }
+        },
+      };
+    },
+  },
+
+  fashion: { // fashion week: a white-lit catwalk across the hub stage, models walking it, camera flashes, clothing rails
+    light: { sky: '#ffffff', ground: '#2a2a2a', hemi: 0.42, sun: '#fff6f0', sunI: 2.2, fill: '#ffb3d1', fillI: 0.5, exposure: 0.92, bg: '#141016' },
+    floors: { hub: '#f2e8ec', live: '#1b1b1f' },
+    mood: { beams: ['#ffffff', '#ffd1e6', '#ffffff'], beamGain: 1.6, pools: ['#ffffff', '#ffd1e6', '#ffffff'], poolGain: 1.3, screenHue: 0.95, screenSat: 0.2, screenLight: 0.85,
+      balloons: ['#1b1b1f', '#ffffff', '#e6c47e'], confetti: ['#1b1b1f', '#ffffff', '#e6c47e', '#c9ccd6'], sparkle: '#ffffff', sparkleGain: 1.6 },
+    build(g, ctx) {
+      const walk = prop(g, ...STAGE, TOP);
+      part(walk, GEO.box(6.4, 0.2, 1.2), std('#ffffff', { roughness: 0.15, metalness: 0.1 }), 0, 0, 0.1);
+      [-0.62, 0.62].forEach((d) => part(walk, GEO.box(6.4, 0.04, 0.05), lit('#ffd1e6', 2.2), 0, d, 0.18));
+      const models = ['#1b1b1f', '#ff3d8b', '#ffffff'].map((col, k) => {
+        const m = new THREE.Group(); walk.add(m);
+        const dress = new THREE.Mesh(GEO.cone(0.32, 1.1, 16), std(col, { roughness: 0.5 })); dress.position.y = M(0.75); m.add(dress);
+        const body = new THREE.Mesh(GEO.cyl(0.1, 0.12, 0.35, 10), std(col)); body.position.y = M(1.4); m.add(body);
+        const head = new THREE.Mesh(GEO.sph(0.12, 14), std('#c98d6b')); head.position.y = M(1.7); m.add(head);
+        const hair = new THREE.Mesh(GEO.sph(0.13, 14, 8), std('#2b1a14')); hair.position.set(0, M(1.74), M(-0.03)); m.add(hair);
+        return { m, ph: k / 3 };
+      });
+      const flashes = [];
+      [-1, 1].forEach((side) => { for (let k = 0; k < 5; k++) { // photographers' cameras on tripods, both sides of the catwalk
+        const c = prop(g, STAGE[0] - 2.4 + k * 1.2, STAGE[1] + side * 1.7, TOP);
+        part(c, GEO.cyl(0.02, 0.02, 1.2, 6), std('#1b1b1f'), 0, 0, 0.6);
+        part(c, GEO.box(0.22, 0.15, 0.15), std('#1b1b1f'), 0, 0, 1.25);
+        flashes.push({ m: part(c, GEO.box(0.12, 0.06, 0.03), lit('#ffffff', 0), 0, -side * 0.09, 1.36), at: Math.random() * 3 });
+      } });
+      SPOTS.forEach(([x, y], k) => { // clothing rails
+        const r = prop(g, x, y, 0, k * 0.8), gold = std('#e6c47e', { metalness: 0.8, roughness: 0.3 });
+        [-0.8, 0.8].forEach((d) => part(r, GEO.cyl(0.025, 0.025, 1.7, 8), gold, d, 0, 0.85));
+        part(r, GEO.cyl(0.02, 0.02, 1.7, 8), gold, 0, 0, 1.7).rotation.z = Math.PI / 2;
+        for (let j = 0; j < 6; j++) part(r, GEO.box(0.06, 0.9, 0.45), std(['#1b1b1f', '#ff3d8b', '#ffffff', '#e6c47e', '#ddcffb', '#c81d32'][(j + k) % 6], { roughness: 0.7 }), -0.6 + j * 0.24, 0, 1.2);
+      });
+      return {
+        step(dt, t, p) {
+          models.forEach((o) => { // up the catwalk, a turn at the end, back
+            const k = (t * 0.08 + o.ph) % 1, out = k < 0.5, q = out ? k * 2 : (1 - k) * 2;
+            o.m.position.x = M(-2.8 + q * 5.6); o.m.position.y = M(0.2 + Math.abs(Math.sin(t * 6 + o.ph * 9)) * 0.03);
+            o.m.rotation.y = out ? Math.PI / 2 : -Math.PI / 2;
+          });
+          flashes.forEach((f) => { const ph = (t + f.at) % 2.6; f.m.material.emissiveIntensity = ph < 0.08 ? 6 : 0; });
+        },
+      };
+    },
+  },
+
+  science: { // science lab day: cool mint light, a giant DNA helix turning on the hub stage, lab benches with bubbling flasks
+    light: { sky: '#e8fff6', ground: '#1a3a3a', hemi: 0.45, sun: '#f0fffa', sunI: 1.8, fill: '#7affc8', fillI: 0.7, exposure: 0.9, bg: '#0a1e1e' },
+    floors: { hub: '#d8f5ec' },
+    mood: { beams: ['#7affc8', '#4cc9ff', '#b7ff3c'], pools: ['#7affc8', '#4cc9ff', '#b7ff3c'], screenHue: 0.45, screenSat: 0.8,
+      balloons: ['#7affc8', '#4cc9ff', '#b7ff3c'], confetti: ['#7affc8', '#4cc9ff', '#b7ff3c', '#ffffff'], sparkle: '#c8fff0', sparkleGain: 1.2 },
+    build(g, ctx) {
+      const helix = prop(g, ...STAGE, TOP);
+      const strand = [lit('#ff3d8b', 0.8), lit('#4cc9ff', 0.8)], rung = std('#ffffff', { roughness: 0.4 });
+      for (let k = 0; k < 18; k++) {
+        const a = k * 0.55, h = 0.4 + k * 0.2;
+        [0, Math.PI].forEach((o, s) => part(helix, GEO.sph(0.14, 12), strand[s], Math.cos(a + o) * 0.75, Math.sin(a + o) * 0.75, h));
+        const r = part(helix, GEO.cyl(0.03, 0.03, 1.5, 6), rung, 0, 0, h); r.rotation.z = Math.PI / 2; r.rotation.y = -a;
+      }
+      part(helix, GEO.cyl(0.9, 1.0, 0.25, 32), std('#e8e8f0', { metalness: 0.5, roughness: 0.3 }), 0, 0, 0.12);
+      const glass = std('#e8fff6', { transparent: true, opacity: 0.35, roughness: 0.05, depthWrite: false });
+      const LIQ = ['#7affc8', '#ff3d8b', '#4cc9ff', '#b7ff3c'];
+      const tops = [];
+      for (let k = 0; k < 4; k++) { // lab benches with flasks and test tubes
+        const a = (k / 4) * Math.PI * 2 + Math.PI / 4, b = prop(g, ...onStage(a, 2.6), TOP, a);
+        part(b, GEO.box(1.4, 0.08, 0.6), std('#ffffff', { roughness: 0.3 }), 0, 0, 0.9);
+        part(b, GEO.box(1.3, 0.85, 0.5), std('#3a5a5a'), 0, 0, 0.45);
+        part(b, GEO.cone(0.22, 0.4, 16), lit(LIQ[k], 0.9, { transparent: true, opacity: 0.85 }), -0.35, 0, 1.13);
+        part(b, GEO.cyl(0.05, 0.05, 0.25, 10), glass, -0.35, 0, 1.45);
+        for (let j = 0; j < 3; j++) part(b, GEO.cyl(0.04, 0.04, 0.3, 8), lit(LIQ[(k + j + 1) % 4], 0.9), 0.15 + j * 0.15, 0, 1.1);
+        part(b, GEO.box(0.5, 0.04, 0.12), std('#c9ccd6'), 0.3, 0, 0.98);
+        tops.push(new THREE.Vector3(toX(onStage(a, 2.6)[0]), M(TOP + 1.6), toZ(onStage(a, 2.6)[1])));
+      }
+      SPOTS.forEach(([x, y]) => { const at = prop(g, x, y, 2.2); at.add(atom(0.5)); });
+      const bub = particles(ctx.coarse ? 24 : 48, dotTexture(), { blending: THREE.AdditiveBlending });
+      const bs = Array.from({ length: bub.n }, (_, i) => ({ f: i % 4, k: Math.random(), ph: rand(0, 6) }));
+      for (let i = 0; i < bub.n; i++) { bub.tint(i, LIQ[i % 4]); bub.size.setX(i, rand(0.04, 0.08)); }
+      ctx.scene.add(bub.points);
+      const atoms = g.children.filter((c) => c.children[0]?.userData.atom);
+      return {
+        points: [bub],
+        step(dt, t, p) {
+          helix.rotation.y = t * 0.5;
+          atoms.forEach((a, i) => { a.rotation.y = t * 0.8 + i; a.rotation.x = Math.sin(t * 0.5 + i) * 0.4; });
+          bs.forEach((o, i) => {
+            o.k = (o.k + dt * 0.35) % 1; const s = tops[o.f];
+            bub.pos.setXYZ(i, s.x + Math.sin(o.ph + t * 3) * 0.04, s.y + o.k * 0.6, s.z + Math.cos(o.ph + t * 3) * 0.04);
+            bub.alpha.setX(i, p * (1 - o.k) * 0.9);
+          });
+          bub.flush();
+        },
+      };
+    },
+  },
+
+  books: { // book club day: a warm library glow, a giant open book with a turning page, book-stack seats, reading lamps
+    light: { sky: '#fff1dc', ground: '#4a2a1a', hemi: 0.45, sun: '#ffd9a8', sunI: 1.8, fill: '#ffb36b', fillI: 0.55, exposure: 0.9, bg: '#24160e' },
+    floors: { hub: '#f3e2c8' },
+    mood: { beams: ['#ffd9a8', '#fff1dc', '#ffd9a8'], pools: ['#ffd9a8', '#fff1dc', '#ffb36b'], screenHue: 0.08, screenSat: 0.6,
+      balloons: ['#7a2c3a', '#1f4f6b', '#e6c47e'], confetti: ['#7a2c3a', '#1f4f6b', '#e6c47e', '#fff1dc'], sparkle: '#ffe6b0', sparkleGain: 1.2 },
+    build(g, ctx) {
+      const text = canvasTexture(128, (c, s) => { c.fillStyle = '#fffaf0'; c.fillRect(0, 0, s, s); c.fillStyle = '#8a7a6a'; for (let r = 0; r < 14; r++) for (let w = 0; w < 5; w++) c.fillRect(10 + w * 22, 10 + r * 8, 8 + ((r * 7 + w * 3) % 10), 3); });
+      const page = std('#ffffff', { map: text, roughness: 0.9, side: THREE.DoubleSide });
+      const book = prop(g, ...STAGE, TOP + 0.5);
+      part(book, GEO.box(3.6, 0.12, 2.4), std('#7a2c3a', { roughness: 0.6 }), 0, 0, 0);
+      [-1, 1].forEach((s) => { const pg = part(book, GEO.box(1.7, 0.18, 2.2), page, s * 0.88, 0, 0.15); pg.rotation.z = -s * 0.08; });
+      part(prop(g, ...STAGE, TOP), GEO.box(1.2, 0.45, 0.8), std('#5a3a22'), 0, 0, 0.22);
+      const flip = new THREE.Group(); flip.position.y = M(0.26); book.add(flip);
+      const leaf = new THREE.Mesh(new THREE.PlaneGeometry(M(1.7), M(2.2)), page); leaf.rotation.x = -Math.PI / 2; leaf.position.x = M(0.85); flip.add(leaf);
+      const COVERS = ['#7a2c3a', '#1f4f6b', '#e6c47e', '#2f6b45', '#ff8fb8', '#3a2a5a'];
+      for (let k = 0; k < 6; k++) { // stacks of giant books to sit on
+        const a = (k / 6) * Math.PI * 2 + 0.3, st = prop(g, ...onStage(a, 2.6), TOP, a + k);
+        for (let j = 0; j < 3; j++) { const b = part(st, GEO.box(0.8 - j * 0.06, 0.16, 0.55), std(COVERS[(k + j) % 6], { roughness: 0.6 }), 0, 0, 0.08 + j * 0.17); b.rotation.y = (j - 1) * 0.2; part(st, GEO.box(0.74 - j * 0.06, 0.13, 0.5), std('#fffaf0'), 0.03, 0, 0.08 + j * 0.17).rotation.y = (j - 1) * 0.2; }
+      }
+      const shades = [];
+      SPOTS.forEach(([x, y]) => { // reading lamps
+        const l = prop(g, x, y);
+        part(l, GEO.cyl(0.25, 0.3, 0.06, 16), std('#3a2a22'), 0, 0, 0.03);
+        part(l, GEO.cyl(0.025, 0.025, 1.8, 8), std('#c9a14a', { metalness: 0.7 }), 0, 0, 0.9);
+        shades.push(part(l, GEO.cone(0.4, 0.45, 20, true), lit('#ffd9a8', 1.2, { side: THREE.DoubleSide }), 0, 0, 1.9));
+      });
+      return {
+        step(dt, t) {
+          const k = (t * 0.25) % 1; flip.rotation.z = Math.PI * Math.min(1, k / 0.7) * 0.97; // a page turns every few seconds
+          leaf.visible = k < 0.75;
+          shades.forEach((s, i) => { s.material.emissiveIntensity = 1.1 + Math.sin(t * 2 + i) * 0.1; });
+        },
+      };
+    },
+  },
+
+  bake: { // bake-off day: a warm kitchen, a giant stand mixer whisking on the hub stage, counters with steaming pots, macaron towers
+    light: { sky: '#fff4e8', ground: '#5a3a2a', hemi: 0.5, sun: '#ffe8cc', sunI: 2.0, fill: '#ff9fb0', fillI: 0.5, exposure: 0.9, bg: '#2a1612' },
+    floors: { hub: '#fbe6d6' },
+    mood: { beams: ['#ffd1dc', '#fff4e8', '#ffd1dc'], pools: ['#ffb3c1', '#fff4e8', '#ffd9a8'], screenHue: 0.03, screenSat: 0.6,
+      balloons: ['#ffb3c1', '#c7efdf', '#fff0aa'], confetti: ['#ffb3c1', '#c7efdf', '#fff0aa', '#ffffff'], sparkle: '#fff2d6', sparkleGain: 1.2 },
+    build(g, ctx) {
+      const pink = std('#ff9fb0', { roughness: 0.35 }), steel = std('#d6d9e0', { metalness: 0.8, roughness: 0.25 });
+      const mixer = prop(g, ...STAGE, TOP);
+      part(mixer, GEO.box(1.6, 0.35, 1.1), pink, 0, 0, 0.18);
+      part(mixer, GEO.box(0.55, 2.0, 0.7), pink, -0.6, 0, 1.2);
+      part(mixer, GEO.cyl(0.42, 0.42, 1.5, 24), pink, 0.05, 0, 2.3).rotation.z = Math.PI / 2;
+      part(mixer, GEO.cyl(0.65, 0.45, 0.8, 28, true), steel, 0.35, 0, 0.75);
+      part(mixer, GEO.sph(0.6, 20), std('#fff6fb', { roughness: 0.6 }), 0.35, 0, 0.95).scale.y = 0.5;
+      const whisk = prop(g, STAGE[0] + 0.35, STAGE[1], TOP + 1.1);
+      for (let k = 0; k < 4; k++) { const w = part(whisk, GEO.torus(0.25, 0.015, Math.PI * 2, 20), steel, 0, 0, 0.35); w.rotation.y = (k * Math.PI) / 4; w.scale.set(1, 1.6, 1); }
+      part(whisk, GEO.cyl(0.03, 0.03, 0.6, 8), steel, 0, 0, 0.9);
+      const pots = [];
+      for (let k = 0; k < 4; k++) { // counters round the mixer
+        const a = (k / 4) * Math.PI * 2 + Math.PI / 4, c = prop(g, ...onStage(a, 2.6), TOP, a);
+        part(c, GEO.box(1.4, 0.9, 0.6), std('#ffffff', { roughness: 0.4 }), 0, 0, 0.45);
+        part(c, GEO.box(1.45, 0.06, 0.65), std('#e8d9c8', { roughness: 0.3 }), 0, 0, 0.93);
+        part(c, GEO.cyl(0.22, 0.2, 0.25, 16), steel, -0.35, 0, 1.08);
+        part(c, GEO.cyl(0.3, 0.2, 0.18, 16), std(['#c7efdf', '#fff0aa', '#ffb3c1', '#ddcffb'][k], { roughness: 0.4 }), 0.35, 0, 1.05);
+        const [x, y] = onStage(a, 2.6); pots.push(new THREE.Vector3(toX(x), M(TOP + 1.25), toZ(y)));
+      }
+      SPOTS.forEach(([x, y], k) => { const t = prop(g, x, y); for (let j = 0; j < 5; j++) { const m = macaron(0.5 - j * 0.06, ['#ffb3c1', '#c7efdf', '#fff0aa', '#ddcffb', '#ffd9a8'][(j + k) % 5]); m.position.y = M(0.15 + j * 0.3); t.add(m); } });
+      const steam = particles(ctx.coarse ? 20 : 40, dotTexture());
+      const ss = Array.from({ length: steam.n }, (_, i) => ({ f: i % 4, k: Math.random(), ph: rand(0, 6) }));
+      for (let i = 0; i < steam.n; i++) { steam.tint(i, '#ffffff'); steam.size.setX(i, rand(0.12, 0.22)); }
+      ctx.scene.add(steam.points);
+      let next = 0;
+      return {
+        points: [steam],
+        step(dt, t, p) {
+          whisk.rotation.y = t * 6;
+          ss.forEach((o, i) => { o.k = (o.k + dt * 0.3) % 1; const s = pots[o.f]; steam.pos.setXYZ(i, s.x + Math.sin(o.ph + t) * 0.08 * o.k, s.y + o.k * 0.7, s.z + Math.cos(o.ph + t) * 0.08 * o.k); steam.alpha.setX(i, p * 0.35 * Math.sin(o.k * Math.PI)); });
+          steam.flush();
+          if (p > 0.9 && t > next) { next = t + 1.1; ctx.live.burst(new THREE.Vector3(toX(STAGE[0]), M(2.2), toZ(STAGE[1])), ['heart', 'cup'], 1); }
+        },
+      };
+    },
+  },
+
+  wellness: { // wellness and yoga: a calm dawn, a lotus breathing in a pool of ripples on the hub stage, a ring of mats, stone cairns
+    light: { sky: '#fff8f0', ground: '#5a7a6a', hemi: 0.52, sun: '#ffe8d6', sunI: 1.8, fill: '#c7efdf', fillI: 0.6, exposure: 0.88, bg: '#2f4a46' },
+    floors: { hub: '#e4f3ea' },
+    mood: { beams: ['#c7efdf', '#fff3e6', '#ffd1dc'], beamGain: 0.6, pools: ['#c7efdf', '#fff3e6', '#ffd1dc'], poolGain: 0.8, screenHue: 0.4, screenSat: 0.4,
+      balloons: ['#c7efdf', '#ffd1dc', '#fff3e6'], confetti: ['#c7efdf', '#ffd1dc', '#fff3e6', '#ffffff'], sparkle: '#fff8e6', sparkleGain: 1.4 },
+    build(g, ctx) {
+      const pond = prop(g, ...STAGE, TOP);
+      part(pond, GEO.cyl(1.4, 1.4, 0.06, 40), std('#9fd8e0', { roughness: 0.1, metalness: 0.2 }), 0, 0, 0.03);
+      const lotus = new THREE.Group(); lotus.position.y = M(0.15); pond.add(lotus);
+      [[8, 0.7, 0.5, '#ffd1dc'], [6, 0.5, 0.9, '#ffb3c8']].forEach(([n, r, tilt, col]) => { for (let k = 0; k < n; k++) { const a = (k / n) * Math.PI * 2 + tilt, pe = new THREE.Mesh(GEO.sph(0.32, 14), lit(col, 0.25, { roughness: 0.5 })); pe.scale.set(0.45, 0.25, 1); pe.position.set(Math.sin(a) * M(r * 0.6), M(0.12), Math.cos(a) * M(r * 0.6)); pe.rotation.set(-tilt * 0.8, a, 0, 'YXZ'); pe.castShadow = true; lotus.add(pe); } });
+      lotus.add(mesh(GEO.sph(0.16, 14), lit('#ffe680', 0.8), 0, 0, 0.2));
+      const ripples = [0, 1, 2].map((k) => { const r = part(pond, GEO.torus(1, 0.012, Math.PI * 2, 48), std('#ffffff', { transparent: true, opacity: 0.6 }), 0, 0, 0.07); r.rotation.x = Math.PI / 2; return r; });
+      const MATS = ['#c7efdf', '#ffd1dc', '#ddcffb', '#fff0aa', '#bfe9ff', '#ffd9c2'];
+      for (let k = 0; k < 8; k++) { const a = (k / 8) * Math.PI * 2, m = prop(g, ...onStage(a, 2.4), TOP, a); part(m, GEO.box(0.6, 0.02, 1.6), std(MATS[k % 6], { roughness: 0.9 }), 0, 0, 0.02); }
+      SPOTS.forEach(([x, y], k) => { // stone cairns and a plant
+        const c = prop(g, x, y);
+        [[0.45, 0.16], [0.36, 0.14], [0.28, 0.12], [0.2, 0.1]].reduce((h, [r, th]) => { part(c, GEO.sph(r, 16), std(['#c9c4bc', '#a8a39b', '#d8d3cb'][k], { roughness: 0.9 }), rand(-0.04, 0.04), 0, h + th).scale.y = th / r; return h + th * 2; }, 0);
+        for (let j = 0; j < 5; j++) { const a = (j / 5) * Math.PI * 2; const l = part(c, GEO.sph(0.25, 10), std('#4f9a6a', { roughness: 0.8 }), 0.8 + Math.cos(a) * 0.25, Math.sin(a) * 0.25, 0.5); l.scale.set(0.5, 0.15, 1); l.rotation.set(0.6, a, 0, 'YXZ'); }
+        part(c, GEO.cyl(0.25, 0.2, 0.35, 14), std('#f3e6c8'), 0.8, 0, 0.17);
+      });
+      return {
+        step(dt, t) {
+          const b = 1 + Math.sin(t * 0.9) * 0.06; lotus.scale.set(b, b, b); lotus.rotation.y = t * 0.1; // breathing
+          ripples.forEach((r, k) => { const q = ((t * 0.25) + k / 3) % 1; r.scale.setScalar(0.3 + q * 1.0); r.material.opacity = 0.6 * (1 - q); });
+        },
+      };
+    },
+  },
+
+  travel: { // around the world: a sunny day, a giant turning globe with a plane circling it, suitcases, hot-air balloons over the hall
+    light: { sky: '#ffffff', ground: '#3a6a8a', hemi: 0.52, sun: '#fff2d6', sunI: 2.1, fill: '#9fd8ff', fillI: 0.5, exposure: 0.88, bg: '#5aa0d8' },
+    floors: { hub: '#e8f4ff' },
+    mood: { beams: ['#ffd23f', '#ffffff', '#3fa9f5'], pools: ['#ffd23f', '#ffffff', '#3fa9f5'], screenHue: 0.55, screenSat: 0.7,
+      balloons: ['#ff5a5f', '#ffd23f', '#3fa9f5', '#5ad17a'], confetti: ['#ff5a5f', '#ffd23f', '#3fa9f5', '#5ad17a', '#ffffff'], sparkle: '#ffffff', sparkleGain: 0.8 },
+    build(g, ctx) {
+      const earth = canvasTexture(256, (c, s) => {
+        c.fillStyle = '#3fa9f5'; c.fillRect(0, 0, s, s); c.fillStyle = '#7fd08a';
+        [[40, 70, 30, 40], [70, 150, 20, 35], [130, 60, 40, 25], [140, 120, 25, 40], [200, 80, 35, 30], [210, 170, 25, 18]].forEach(([x, y, rx, ry]) => { c.beginPath(); c.ellipse(x, y, rx, ry, 0.4, 0, Math.PI * 2); c.fill(); });
+        c.fillStyle = '#ffffff'; c.fillRect(0, 0, s, 14); c.fillRect(0, s - 14, s, 14);
+      });
+      const stand = prop(g, ...STAGE, TOP);
+      const gold = std('#e6c47e', { metalness: 0.8, roughness: 0.3 });
+      part(stand, GEO.cyl(0.7, 0.9, 0.2, 28), gold, 0, 0, 0.1);
+      part(stand, GEO.cyl(0.08, 0.1, 1.0, 10), gold, 0, 0, 0.6);
+      const globe = part(stand, GEO.sph(1.25, 40), std('#ffffff', { map: earth, roughness: 0.5 }), 0, 0, 2.35);
+      globe.rotation.z = 0.4;
+      const meridian = part(stand, GEO.torus(1.4, 0.05, Math.PI * 2, 48), gold, 0, 0, 2.35); meridian.rotation.z = 0.4;
+      const orbit = new THREE.Group(); orbit.position.y = M(2.35); stand.add(orbit);
+      const plane = paperPlane('#ffffff'); plane.position.x = M(1.9); plane.scale.setScalar(1.5); orbit.add(plane);
+      const CASE = ['#ff5a5f', '#ffd23f', '#3fa9f5', '#5ad17a', '#b44cff'];
+      for (let k = 0; k < 5; k++) { // suitcases
+        const a = (k / 5) * Math.PI * 2 + 0.2, s = prop(g, ...onStage(a, 2.7), TOP, a + k * 0.7);
+        part(s, GEO.box(0.8, 1.0, 0.35), std(CASE[k], { roughness: 0.5 }), 0, 0, 0.55);
+        part(s, GEO.box(0.3, 0.06, 0.06), std('#1b1b1f'), 0, 0, 1.1);
+        part(s, GEO.cyl(0.18, 0.18, 0.02, 16), std(CASE[(k + 2) % 5]), 0.15, 0.18, 0.7).rotation.x = Math.PI / 2;
+        [-0.3, 0.3].forEach((d) => part(s, GEO.cyl(0.05, 0.05, 0.05, 10), std('#1b1b1f'), d, 0, 0.04).rotation.z = Math.PI / 2);
+      }
+      const balloons = [[...SPOTS[0], '#ff5a5f'], [...SPOTS[1], '#ffd23f'], [...SPOTS[2], '#3fa9f5']].map(([x, y, col], k) => { // hot-air balloons
+        const b = prop(g, x, y, 4.2);
+        const env = part(b, GEO.sph(0.75, 20), std(col, { roughness: 0.6 }), 0, 0, 0.6); env.scale.y = 1.2;
+        for (let j = 0; j < 6; j++) { const st = part(b, GEO.box(0.02, 1.45, 0.02), std('#ffffff'), Math.cos(j) * 0.74, Math.sin(j) * 0.74, 0.6); st.visible = j % 2 === 0; }
+        part(b, GEO.box(0.35, 0.3, 0.35), std('#8a5a2a', { roughness: 0.9 }), 0, 0, -0.65);
+        [-0.15, 0.15].forEach((d) => part(b, GEO.cyl(0.006, 0.006, 0.5, 4), std('#3a2a22'), d, d, -0.35));
+        return { b, ph: k * 2 };
+      });
+      return {
+        step(dt, t) {
+          globe.rotation.y = t * 0.3; orbit.rotation.y = -t * 0.8;
+          balloons.forEach((o) => { o.b.position.y = M(4.2 + Math.sin(t * 0.5 + o.ph) * 0.4); });
+        },
+      };
+    },
+  },
+
+  tech: { // future tech day: blue holo light, a friendly robot waving on a circuit stage, a scanning hologram ring, drones
+    light: { sky: '#cfe8ff', ground: '#0a1a2a', hemi: 0.36, sun: '#d6ecff', sunI: 1.2, fill: '#29e3ff', fillI: 0.8, exposure: 0.95, bg: '#06101e' },
+    floors: { hub: '#b8d8f0', live: '#10223a' },
+    mood: { beams: ['#29e3ff', '#ffffff', '#7a5cff'], beamGain: 1.4, pools: ['#29e3ff', '#7a5cff', '#ffffff'], poolGain: 1.3, screenHue: 0.53, screenSat: 0.9,
+      balloons: ['#29e3ff', '#c9ccd6', '#7a5cff'], confetti: ['#29e3ff', '#c9ccd6', '#7a5cff', '#ffffff'], sparkle: '#bff6ff', sparkleGain: 1.4 },
+    build(g, ctx) {
+      const circuit = canvasTexture(256, (c, s) => {
+        c.fillStyle = '#0d2238'; c.fillRect(0, 0, s, s); c.strokeStyle = '#29e3ff'; c.lineWidth = 3; c.fillStyle = '#29e3ff';
+        for (let k = 0; k < 22; k++) { let x = (k * 53) % s, y = (k * 97) % s; c.beginPath(); c.moveTo(x, y); for (let j = 0; j < 3; j++) { if ((k + j) % 2) x += 30; else y += 30; c.lineTo(x, y); } c.stroke(); c.beginPath(); c.arc(x, y, 4, 0, Math.PI * 2); c.fill(); }
+      });
+      const base = prop(g, ...STAGE, TOP);
+      part(base, GEO.cyl(3.1, 3.1, 0.03, 48), std('#ffffff', { map: circuit, emissive: '#ffffff', emissiveMap: circuit, emissiveIntensity: 0.6, roughness: 0.4 }), 0, 0, 0.02);
+      const white = std('#f2f4f8', { roughness: 0.3, metalness: 0.2 }), dark = std('#1b2233', { roughness: 0.3 });
+      const bot = prop(g, ...STAGE, TOP);
+      part(bot, GEO.cyl(0.45, 0.55, 0.3, 24), dark, 0, 0, 0.15);
+      part(bot, GEO.box(1.0, 1.1, 0.7), white, 0, 0, 0.9);
+      part(bot, GEO.box(0.5, 0.3, 0.02), lit('#29e3ff', 1.2), 0, 0.36, 1.0);
+      const head = new THREE.Group(); head.position.y = M(1.85); bot.add(head);
+      head.add(mesh(GEO.box(0.8, 0.6, 0.6), white), mesh(GEO.box(0.62, 0.3, 0.02), dark, 0, 0.31, 0.02));
+      const eyes = [-0.14, 0.14].map((d) => mesh(GEO.sph(0.07, 12), lit('#29e3ff', 2.2), d, 0.33, 0.03)); head.add(...eyes);
+      head.add(mesh(GEO.cyl(0.015, 0.015, 0.3, 6), dark, 0, 0, 0.45), mesh(GEO.sph(0.06, 10), lit('#ff3d8b', 2), 0, 0, 0.62));
+      const arms = [-1, 1].map((s) => { const a = new THREE.Group(); a.position.set(M(s * 0.6), M(1.35), 0); bot.add(a); a.add(mesh(GEO.cyl(0.08, 0.08, 0.7, 10), white, 0, 0, -0.35), mesh(GEO.sph(0.12, 10), dark, 0, 0, -0.75)); return a; });
+      const scan = part(prop(g, ...STAGE, TOP), GEO.torus(1.6, 0.03, Math.PI * 2, 64), lit('#29e3ff', 2.4, { transparent: true, opacity: 0.8 }), 0, 0, 1.0); scan.rotation.x = Math.PI / 2;
+      const drones = [0, 1, 2, 3].map((k) => { const d = prop(g, ...STAGE, 3.6 + (k % 2) * 0.6); d.add(drone()); return { d, ph: (k / 4) * Math.PI * 2, r: 4 + (k % 2) * 3 }; });
+      let next = 0;
+      return {
+        step(dt, t, p) {
+          arms[1].rotation.z = 2.4 + Math.sin(t * 5) * 0.4; arms[0].rotation.z = -0.2 + Math.sin(t * 1.5) * 0.1; // one arm waves
+          head.rotation.y = Math.sin(t * 0.7) * 0.5;
+          eyes.forEach((e) => { e.scale.y = (t % 3.5) < 0.12 ? 0.15 : 1; }); // a blink
+          scan.position.y = M(0.3 + ((Math.sin(t * 1.2) + 1) / 2) * 2.4);
+          drones.forEach((o) => { const a = t * 0.5 + o.ph; o.d.position.x = toX(STAGE[0] + Math.cos(a) * o.r); o.d.position.z = toZ(STAGE[1] + Math.sin(a) * o.r); o.d.rotation.y = -a; o.d.children[0].children.slice(1).forEach((r) => { r.rotation.y = t * 30; }); });
+          if (p > 0.9 && t > next) { next = t + 1.2; ctx.live.burst(new THREE.Vector3(toX(STAGE[0]), M(2.6), toZ(STAGE[1])), ['heart', 'sparkle'], 1); }
+        },
+      };
+    },
+  },
+
+  safari: { // safari day: golden savanna light, an acacia tree with a giraffe nibbling it, grass tufts, birds circling
+    light: { sky: '#ffe6b0', ground: '#6a4a1a', hemi: 0.5, sun: '#ffc870', sunI: 2.1, fill: '#ff9a55', fillI: 0.5, exposure: 0.9, bg: '#b8683a' },
+    floors: { hub: '#f0dcb0' },
+    mood: { beams: ['#ffc870', '#fff1d6', '#ff9a55'], pools: ['#ffc870', '#fff1d6', '#ff9a55'], screenHue: 0.09, screenSat: 0.8,
+      balloons: ['#c9a14a', '#6b8a3a', '#e07a2e'], confetti: ['#c9a14a', '#6b8a3a', '#e07a2e', '#fff1d6'], sparkle: '#ffe6a0', sparkleGain: 1 },
+    build(g, ctx) {
+      const tree = prop(g, STAGE[0] + 0.8, STAGE[1] - 0.4, TOP);
+      const bark = std('#6b4433', { roughness: 0.9 });
+      part(tree, GEO.cyl(0.14, 0.22, 2.6, 8), bark, 0, 0, 1.3);
+      [[-0.5, 0.3], [0.5, -0.2]].forEach(([dx, rz]) => part(tree, GEO.cyl(0.06, 0.1, 1.2, 6), bark, dx * 0.5, 0, 2.6).rotation.z = rz * 1.6);
+      [[0, 0, 3.2, 1.6], [-0.9, 0.3, 3.0, 1.0], [0.9, -0.2, 3.05, 1.1]].forEach(([dx, dy, h, r]) => part(tree, GEO.sph(r, 16), std('#6b8a3a', { roughness: 0.8, flatShading: true }), dx, dy, h).scale.y = 0.28);
+      const spots = canvasTexture(128, (c, s) => { c.fillStyle = '#f2c56a'; c.fillRect(0, 0, s, s); c.fillStyle = '#9a5a2a'; for (let k = 0; k < 24; k++) c.fillRect((k * 37) % s, (k * 61) % s, 16 + (k % 3) * 4, 14 + (k % 2) * 6); });
+      const hide = std('#ffffff', { map: spots, roughness: 0.8 });
+      const gir = prop(g, STAGE[0] - 1.1, STAGE[1] + 0.3, TOP, 0.4);
+      part(gir, GEO.box(1.4, 0.7, 0.6), hide, 0, 0, 1.6);
+      [[-0.55, -0.22], [-0.55, 0.22], [0.55, -0.22], [0.55, 0.22]].forEach(([dx, dy]) => part(gir, GEO.cyl(0.06, 0.07, 1.3, 8), hide, dx, dy, 0.65));
+      const neck = new THREE.Group(); neck.position.set(M(0.55), M(1.85), 0); gir.add(neck);
+      neck.add(mesh(GEO.cyl(0.11, 0.16, 1.6, 10), hide, 0, 0, 0.8));
+      const headG = group(mesh(GEO.box(0.5, 0.22, 0.25), hide, 0.15, 0, 0), mesh(GEO.cyl(0.03, 0.03, 0.18, 6), std('#6b4433'), -0.05, -0.06, 0.18), mesh(GEO.cyl(0.03, 0.03, 0.18, 6), std('#6b4433'), -0.05, 0.06, 0.18));
+      headG.position.y = M(1.65); neck.add(headG);
+      const tail = part(gir, GEO.cyl(0.02, 0.02, 0.6, 6), std('#6b4433'), -0.75, 0, 1.55);
+      for (let k = 0; k < 14; k++) { const [x, y] = onStage(k * 0.45, 2.2 + (k % 3) * 0.35); const tf = prop(g, x, y, TOP); for (let j = 0; j < 3; j++) part(tf, GEO.cone(0.06, 0.55, 5), std(j % 2 ? '#c9a14a' : '#8aa04a'), (j - 1) * 0.07, 0, 0.27).rotation.z = (j - 1) * 0.3; }
+      SPOTS.forEach(([x, y]) => { // binocular stands
+        const b = prop(g, x, y);
+        part(b, GEO.cyl(0.05, 0.08, 1.2, 8), std('#3a3a3a', { metalness: 0.5 }), 0, 0, 0.6);
+        [-0.1, 0.1].forEach((d) => part(b, GEO.cyl(0.08, 0.08, 0.3, 12), std('#1b1b1f', { metalness: 0.4 }), d, 0, 1.3).rotation.x = Math.PI / 2);
+      });
+      const dust = particles(ctx.coarse ? 26 : 50, dotTexture(), { blending: THREE.AdditiveBlending });
+      const ds = Array.from({ length: dust.n }, () => ({ x: toX(rand(8, 24)), y: M(rand(0.3, 3.5)), z: toZ(rand(15, 28)), ph: rand(0, 6) }));
+      for (let i = 0; i < dust.n; i++) { dust.tint(i, '#ffd98a'); dust.size.setX(i, rand(0.03, 0.06)); }
+      ctx.scene.add(dust.points);
+      return {
+        points: [dust],
+        step(dt, t, p) {
+          neck.rotation.z = -0.15 - Math.max(0, Math.sin(t * 0.6)) * 0.25; headG.rotation.z = Math.sin(t * 2.4) * 0.05; // reaching up to nibble
+          tail.rotation.x = Math.sin(t * 3) * 0.4;
+          ds.forEach((o, i) => { dust.pos.setXYZ(i, o.x + Math.sin(t * 0.3 + o.ph) * 0.3, o.y + Math.sin(t * 0.5 + o.ph) * 0.05, o.z); dust.alpha.setX(i, p * (0.3 + 0.3 * Math.sin(t * 1.5 + o.ph))); });
+          dust.flush();
+        },
+      };
+    },
+  },
+
+  carnival: { // carnival day: festive lights, a carousel turning on the hub stage with bobbing horses, balloon bunches, chasing bulbs
+    light: { sky: '#fff0e0', ground: '#3a1a3a', hemi: 0.42, sun: '#ffe0c0', sunI: 1.6, fill: '#ff6a8a', fillI: 0.7, exposure: 0.93, bg: '#1e0e2e' },
+    floors: { hub: '#ffe6e0' },
+    mood: { beams: ['#ff3d6e', '#ffd23f', '#29c7ff'], beamGain: 1.3, pools: ['#ff3d6e', '#ffd23f', '#29c7ff'], screenHue: 0.98, screenSat: 0.9,
+      balloons: ['#ff3d6e', '#ffd23f', '#29c7ff', '#5ad17a'], confetti: ['#ff3d6e', '#ffd23f', '#29c7ff', '#5ad17a', '#ffffff'], sparkle: '#fff2a8', sparkleGain: 1.6 },
+    build(g, ctx) {
+      const gold = std('#e6c47e', { metalness: 0.8, roughness: 0.3 });
+      const ride = prop(g, ...STAGE, TOP);
+      part(ride, GEO.cyl(2.6, 2.6, 0.25, 40), std('#ffffff', { roughness: 0.4 }), 0, 0, 0.12);
+      part(ride, GEO.cyl(0.35, 0.35, 3.2, 20), std('#ff3d6e', { roughness: 0.4 }), 0, 0, 1.6);
+      const roof = part(ride, GEO.cone(3.0, 1.3, 16), std('#ffffff', { map: stripeTex('#ff3d6e', '#ffffff', 16), roughness: 0.5 }), 0, 0, 3.75);
+      part(ride, GEO.cyl(2.9, 2.9, 0.3, 40, true), std('#ffd23f', { roughness: 0.4, side: THREE.DoubleSide }), 0, 0, 3.1);
+      part(ride, GEO.sph(0.2, 12), gold, 0, 0, 4.5);
+      const bulbs = [];
+      for (let k = 0; k < 24; k++) { const a = (k / 24) * Math.PI * 2; bulbs.push(part(ride, GEO.sph(0.07, 8), lit('#fff2a8', 1.5), Math.cos(a) * 2.95, Math.sin(a) * 2.95, 2.95)); }
+      const horses = [];
+      for (let k = 0; k < 6; k++) {
+        const a = (k / 6) * Math.PI * 2, x = Math.cos(a) * 1.9, y = Math.sin(a) * 1.9;
+        part(ride, GEO.cyl(0.03, 0.03, 2.9, 8), gold, x, y, 1.7);
+        const h = new THREE.Group(); h.position.set(M(x), M(1.1), M(y)); h.rotation.y = -a; ride.add(h);
+        const col = std(['#ffffff', '#ffd1ec', '#c9e7ff'][k % 3], { roughness: 0.4 });
+        h.add(mesh(GEO.box(0.25, 0.35, 0.9), col), mesh(GEO.box(0.2, 0.5, 0.2), col, 0, 0.45, 0.25), mesh(GEO.box(0.18, 0.18, 0.35), col, 0, 0.55, 0.45));
+        [[-0.08, -0.3], [0.08, -0.3], [-0.08, 0.3], [0.08, 0.3]].forEach(([dx, dy]) => h.add(mesh(GEO.box(0.06, 0.45, 0.06), col, dx, dy, -0.35)));
+        h.add(mesh(GEO.box(0.27, 0.06, 0.3), std(['#ff3d6e', '#29c7ff', '#ffd23f'][k % 3]), 0, 0, 0.2));
+        horses.push(h);
+      }
+      SPOTS.forEach(([x, y], k) => { // balloon bunches
+        const b = prop(g, x, y);
+        part(b, GEO.cyl(0.15, 0.2, 0.3, 12), std('#1b1b1f'), 0, 0, 0.15);
+        for (let j = 0; j < 7; j++) {
+          const a = j * 0.9, r = j ? 0.35 : 0, h = 2.4 + (j % 3) * 0.3, bx = Math.cos(a) * r, by = Math.sin(a) * r;
+          part(b, GEO.sph(0.28, 14), std(['#ff3d6e', '#ffd23f', '#29c7ff', '#5ad17a', '#b44cff'][(j + k) % 5], { roughness: 0.25 }), bx, by, h).scale.y = 1.2;
+          const s = part(b, GEO.cyl(0.005, 0.005, h - 0.3, 4), std('#ffffff'), bx / 2, by / 2, (h - 0.3) / 2 + 0.15); s.rotation.set(by * 0.25, 0, -bx * 0.25);
+        }
+      });
+      return {
+        step(dt, t) {
+          ride.rotation.y = t * 0.35;
+          horses.forEach((h, k) => { h.position.y = M(1.1 + Math.sin(t * 2 + k * 1.3) * 0.25); });
+          bulbs.forEach((b, i) => { b.material.emissiveIntensity = (i + Math.floor(t * 6)) % 3 === 0 ? 2.6 : 0.6; });
+        },
+      };
+    },
+  },
 };
 
 /* ---------- How each theme dresses the whole venue ----------
@@ -1017,6 +1434,36 @@ const snowflake = (s, material) => { // six arms with a little V on each, facing
     const a = (k * Math.PI) / 3, x = Math.cos(a) * s * 0.6, y = Math.sin(a) * s * 0.6;
     [-0.6, 0.6].forEach((d) => { const v = mesh(GEO.box(s * 0.45, s * 0.08, 0.03), material, x + Math.cos(a + d) * s * 0.15, 0, y + Math.sin(a + d) * s * 0.15); v.rotation.z = a + d * 1.6; o.add(v); });
   }
+  return o;
+};
+const stripeTex = (a, b, n = 12) => canvasTexture(128, (c, s) => { for (let k = 0; k < n; k++) { c.fillStyle = k % 2 ? b : a; c.fillRect((k * s) / n, 0, s / n + 1, s); } });
+const atom = (r) => { // a nucleus and three electron orbits
+  const o = group(mesh(GEO.sph(r * 0.3, 16), lit('#ff3d8b', 0.8)));
+  [0, 1, 2].forEach((k) => {
+    const ring = new THREE.Group(); ring.rotation.set(k * 1.05, k * 0.6, 0); o.add(ring);
+    ring.add(mesh(GEO.torus(r, r * 0.03, Math.PI * 2, 40), lit('#4cc9ff', 1.2)), mesh(GEO.sph(r * 0.1, 10), lit('#7affc8', 2), r, 0, 0));
+  });
+  o.userData.atom = true;
+  return o;
+};
+const macaron = (r, col) => { // two shells and a cream middle
+  const shellM = std(col, { roughness: 0.6 }), o = group();
+  [-1, 1].forEach((s) => { const sh = mesh(GEO.sph(r, 16), shellM, 0, 0, s * r * 0.3); sh.scale.y = 0.35; o.add(sh); });
+  const cream = mesh(GEO.cyl(r * 0.9, r * 0.9, r * 0.25, 16), std('#fff8f0', { roughness: 0.7 })); o.add(cream);
+  return o;
+};
+const paperPlane = (col) => { // two flat triangles in a V, nose to +x
+  const m = std(col, { side: THREE.DoubleSide, roughness: 0.8, flatShading: true }), o = group();
+  [-1, 1].forEach((s) => {
+    const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(M(0.3), 0, 0), new THREE.Vector3(M(-0.2), 0, s * M(0.14)), new THREE.Vector3(M(-0.2), M(-0.04), 0)]);
+    geo.computeVertexNormals(); o.add(new THREE.Mesh(geo, m));
+  });
+  return o;
+};
+const drone = () => { // a body and four spinning rotors (body first)
+  const dark = std('#1b2233', { roughness: 0.4 }), o = group(mesh(GEO.box(0.3, 0.08, 0.3), std('#f2f4f8', { roughness: 0.3 })));
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([x, z]) => { const r = group(mesh(GEO.box(0.28, 0.01, 0.04), lit('#29e3ff', 1.4))); r.position.set(M(x * 0.2), M(0.06), M(z * 0.2)); o.add(r); });
+  o.children[0].add(mesh(GEO.sph(0.04, 8), dark, 0, 0.15, -0.02));
   return o;
 };
 const NEON = ['#ff2bd6', '#29e3ff', '#b7ff3c'];
@@ -1235,6 +1682,130 @@ const DRESS = {
       const d = mesh(GEO.cyl(1.4, 1.4, 0.2, 48), std('#ff8fd8', { roughness: 0.3 })); d.rotation.x = Math.PI / 2; c.add(d);
       [1.1, 0.75, 0.4].forEach((r, k) => c.add(mesh(GEO.torus(r, 0.1, Math.PI * 2, 40), std(k % 2 ? '#ff8fd8' : '#ffffff'), 0, 0.12, 0)));
       c.add(mesh(GEO.cyl(0.1, 0.1, 1.6, 8), std('#ffffff'), 0, -0.05, -1.9));
+    },
+  },
+  art: {
+    tint: '#fff0e0', outfits: ['#ffffff', '#3fa9f5', '#ffd23f', '#ff5a5f', '#2b1220', '#5ad17a'], bags: ['#ff5a5f', '#ffd23f', '#3fa9f5'], hat: 'beret',
+    door: (i) => { const col = std(['#ff5a5f', '#ffd23f', '#3fa9f5', '#5ad17a', '#b44cff'][i % 5], { roughness: 0.2 }); return group(mesh(GEO.sph(0.07, 10), col, 0, 0, -0.12), mesh(GEO.cone(0.06, 0.1, 10), col, 0, 0, -0.04)); },
+    float: (i) => { // a framed little painting
+      const f = group(mesh(GEO.box(0.6, 0.5, 0.05), std('#e6c47e', { metalness: 0.6, roughness: 0.3 })), mesh(GEO.box(0.5, 0.4, 0.06), lit(['#ff5a5f', '#3fa9f5', '#ffd23f', '#5ad17a'][i % 4], 0.5)));
+      f.userData.spin = 0.5; return f;
+    },
+    crest: (c) => {
+      const pal = mesh(GEO.cyl(1.6, 1.6, 0.12, 40), std('#c98d5b', { roughness: 0.8 })); pal.rotation.x = Math.PI / 2; pal.scale.set(1.3, 1, 1); c.add(pal);
+      ['#ff5a5f', '#ffd23f', '#3fa9f5', '#5ad17a', '#b44cff', '#ffffff'].forEach((col, k) => { const a = (k / 6) * Math.PI * 1.6 + 0.7; const b = mesh(GEO.sph(0.3, 14), std(col, { roughness: 0.2 }), Math.cos(a) * 1.5, 0.12, Math.sin(a) * 1.1); b.scale.z = 0.4; c.add(b); });
+    },
+  },
+  fashion: {
+    tint: '#f4eef0', outfits: ['#1b1b1f', '#ffffff', '#ff3d8b', '#e6c47e', '#1b1b1f', '#c81d32'], bags: ['#1b1b1f', '#e6c47e', '#ff3d8b'], hat: 'fascinator',
+    door: (i) => (i % 2 ? mesh(GEO.sph(0.05, 10), std('#fff8f0', { metalness: 0.4, roughness: 0.15 })) : mesh(GEO.cone(0.11, 0.26, 12), std(['#1b1b1f', '#ff3d8b', '#ffffff'][(i / 2) % 3], { roughness: 0.5 }), 0, 0, -0.18)),
+    float: (i) => { // shopping bags
+      const col = std(['#ff3d8b', '#1b1b1f', '#ffffff', '#e6c47e'][i % 4], { roughness: 0.6 });
+      const b = group(mesh(GEO.box(0.45, 0.5, 0.18), col), mesh(GEO.torus(0.11, 0.015, Math.PI, 12), std('#e6c47e', { metalness: 0.7 }), 0, 0, 0.25));
+      b.userData.spin = 0.6; return b;
+    },
+    crest: (c) => {
+      const gold = std('#e6c47e', { metalness: 0.8, roughness: 0.25 });
+      c.add(mesh(GEO.torus(0.25, 0.05, Math.PI * 1.5, 20), gold, 0, 0, 1.55), mesh(GEO.box(2.4, 0.08, 0.08), gold, 0, 0, 1.2));
+      [-1, 1].forEach((s) => { const arm = mesh(GEO.box(1.3, 0.08, 0.08), gold, s * 0.6, 0, 1.35); arm.rotation.z = -s * 0.3; c.add(arm); });
+      c.add(mesh(GEO.cone(1.2, 2.4, 24), std('#ff3d8b', { roughness: 0.5 }), 0, 0, -0.1), mesh(GEO.cyl(0.35, 0.5, 0.6, 20), std('#ff3d8b', { roughness: 0.5 }), 0, 0, 1.0));
+    },
+  },
+  science: {
+    tint: '#e0f5ee', outfits: ['#ffffff', '#ffffff', '#7affc8', '#4cc9ff', '#1f3a4a', '#ffffff'], bags: ['#4cc9ff', '#7affc8'], hat: 'goggles',
+    door: (i) => mesh(GEO.cyl(0.04, 0.04, 0.3, 8), lit(['#7affc8', '#ff3d8b', '#4cc9ff', '#b7ff3c'][i % 4], 1.2), 0, 0, -0.18),
+    float: () => { const a = group(atom(0.35)); a.userData.spin = 0.9; return a; },
+    crest: (c) => c.add(atom(1.3)),
+  },
+  books: {
+    tint: '#f5e8d4', outfits: ['#7a2c3a', '#1f4f6b', '#f3e6c8', '#2f6b45', '#3a2a22', '#e6c47e'], bags: ['#7a2c3a', '#c9a14a'], hat: 'readers',
+    door: (i) => mesh(GEO.box(0.2, 0.28, 0.06), std(['#7a2c3a', '#1f4f6b', '#e6c47e', '#2f6b45', '#ff8fb8'][i % 5], { roughness: 0.6 }), 0, 0, -0.18),
+    float: (i) => { // books flapping like birds
+      const col = std(['#7a2c3a', '#1f4f6b', '#e6c47e', '#2f6b45'][i % 4], { roughness: 0.6 });
+      const covers = [-1, 1].map((s) => { const h = new THREE.Group(); h.add(mesh(GEO.box(0.28, 0.03, 0.4), col, s * 0.14, 0, 0)); return h; });
+      const b = group(mesh(GEO.box(0.04, 0.06, 0.4), col), ...covers); b.userData.wings = covers; b.userData.circle = 1.2; return b;
+    },
+    crest: (c) => {
+      [-1, 1].forEach((s) => { const pg = mesh(GEO.box(1.8, 2.4, 0.12), std('#fffaf0', { roughness: 0.9 }), s * 0.92, 0, 0); pg.rotation.y = s * 0.25; c.add(pg); for (let r = 0; r < 6; r++) c.add(mesh(GEO.box(1.2, 0.06, 0.02), std('#8a7a6a'), s * 0.92, s * -0.25 + 0.08, 0.8 - r * 0.32)); });
+      c.add(mesh(GEO.box(4.0, 2.6, 0.08), std('#7a2c3a', { roughness: 0.6 }), 0, -0.25, 0));
+    },
+  },
+  bake: {
+    tint: '#fdeee4', outfits: ['#ffffff', '#ffb3c1', '#c7efdf', '#fff0aa', '#ffffff', '#ddcffb'], bags: ['#ffb3c1', '#c7efdf'], hat: 'chef',
+    door: (i) => macaron(0.16, ['#ffb3c1', '#c7efdf', '#fff0aa', '#ddcffb'][i % 4]),
+    float: (i) => {
+      if (i % 2) { const c = group(mesh(GEO.torus(0.25, 0.12, Math.PI * 1.2, 16), std('#e0a050', { roughness: 0.7 }))); c.userData.spin = 0.8; return c; } // a croissant
+      const m = group(macaron(0.35, ['#ffb3c1', '#c7efdf', '#ddcffb'][i % 3])); m.rotation.x = 1.2; m.userData.spin = 0.9; return m;
+    },
+    crest: (c) => {
+      const w = std('#ffffff', { roughness: 0.6 });
+      c.add(mesh(GEO.cyl(1.0, 0.9, 1.4, 24), w, 0, 0, -0.6));
+      [[0, 0.8, 0.9], [-0.8, 0.5, 0.65], [0.8, 0.5, 0.65], [-0.4, 1.2, 0.6], [0.4, 1.2, 0.6]].forEach(([d, h, r]) => c.add(mesh(GEO.sph(r, 16), w, d, 0, h)));
+    },
+  },
+  wellness: {
+    tint: '#eaf6ee', outfits: ['#c7efdf', '#ffd1dc', '#ffffff', '#ddcffb', '#fff3e6', '#9fd8c0'], bags: ['#c7efdf', '#ffffff'], hat: 'bun',
+    door: (i) => (i % 2 ? mesh(GEO.sph(0.05, 10), std('#fff3e6')) : (() => { const l = mesh(GEO.sph(0.12, 10), std('#7fc08a', { roughness: 0.8 }), 0, 0, -0.1); l.scale.set(0.5, 0.2, 1); l.rotation.x = 1.2; return l; })()),
+    float: (i) => { // floating lotus
+      const o = group();
+      for (let k = 0; k < 6; k++) { const a = (k / 6) * Math.PI * 2, pe = mesh(GEO.sph(0.18, 10), lit(['#ffd1dc', '#ffffff'][i % 2], 0.3), Math.sin(a) * 0.12, Math.cos(a) * 0.12, 0.05); pe.scale.set(0.45, 0.3, 1); pe.rotation.set(-0.5, a, 0, 'YXZ'); o.add(pe); }
+      o.add(mesh(GEO.cyl(0.32, 0.32, 0.03, 20), std('#4f9a6a'), 0, 0, -0.03)); o.userData.spin = 0.3; return o;
+    },
+    crest: (c) => {
+      const sun = mesh(GEO.cyl(1.6, 1.6, 0.08, 48), lit('#ffe6c8', 0.6)); sun.rotation.x = Math.PI / 2; c.add(sun);
+      for (let k = 0; k < 7; k++) { const a = ((k - 3) / 3) * 1.2, pe = mesh(GEO.sph(0.55, 14), std(k % 2 ? '#ffb3c8' : '#ffd1dc', { roughness: 0.5 }), Math.sin(a) * 0.7, 0.15, -0.6 + Math.cos(a) * 0.7); pe.scale.set(0.45, 0.2, 1); pe.rotation.set(Math.PI / 2, 0, -a, 'XYZ'); c.add(pe); }
+    },
+  },
+  travel: {
+    tint: '#eef6ff', outfits: ['#ffffff', '#3fa9f5', '#ffd23f', '#ff5a5f', '#c9b38a', '#5ad17a'], bags: ['#c9b38a', '#ff5a5f', '#3fa9f5'], hat: 'sunhat',
+    door: (i) => pennant(['#ff5a5f', '#ffd23f', '#3fa9f5', '#5ad17a', '#ffffff'][i % 5]),
+    float: (i) => { const p = group(paperPlane(['#ffffff', '#bfe9ff', '#ffd1ec'][i % 3])); p.userData.circle = 1.8; return p; },
+    crest: (c) => {
+      const earth = mesh(GEO.sph(1.3, 32), std('#3fa9f5', { roughness: 0.5 })); c.add(earth);
+      [[0.4, 0.3, 0.5], [-0.5, 0.2, -0.3], [0.1, 0.5, -0.6]].forEach(([d, z, h]) => { const l = mesh(GEO.sph(0.55, 12), std('#7fd08a', { roughness: 0.6 }), d, z + 0.75, h); l.scale.set(1, 0.6, 0.35); c.add(l); });
+      const ring = mesh(GEO.torus(1.8, 0.03, Math.PI * 2, 48), std('#ffffff')); ring.rotation.x = 0.4; c.add(ring);
+      const p = paperPlane('#ffffff'); p.scale.setScalar(2.5); p.position.set(M(1.7), M(0.6), M(0.4)); p.rotation.z = 0.5; c.add(p);
+    },
+  },
+  tech: {
+    tint: '#d6e8f8', outfits: ['#f2f4f8', '#1b2233', '#29e3ff', '#c9ccd6', '#7a5cff', '#ffffff'], bags: ['#c9ccd6', '#29e3ff'], hat: 'cyber',
+    door: (i) => mesh(GEO.box(0.1, 0.1, 0.1), lit(i % 2 ? '#29e3ff' : '#ffffff', 2)),
+    float: () => { const d = group(drone()); d.userData.circle = 1.4; return d; },
+    crest: (c) => {
+      const white = std('#f2f4f8', { roughness: 0.3, metalness: 0.2 });
+      c.add(mesh(GEO.box(3.0, 2.2, 0.6), white), mesh(GEO.box(2.4, 1.2, 0.1), std('#1b2233'), 0, 0.3, 0.1));
+      [-0.6, 0.6].forEach((d) => c.add(mesh(GEO.sph(0.25, 14), lit('#29e3ff', 2.2), d, 0.4, 0.2)));
+      c.add(mesh(GEO.box(0.9, 0.12, 0.05), lit('#29e3ff', 1.8), 0, 0.4, -0.35), mesh(GEO.cyl(0.04, 0.04, 0.7, 6), std('#1b2233'), 0, 0, 1.45), mesh(GEO.sph(0.18, 10), lit('#ff3d8b', 2), 0, 0, 1.85));
+    },
+  },
+  safari: {
+    tint: '#f5e6c8', outfits: ['#c9b38a', '#6b8a3a', '#f3e6c8', '#8a5a2a', '#e07a2e', '#ffffff'], bags: ['#8a5a2a', '#c9b38a'], hat: 'safari',
+    door: (i) => { const l = mesh(GEO.sph(0.14, 10), std(i % 2 ? '#6b8a3a' : '#8aa04a', { roughness: 0.8 }), 0, 0, -0.12); l.scale.set(0.5, 1, 0.15); return l; },
+    float: (i) => {
+      const col = std(['#ff5a5f', '#29c7ff', '#ffd23f', '#5ad17a'][i % 4], { side: THREE.DoubleSide });
+      const bird = group(mesh(GEO.sph(0.07, 10), col), mesh(GEO.cone(0.03, 0.08, 4), std('#ffb03c'), 0, 0.09, 0));
+      bird.children[1].rotation.x = Math.PI / 2;
+      const l = wing(col, -1), r = wing(col, 1); l.scale.setScalar(1.3); r.scale.setScalar(1.3); bird.add(l, r);
+      bird.userData.wings = [l, r]; bird.userData.circle = 1.6; return bird;
+    },
+    crest: (c) => {
+      const sun = mesh(GEO.cyl(1.7, 1.7, 0.08, 48), lit('#ff9a3c', 1.0)); sun.rotation.x = Math.PI / 2; c.add(sun);
+      const dark = std('#2b1a14');
+      c.add(mesh(GEO.cyl(0.08, 0.12, 1.8, 6), dark, 0.4, 0.1, -0.6));
+      const top = mesh(GEO.sph(1.0, 14), dark, 0.4, 0.1, 0.4); top.scale.set(1.4, 0.25, 0.1); c.add(top);
+    },
+  },
+  carnival: {
+    tint: '#ffece6', outfits: ['#ff3d6e', '#ffd23f', '#29c7ff', '#ffffff', '#5ad17a', '#b44cff'], bags: ['#ffd23f', '#ff3d6e'], hat: 'party',
+    door: (i) => mesh(GEO.sph(0.07, 8), lit(['#ff3d6e', '#ffd23f', '#29c7ff', '#5ad17a'][i % 4], 2.2)),
+    float: (i) => { // circus balls
+      const b = group(mesh(GEO.sph(0.35, 20), std('#ffffff', { map: stripeTex(['#ff3d6e', '#29c7ff', '#ffd23f'][i % 3], '#ffffff', 8), roughness: 0.3 })));
+      b.userData.spin = 1.2; return b;
+    },
+    crest: (c) => {
+      const tex = stripeTex('#ff3d6e', '#ffffff', 16);
+      c.add(mesh(GEO.cyl(1.7, 1.7, 1.2, 24), std('#ffffff', { map: tex, roughness: 0.5 }), 0, 0, -0.6), mesh(GEO.cone(1.9, 1.6, 24), std('#ffffff', { map: tex, roughness: 0.5 }), 0, 0, 0.8));
+      c.add(mesh(GEO.cyl(0.02, 0.02, 0.6, 6), std('#ffd23f'), 0, 0, 1.9), mesh(new THREE.CircleGeometry(M(0.25), 3), std('#ffd23f', { side: THREE.DoubleSide }), 0.15, 0, 2.0));
     },
   },
 };

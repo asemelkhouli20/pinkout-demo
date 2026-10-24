@@ -3,7 +3,7 @@
 import { CONFIG } from './config.js?v=20';
 import { get, on, safeStore, $, $$ } from './store.js?v=20';
 import { t } from './i18n.js?v=23';
-import { ZONES, THEMES } from './data.js?v=21';
+import { ZONES, THEMES } from './data.js?v=22';
 
 const ICONS = {
   event: '<svg viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18"/></svg>',

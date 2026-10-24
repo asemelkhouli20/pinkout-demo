@@ -90,6 +90,16 @@ export const THEMES = [
   { id: 'garden', en: 'Flower Festival', ar: 'مهرجان الزهور' },
   { id: 'winter', en: 'Winter Wonderland', ar: 'عالم الشتاء' },
   { id: 'candy', en: 'Candy Land', ar: 'أرض الحلوى' },
+  { id: 'art', en: 'Art Day', ar: 'يوم الفن' },
+  { id: 'fashion', en: 'Fashion Week', ar: 'أسبوع الموضة' },
+  { id: 'science', en: 'Science Lab Day', ar: 'يوم مختبر العلوم' },
+  { id: 'books', en: 'Book Club Day', ar: 'يوم نادي الكتاب' },
+  { id: 'bake', en: 'Bake-Off Day', ar: 'يوم مسابقة الخَبز' },
+  { id: 'wellness', en: 'Wellness & Yoga Day', ar: 'يوم العافية واليوغا' },
+  { id: 'travel', en: 'Around the World', ar: 'حول العالم' },
+  { id: 'tech', en: 'Future Tech Day', ar: 'يوم تقنية المستقبل' },
+  { id: 'safari', en: 'Safari Day', ar: 'يوم السفاري' },
+  { id: 'carnival', en: 'Carnival Day', ar: 'يوم الكرنفال' },
 ];
 
 export const TRACKS = ['event', 'beauty', 'shop'];

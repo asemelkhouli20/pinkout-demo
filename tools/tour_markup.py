@@ -50,6 +50,16 @@ THEME_ICONS = {
     'garden': '<circle cx="12" cy="5.5" r="2.5"/><circle cx="15.5" cy="9" r="2.5"/><circle cx="12" cy="12.5" r="2.5"/><circle cx="8.5" cy="9" r="2.5"/><path d="M12 15v6.5M12 19c-1.5-2-3.5-2.3-5-1.8M12 19.5c1.5-2 3.5-2.5 5-2"/>',
     'winter': '<path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9.5 3.5L12 6l2.5-2.5M9.5 20.5L12 18l2.5 2.5"/>',
     'candy': '<circle cx="12" cy="9" r="6"/><path d="M12 15v7"/><path d="M12 9a2 2 0 1 1 2 2 4 4 0 1 1-4-4"/>',
+    'art': '<path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 2-2s-1-1.5-1-2.5 1-1.5 2-1.5h2a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/>',
+    'fashion': '<path d="M12 4a1.8 1.8 0 1 1 1.8 1.8c-1 0-1.8.8-1.8 1.8V8"/><path d="M12 8L3 15.5c-.8.7-.3 2 .7 2h16.6c1 0 1.5-1.3.7-2z"/>',
+    'science': '<path d="M9 3h6M10 3v6l-5.5 9.5A1.6 1.6 0 0 0 5.9 21h12.2a1.6 1.6 0 0 0 1.4-2.5L14 9V3"/><path d="M7.5 15h9"/>',
+    'books': '<path d="M3 5.5c3-1 6-1 9 1 3-2 6-2 9-1v13c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6.5v13"/>',
+    'bake': '<path d="M6 13a3.5 3.5 0 0 1-.5-7 4.5 4.5 0 0 1 8.5-1.5A4 4 0 0 1 18.5 13"/><path d="M6.5 13h11v7h-11zM10 13v7M14 13v7"/>',
+    'wellness': '<path d="M12 20c-4 0-8-2.5-9-6 3 0 6 1 9 4 3-3 6-4 9-4-1 3.5-5 6-9 6z"/><path d="M12 18c-2-2.5-2.5-6 0-11 2.5 5 2 8.5 0 11z"/>',
+    'travel': '<path d="M3 13.5l3 1 3.5-2.5L5 5l2-1 7.5 6 4-2.5a1.8 1.8 0 0 1 2 3L9 18l-4-1z"/><path d="M3 21h18"/>',
+    'tech': '<rect x="5" y="8" width="14" height="11" rx="2"/><path d="M12 8V4M10.5 4h3M9 13h.01M15 13h.01M9.5 16h5M2.5 12v3M21.5 12v3"/>',
+    'safari': '<path d="M12 21V12"/><path d="M4 11c2-4 14-4 16 0-3 1.5-13 1.5-16 0z"/><path d="M12 11c-1-3-1-5-3-7M12 11c1-3 2-5 4-6"/>',
+    'carnival': '<path d="M3 9l9-6 9 6z"/><path d="M5 9v12M19 9v12M12 9v12M3 21h18"/><path d="M8.5 14a1.5 1.5 0 0 0 0 3M15.5 14a1.5 1.5 0 0 1 0 3"/>',
 }
 CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
 esc = html.escape
@@ -124,13 +134,15 @@ def _finale(i, ui):
 
 
 def _themes(ui):
-    buttons = ''.join(
-        f'<button class="tour__theme" type="button" data-theme-pick="{th["id"]}" aria-pressed="{str(th["id"] == "default").lower()}" '
-        f'aria-label="{esc(th["en"]["name"])}" title="{esc(th["en"]["name"])}" data-tx-label="t.{k}.name">'
-        f'<svg viewBox="0 0 24 24" aria-hidden="true">{THEME_ICONS[th["id"]]}</svg></button>'
-        for k, th in enumerate(TOUR['themes']))
-    return f'''      <div class="tour__themes" data-tour-themes role="group" aria-labelledby="tour-themes-title">
-        <span class="tour__themes-title" id="tour-themes-title" data-tx="u.themes">{esc(ui["themes"])}</span>{buttons}
+    """One button on the map: each click dresses the venue for the next themed day, and after the last one it is
+    back to every day (tour.js swaps the icon; the name is in its tooltip)."""
+    themes = TOUR['themes']
+    icons = ''.join(f'<svg viewBox="0 0 24 24" aria-hidden="true" data-theme-icon="{th["id"]}"{"" if k == 0 else " hidden"}>{THEME_ICONS[th["id"]]}</svg>'
+                    for k, th in enumerate(themes))
+    nxt = esc(ui['themeNext'].replace('{name}', themes[1]['en']['name']))
+    return f'''      <div class="tour__themes" data-tour-themes>
+        <button class="tour__theme-next" type="button" data-theme-next title="{nxt}" aria-label="{esc(ui["themes"])}: {esc(themes[0]["en"]["name"])}. {nxt}">{icons}</button>
+        <span class="tour__theme-sparks" aria-hidden="true"><i style="--a:-165deg;--d:0s;--c:#ffe08a"></i><i style="--a:-135deg;--d:0.18s;--c:#ff8fb8"></i><i style="--a:-105deg;--d:0.36s;--c:#ffffff"></i><i style="--a:-75deg;--d:0.54s;--c:#ffe08a"></i><i style="--a:-45deg;--d:0.72s;--c:#ff8fb8"></i><i style="--a:-15deg;--d:0.9s;--c:#ffffff"></i></span>
       </div>
 '''
 
@@ -164,7 +176,7 @@ def tour_for():
     <a class="skip-link tour__skip" href="#event" data-tx="u.skip">{esc(ui["skip"])}</a>
     <div class="tour__stage" data-tour-stage>
 {_loader(ui)}      <div class="tour__labels" data-tour-labels aria-hidden="true"></div>
-      <div class="tour__plan" data-tour-plan aria-hidden="true"><span class="tour__plan-title" data-tx="u.plan">{esc(ui["plan"])}</span></div>
+      <div class="tour__plan" data-tour-plan aria-hidden="true"></div>
 {_themes(ui)}    </div>
     <ol class="tour__stops">
 {nl.join(items)}

@@ -10,7 +10,7 @@
 // at a stop, for the bubbles), never every frame, and the themed days load on the first theme click.
 import * as THREE from './vendor/three.module.min.js?v=1';
 import { buildVenue, studioEnvironment, toX, toZ, U } from './venue.js?v=32';
-import { liveLayer } from './crowd.js?v=37';
+import { liveLayer } from './crowd.js?v=38';
 import { buildPark } from './park.js?v=13';
 
 const P = ([x, y, h]) => new THREE.Vector3(toX(x), h, toZ(y)); // plan metres + height (units) → scene
@@ -68,7 +68,7 @@ export function mount(stageEl, { zones, data, get, on, onPick, onReady }) {
   const useTheme = (id) => {
     wantTheme = id;
     if (!themes && id === 'default') return;
-    loadingThemes ||= import('./themes3d.js?v=10').then((m) => { themes = m.mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); });
+    loadingThemes ||= import('./themes3d.js?v=11').then((m) => { themes = m.mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); });
     loadingThemes.then(() => { themes.set(wantTheme); if (reduced() || !running) draw(0); });
   };
 

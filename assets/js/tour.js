@@ -3,7 +3,7 @@
 // step by step (what it is → what the brand can do → what it gets). tour3d.js films it when WebGL is fine;
 // otherwise the stops read as illustrated cards. Text comes from src/tour.json (embedded), in EN or AR.
 import { get, on, safeStore, $, $$ } from './store.js?v=20';
-import { ZONES } from './data.js?v=21';
+import { ZONES } from './data.js?v=22';
 
 const BRAND_KEY = 'po-brand';
 const brand = () => (safeStore.get('sessionStorage', BRAND_KEY) || '').trim();
@@ -43,7 +43,7 @@ export function initTour() {
     const lang = get('lang');
     $$('[data-tx]', root).forEach((el) => fill(el, lookup(el.dataset.tx, lang), lang));
     $$('[data-tx-label]', root).forEach((el) => el.setAttribute('aria-label', lookup(el.dataset.txLabel, lang)));
-    $$('[data-theme-pick]', root).forEach((el) => { el.title = el.getAttribute('aria-label'); });
+    labelTheme(lang);
     $$('[data-brand-input]').forEach((input) => { input.placeholder = data.ui[lang].default; });
     progress();
   };
@@ -58,13 +58,41 @@ export function initTour() {
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); jump(1); } }); // the name is in: start the walk
   });
 
-  /* ---------- Themed days: the icons on the map dress the venue for that day (themes3d.js); every day = default ---------- */
-  let theme = 'default';
-  $$('[data-theme-pick]', root).forEach((b) => b.addEventListener('click', () => {
-    theme = b.dataset.themePick;
-    $$('[data-theme-pick]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  /* ---------- Themed days: one button on the map; each click dresses the venue for the next day (themes3d.js), and
+     after the last one it is back to every day ---------- */
+  let theme = 'default', themeAt = 0;
+  function labelTheme(lang) {
+    const btn = $('[data-theme-next]', root);
+    if (!btn) return;
+    const next = data.themes[(themeAt + 1) % data.themes.length][lang].name;
+    btn.title = data.ui[lang].themeNext.replace('{name}', next);
+    btn.setAttribute('aria-label', `${data.ui[lang].themes}: ${data.themes[themeAt][lang].name}. ${btn.title}`);
+  }
+  const themeBtn = $('[data-theme-next]', root);
+  let peekBack = 0;
+  const showIcon = (id) => { // swap the icon with a little spin-in
+    $$('[data-theme-icon]', themeBtn).forEach((svg) => svg.toggleAttribute('hidden', svg.dataset.themeIcon !== id)); // an <svg> has no .hidden property
+    themeBtn.classList.remove('is-switching'); void themeBtn.offsetWidth; themeBtn.classList.add('is-switching'); // restart the pop
+  };
+  themeBtn?.addEventListener('animationend', (e) => { if (e.animationName === 'theme-pop') themeBtn.classList.remove('is-switching'); });
+  themeBtn?.addEventListener('click', () => {
+    clearTimeout(peekBack);
+    themeAt = (themeAt + 1) % data.themes.length;
+    theme = data.themes[themeAt].id;
+    showIcon(theme);
+    labelTheme(get('lang'));
     scene?.setTheme(theme);
-  }));
+  });
+  // with each puff of sparks the icon turns into the next day's for a moment, then back: a hint of what a click does
+  const peek = () => {
+    if (document.hidden || get('motion') !== 'full') return;
+    showIcon(data.themes[(themeAt + 1) % data.themes.length].id);
+    clearTimeout(peekBack);
+    peekBack = setTimeout(() => showIcon(theme), 1400);
+  };
+  const spark = $('.tour__theme-sparks i', root); // the sparks' CSS animation sets the beat (none with reduced motion)
+  spark?.addEventListener('animationstart', peek);
+  spark?.addEventListener('animationiteration', peek);
 
   /* ---------- Phones: a card shows the essentials (a quarter of the screen at most); "Details" opens the rest ---------- */
   function openCard(card, open) {
@@ -84,9 +112,31 @@ export function initTour() {
     ZONES.forEach((z) => z.plan.rects.forEach(([x1, y1, x2, y2]) => {
       svg.append(el('rect', { x: x1, y: y1, width: x2 - x1, height: y2 - y1, rx: 0.6, fill: z.hex, 'data-plan-zone': z.id }));
     }));
-    // the visitors' route: in at the north door through the Entrance passage, round the worlds, out through the Exit passage
-    const loop = [[2.8, -2], [2.8, 15], [4.4, 18.2], [9, 20.6], ...['make', 'market', 'live', 'beauty', 'move'].map((id) => ZONES.find((q) => q.id === id).plan.label), [9, 23.6], [4.4, 26.6], [2.8, 30], [2.8, 47]];
-    svg.append(el('polyline', { points: loop.map((p) => p.join(',')).join(' '), class: 'tour__plan-loop' }));
+    // the visitors' route, drawn like a doodle in one flowing stroke: down the Entrance passage, then waves that swoop
+    // up through each world's doorway and back, a swing past the stage, and out through the Exit passage to an arrowhead.
+    // Each node is [x, y, tangent x, tangent y] (plan metres); neighbouring nodes are joined by Hermite curves, so every
+    // join is smooth. The line only crosses a wall at a doorway (venue.js): Make and Market on the hall's north wall
+    // (y 12), Beauty (y 30.7) and Move (y 30) on its south wall; PinkOut Live opens onto the hall.
+    const nodes = [
+      [2.8, -2, 0, 12], [2.8, 10, 0, 12], [7.4, 17.6, 9, 2],                        // in, down the passage, into the hall
+      [12.9, 17.6, 7, -15], [17.7, 5.6, 17, 0], [22.5, 17.6, 7, 15],                 // up through Make Studio and back
+      [28.6, 20.6, 12, 0],                                                           // a dip along the hall
+      [35, 17.6, 7, -15], [39.8, 5.6, 17, 0], [44.6, 17.6, 4, 15],                   // Pink Market
+      [46.4, 22.4, -1, 9],                                                           // swinging past the PinkOut Live stage
+      [40.8, 27.2, -6, 15], [37.1, 38.6, -15, 0], [33.4, 27.2, -6, -15],             // down through Beauty Lab and back
+      [26.4, 24.6, -11, 0],                                                          // a rise along the hall
+      [18, 26.8, -5, 15], [14.8, 38.6, -14, 0], [11.6, 26.8, -5, -15],               // Move Studio
+      [6.6, 25.2, -8, 0], [2.8, 31.6, 0, 12], [2.8, 45.2, 0, 12],                    // round to the Exit passage and out
+    ];
+    const pts = [nodes[0].slice(0, 2)];
+    nodes.slice(1).forEach(([x1, y1, u1, v1], i) => {
+      const [x0, y0, u0, v0] = nodes[i];
+      const c1 = [x0 + u0 / 3, y0 + v0 / 3], c2 = [x1 - u1 / 3, y1 - v1 / 3];
+      for (let n = 1; n <= 20; n++) { const t = n / 20, w = 1 - t; pts.push([[x0, c1[0], c2[0], x1], [y0, c1[1], c2[1], y1]].map(([a0, a1, a2, a3]) => w * w * w * a0 + 3 * w * w * t * a1 + 3 * w * t * t * a2 + t * t * t * a3)); }
+    });
+    const route = `M${pts.map((p) => p.map((v) => v.toFixed(2)).join(' ')).join('L')}`;
+    svg.append(el('path', { d: route, class: 'tour__plan-road' }), el('path', { d: route, class: 'tour__plan-loop' }));
+    svg.append(el('path', { d: 'M1 44.4q1 .7 1.8 2.3q.8-1.6 1.8-2.3', class: 'tour__plan-arrow' })); // a doodled arrowhead at the way out
     const hereDot = el('g', { 'data-plan-here': '', hidden: '' });
     hereDot.append(el('circle', { r: 3.2, class: 'tour__plan-pulse' }), el('circle', { r: 1.6, class: 'tour__plan-dot' }));
     svg.append(hereDot);
@@ -309,7 +359,7 @@ export function initTour() {
   new IntersectionObserver(([en], obs) => {
     if (!en.isIntersecting) return;
     obs.disconnect();
-    const load = () => import('./tour3d.js?v=55');
+    const load = () => import('./tour3d.js?v=56');
     load().catch(() => new Promise((r) => setTimeout(r, 900)).then(load)) // one retry on a flaky network
       .then((m) => { scene = m.mount(stage, { zones: ZONES, data, get, on, onPick: jump, onReady: ready }); scene.setTheme(theme); measure(); })
       .catch((err) => { root.classList.remove('is-live'); root.dataset.error = String(err?.message || err); console.warn('Tour 3D unavailable:', err); }); // falls back to the illustrated stops

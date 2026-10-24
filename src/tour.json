@@ -21,7 +21,8 @@
    "sponsorTheme": "Sponsor this theme",
    "more": "Details",
    "less": "Close",
-   "loading": "Opening the venue"
+   "loading": "Opening the venue",
+   "themeNext": "Next: {name}"
   },
   "ar": {
    "zoneOf": "المحطة {n} من 8",
@@ -43,7 +44,8 @@
    "sponsorTheme": "رعاية هذه الثيمة",
    "more": "التفاصيل",
    "less": "إغلاق",
-   "loading": "جاري فتح المكان"
+   "loading": "جاري فتح المكان",
+   "themeNext": "التالي: {name}"
   }
  },
  "intro": {
@@ -1101,6 +1103,116 @@
    "ar": {
     "name": "أرض الحلوى",
     "line": "حلويات عملاقة ومسرح كب كيك وغزل البنات ومرح بألوان الباستيل."
+   }
+  },
+  {
+   "id": "art",
+   "en": {
+    "name": "Art Day",
+    "line": "Live painting, easels for everyone and colourful workshops."
+   },
+   "ar": {
+    "name": "يوم الفن",
+    "line": "رسم مباشر وحوامل رسم للجميع وورش ملوّنة."
+   }
+  },
+  {
+   "id": "fashion",
+   "en": {
+    "name": "Fashion Week",
+    "line": "A catwalk, styling sessions, designer pop-ups and camera flashes."
+   },
+   "ar": {
+    "name": "أسبوع الموضة",
+    "line": "منصة عرض وجلسات تنسيق ومتاجر مصمّمات وفلاشات الكاميرا."
+   }
+  },
+  {
+   "id": "science",
+   "en": {
+    "name": "Science Lab Day",
+    "line": "Colourful experiments, DIY beauty chemistry and curious minds."
+   },
+   "ar": {
+    "name": "يوم مختبر العلوم",
+    "line": "تجارب ملوّنة وكيمياء جمال بنفسك وعقول فضولية."
+   }
+  },
+  {
+   "id": "books",
+   "en": {
+    "name": "Book Club Day",
+    "line": "Author talks, reading corners and book swaps."
+   },
+   "ar": {
+    "name": "يوم نادي الكتاب",
+    "line": "لقاءات مع كاتبات وأركان قراءة وتبادل كتب."
+   }
+  },
+  {
+   "id": "bake",
+   "en": {
+    "name": "Bake-Off Day",
+    "line": "Baking classes, a sweet competition and a dessert bar."
+   },
+   "ar": {
+    "name": "يوم مسابقة الخَبز",
+    "line": "دروس خَبز ومسابقة حلويات وركن حلى."
+   }
+  },
+  {
+   "id": "wellness",
+   "en": {
+    "name": "Wellness & Yoga Day",
+    "line": "Yoga, breathing, calm corners and self-care rituals."
+   },
+   "ar": {
+    "name": "يوم العافية واليوغا",
+    "line": "يوغا وتمارين تنفّس وأركان هادئة وطقوس عناية بالذات."
+   }
+  },
+  {
+   "id": "travel",
+   "en": {
+    "name": "Around the World",
+    "line": "Flavours, fashion and culture from a new country each time."
+   },
+   "ar": {
+    "name": "حول العالم",
+    "line": "نكهات وأزياء وثقافة من بلد جديد في كل مرة."
+   }
+  },
+  {
+   "id": "tech",
+   "en": {
+    "name": "Future Tech Day",
+    "line": "Robots, gadgets, AR try-ons and creative tech workshops."
+   },
+   "ar": {
+    "name": "يوم تقنية المستقبل",
+    "line": "روبوتات وأجهزة وتجربة بالواقع المعزّز وورش تقنية إبداعية."
+   }
+  },
+  {
+   "id": "safari",
+   "en": {
+    "name": "Safari Day",
+    "line": "Savanna colours, animal prints and wild-nature fun."
+   },
+   "ar": {
+    "name": "يوم السفاري",
+    "line": "ألوان السافانا ونقوش الحيوانات ومرح الطبيعة البرية."
+   }
+  },
+  {
+   "id": "carnival",
+   "en": {
+    "name": "Carnival Day",
+    "line": "A carousel, fair games, balloons and festival treats."
+   },
+   "ar": {
+    "name": "يوم الكرنفال",
+    "line": "دوّامة خيل وألعاب مهرجان وبالونات وحلويات احتفالية."
    }
   }
  ]

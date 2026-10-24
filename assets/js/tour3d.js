@@ -5,10 +5,12 @@
 // little burst of icons, once; a bubble that would sit under the card or on another one stays hidden. Zone name
 // labels only show in the overview and the finale (at a stop, the card names the zone).
 // At the finale the map unlocks: drag to orbit, tap a zone to jump back to its stop.
+// Kept light: pixel density steps down by itself when frames run slow, layout is measured on resize (and twice a second
+// at a stop, for the bubbles), never every frame, and the themed days load on the first theme click.
 import * as THREE from './vendor/three.module.min.js?v=1';
 import { buildVenue, studioEnvironment, toX, toZ, U } from './venue.js?v=30';
 import { liveLayer } from './crowd.js?v=34';
-import { mountThemes } from './themes3d.js?v=5';
+import { buildPark } from './park.js?v=2';
 
 const P = ([x, y, h]) => new THREE.Vector3(toX(x), h, toZ(y)); // plan metres + height (units) → scene
 
@@ -21,20 +23,23 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   const coarse = matchMedia('(pointer: coarse)').matches;
   const reduced = () => get('motion') !== 'full';
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, coarse ? 1.5 : 2));
+  // phones: their dense screens need no edge smoothing, and it costs a lot of GPU time there
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse, alpha: true, powerPreference: 'high-performance' });
+  const maxDpr = Math.min(devicePixelRatio, coarse ? 1.5 : 2), minDpr = Math.min(1, maxDpr);
+  let dpr = maxDpr;
+  renderer.setPixelRatio(dpr);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.shadowMap.enabled = !coarse;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; // soft, render-like highlights on marble and gold
-  renderer.toneMappingExposure = 0.86;
+  renderer.toneMappingExposure = 0.95; // night in the park: themes3d.js EVERYDAY holds the same values
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.3, 300);
   scene.environment = studioEnvironment(renderer);
-  const hemi = new THREE.HemisphereLight(0xffffff, 0xe6dcd6, 0.42); // neutral fill: a pink one tinted every world the same
+  const hemi = new THREE.HemisphereLight(0xb8c4ff, 0x2a2440, 0.36); // a cool night sky above, dark lawns below
   scene.add(hemi);
-  const sun = new THREE.DirectionalLight(0xfff1e4, 2.1);
+  const sun = new THREE.DirectionalLight(0xdfe4ff, 1.6); // moonlight: soft, a little cool
   sun.position.set(-9, 18, 11);
   sun.castShadow = !coarse;
   sun.shadow.mapSize.set(2048, 2048);
@@ -42,7 +47,7 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   sun.shadow.bias = -0.0004;
   sun.shadow.radius = 4;
   scene.add(sun);
-  const fill = new THREE.DirectionalLight(0xffd6e6, 0.5);
+  const fill = new THREE.DirectionalLight(0xffcf9e, 0.75); // warm light from inside the venue and the stalls
   fill.position.set(10, 8, -12);
   scene.add(fill);
 
@@ -50,7 +55,15 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   scene.add(venue.root);
   venue.zones.forEach((z) => z.group.scale.setScalar(1));
   const live = liveLayer(scene, zones, venue.zones, { coarse, spots: venue.spots });
-  const themes = mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); // themed days (the map's theme icons)
+  const park = buildPark(scene, { coarse, venue }); // the setting: a park with vendors and visitors under a soft sky
+  // themed days (the map's theme icons): loaded and built on the first pick, so most visits never pay for them
+  let themes = null, wantTheme = 'default', loadingThemes = null;
+  const useTheme = (id) => {
+    wantTheme = id;
+    if (!themes && id === 'default') return;
+    loadingThemes ||= import('./themes3d.js?v=7').then((m) => { themes = m.mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); });
+    loadingThemes.then(() => { themes.set(wantTheme); if (reduced() || !running) draw(0); });
+  };
 
   /* Each zone: a pulsing glow on its materials (not on lights that already glow) and a pink outline on the floor */
   const outlineMat = new THREE.MeshBasicMaterial({ color: '#ff3d8b', transparent: true, opacity: 0, depthWrite: false });
@@ -93,13 +106,24 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
     labelsLayer.append(el);
     return { el, k, pos: P([mx, my, h / U]) };
   }));
-  const momentText = () => { const lang = get('lang'); moments.forEach((list, i) => list.forEach((mo) => { mo.el.textContent = data.zones[i][lang]?.inside?.[mo.k] ?? ''; })); };
+  // bubble sizes are measured once per language / screen size (reading them every frame forces a re-layout)
+  const sizeMoments = () => moments.forEach((list) => list.forEach((mo) => { mo.w = mo.el.offsetWidth; mo.h = mo.el.offsetHeight; }));
+  const momentText = () => { const lang = get('lang'); moments.forEach((list, i) => list.forEach((mo) => { mo.el.textContent = data.zones[i][lang]?.inside?.[mo.k] ?? ''; })); sizeMoments(); };
   momentText();
   let at = 0;        // the stop the camera has arrived at (0 = none)
   const tourRoot = stageEl.closest('[data-tour]');
   const planEl = stageEl.querySelector('[data-tour-plan]'), headerEl = document.getElementById('site-header');
   const themesEl = stageEl.querySelector('[data-tour-themes]');
   let atSince = 0;   // when it arrived (clock seconds: frame times fall behind when the tab runs slowly)
+  let view = { w: 1, h: 1 };            // the canvas size (measured on resize)
+  let blocks = [], blocksAt = -1;       // the panels a bubble must stay clear of, relative to the canvas
+  const measureBlocks = (t) => {
+    const cr = canvas.getBoundingClientRect();
+    blocks = [tourRoot?.querySelector('.tour__stop[data-active] .stop-card'), planEl, headerEl, themesEl]
+      .map((el) => el?.getBoundingClientRect()).filter((r) => r && r.width && r.height)
+      .map((r) => [r.left - cr.left, r.top - cr.top, r.right - cr.left, r.bottom - cr.top]);
+    blocksAt = t;
+  };
 
 
   /* Camera path: overview → the eight stops → finale */
@@ -124,13 +148,16 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
     const { width, height } = stageEl.getBoundingClientRect();
     if (!width || !height) return;
     renderer.setSize(width, height, false);
+    view = { w: width, h: height };
+    blocksAt = -1;
+    sizeMoments();
     camera.aspect = width / height;
     narrow = camera.aspect < 1.1;
     camera.fov = camera.aspect < 0.8 ? 56 : narrow ? 48 : 40;
     // wide screens: the card sits on the reading side, so frame the venue on the other side
     // the card covers one side (desktop: the reading side; phones: the bottom), so frame the venue in the rest
     const shiftX = narrow ? 0 : width * 0.15 * (document.documentElement.dir === 'rtl' ? 1 : -1);
-    const shiftY = narrow ? height * 0.2 : 0;
+    const shiftY = narrow ? height * 0.08 : 0; // phones: the card is a small sheet at the bottom, so lift the venue just a little
     if (shiftX || shiftY) camera.setViewOffset(width, height, shiftX, shiftY, width, height); else camera.clearViewOffset();
     camera.updateProjectionMatrix();
     draw(0);
@@ -171,8 +198,7 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
     renderer.render(scene, camera);
 
     // zone labels: only in the overview and the finale; at a stop the card already names the zone
-    const cr = canvas.getBoundingClientRect();
-    const { width, height } = cr;
+    const { w: width, h: height } = view;
     const overview = !showing;
     labels.forEach((l) => {
       proj.copy(l.anchor).project(camera);
@@ -185,11 +211,9 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
     // moments: arrive → the bubbles pop up one by one, once (each with a small burst of icons). A bubble only shows
     // where it is whole and alone: never under the card, the floor plan, the theme bar or the header, never on another bubble.
     const here = stop && arrive > 0.85 ? Math.round(current) : 0;
-    if (here !== at) { at = here; atSince = t; }
+    if (here !== at) { at = here; atSince = t; blocksAt = -1; }
     const atTime = t - atSince;
-    const blocks = at ? [tourRoot?.querySelector('.tour__stop[data-active] .stop-card'), planEl, headerEl, themesEl]
-      .map((el) => el?.getBoundingClientRect()).filter((r) => r && r.width && r.height)
-      .map((r) => [r.left - cr.left, r.top - cr.top, r.right - cr.left, r.bottom - cr.top]) : [];
+    if (at && (blocksAt < 0 || t - blocksAt > 0.5)) measureBlocks(t); // the card slides in: look again twice a second
     const placed = [];
     moments.forEach((list, i) => list.forEach((mo) => {
       const want = i + 1 === at && (reduced() || atTime > 0.5 + mo.k * 0.55);
@@ -199,7 +223,8 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
       proj.copy(mo.pos).project(camera);
       const x = (proj.x * 0.5 + 0.5) * width, y = (-proj.y * 0.5 + 0.5) * height;
       mo.el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
-      const w = mo.el.offsetWidth, h = mo.el.offsetHeight;
+      if (!mo.w) { mo.w = mo.el.offsetWidth; mo.h = mo.el.offsetHeight; }
+      const w = mo.w, h = mo.h;
       const box = [x - w / 2, y - h - 16, x + w / 2, y - 4]; // the bubble and its tail
       const pad = mo.el.hasAttribute('data-off') ? 10 : -2;  // harder to come back than to stay: no flicker at an edge
       const hit = (b) => box[0] - pad < b[2] && b[0] < box[2] + pad && box[1] - pad < b[3] && b[1] < box[3] + pad;
@@ -225,13 +250,22 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   let visible = false;
   let running = false;
   const clock = new THREE.Clock();
+  // quality: when frames keep running slow (under ~42 fps for a second or so), draw fewer pixels; never below 1×
+  let slow = 0, settleUntil = performance.now() + 2500; // ignore the first seconds (shaders compiling)
+  const govern = (ms) => {
+    if (ms > 200 || performance.now() < settleUntil) return; // a paused or hidden tab, or still starting up
+    slow = ms > 24 ? slow + 1 : Math.max(0, slow - 1);
+    if (slow > 40 && dpr > minDpr) { dpr = Math.max(minDpr, dpr - 0.25); renderer.setPixelRatio(dpr); slow = 0; settleUntil = performance.now() + 1000; }
+  };
   const tick = () => {
-    const dt = Math.min(clock.getDelta(), 0.05);
-    if (!reduced()) live.step(dt, clock.elapsedTime);
-    themes.step(dt, clock.elapsedTime);
+    const raw = clock.getDelta();
+    govern(raw * 1000);
+    const dt = Math.min(raw, 0.05);
+    if (!reduced()) { live.step(dt, clock.elapsedTime); park.step(dt, clock.elapsedTime); }
+    themes?.step(dt, clock.elapsedTime);
     draw(dt);
   };
-  const wake = () => { if (visible && !document.hidden && !running) { running = true; clock.getDelta(); renderer.setAnimationLoop(tick); } };
+  const wake = () => { if (visible && !document.hidden && !running) { running = true; clock.getDelta(); settleUntil = Math.max(settleUntil, performance.now() + 500); renderer.setAnimationLoop(tick); } };
   const sleep = () => { running = false; renderer.setAnimationLoop(null); };
   new IntersectionObserver(([en]) => { visible = en.isIntersecting; visible ? wake() : sleep(); }, { threshold: 0.01 }).observe(stageEl);
   document.addEventListener('visibilitychange', () => (document.hidden ? sleep() : wake()));
@@ -249,6 +283,6 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   stageEl.dataset.mode = '3d';
   return {
     setPosition(c) { target = c; if (reduced() || !running) draw(0); },
-    setTheme(id) { themes.set(id); if (reduced() || !running) draw(0); },
+    setTheme(id) { useTheme(id); },
   };
 }

@@ -87,14 +87,14 @@ const onStage = (a, r) => [STAGE[0] + Math.sin(a) * r, STAGE[1] + Math.cos(a) * 
 const SPOTS = [[24.0, 18.2], [33.0, 23.4], [18.8, 26.6]];
 
 /* ---------- Light ---------- */
-const EVERYDAY = { sky: '#ffffff', ground: '#e6dcd6', hemi: 0.42, sun: '#fff1e4', sunI: 2.1, fill: '#ffd6e6', fillI: 0.5, exposure: 0.86 };
+const EVERYDAY = { sky: '#b8c4ff', ground: '#2a2440', hemi: 0.36, sun: '#dfe4ff', sunI: 1.6, fill: '#ffcf9e', fillI: 0.75, exposure: 0.95, bg: '#141b36' }; // night in the park (tour3d.js starts with these); bg: the sky (park.js)
 
 /* ---------- The themes ---------- */
 const THEMES = {
   default: { light: EVERYDAY },
 
   kpop: { // Korean-inspired music, dance, challenges: a night of neon, a dance floor, light sticks in the audience
-    light: { sky: '#8f7bff', ground: '#1c0f36', hemi: 0.36, sun: '#c9a6ff', sunI: 1.0, fill: '#ff4fd8', fillI: 0.9, exposure: 0.95 },
+    light: { sky: '#8f7bff', ground: '#1c0f36', hemi: 0.36, sun: '#c9a6ff', sunI: 1.0, fill: '#ff4fd8', fillI: 0.9, exposure: 0.95, bg: '#140b30' },
     floors: { hub: '#b6a3ff', live: '#43237f' },
     mood: { beams: ['#ff2bd6', '#29e3ff', '#b7ff3c'], beamGain: 1.6, pools: ['#ff2bd6', '#29e3ff', '#b7ff3c'], poolGain: 1.5, screenHue: 0.78,
       balloons: ['#ff2bd6', '#29e3ff', '#b7ff3c'], confetti: ['#ff2bd6', '#29e3ff', '#b7ff3c', '#ffffff', '#ffe600'], sparkle: '#d9c8ff', sparkleGain: 1.3 },
@@ -129,7 +129,7 @@ const THEMES = {
   },
 
   movie: { // an informal screening: lights down, the stage screen plays, a projector, popcorn on every side table
-    light: { sky: '#a8b8ff', ground: '#141530', hemi: 0.32, sun: '#ffe0b8', sunI: 0.85, fill: '#6f8cff', fillI: 0.45, exposure: 0.9 },
+    light: { sky: '#a8b8ff', ground: '#141530', hemi: 0.32, sun: '#ffe0b8', sunI: 0.85, fill: '#6f8cff', fillI: 0.45, exposure: 0.9, bg: '#0d1226' },
     floors: { live: '#232a52' },
     mood: { beamGain: 0, poolGain: 0, screenHue: 0.6, screenSat: 0.35, screenLight: 0.78, flicker: 1, balloons: ['#e0182d', '#ffffff', '#e6c47e'], sparkle: '#cfd8ff', sparkleGain: 0.6 },
     build(g, ctx) {
@@ -189,7 +189,7 @@ const THEMES = {
   },
 
   henna: { // Arabic coffee, henna and hospitality: warm amber light, a majlis with a dallah, glowing lanterns
-    light: { sky: '#ffe0b8', ground: '#5a3420', hemi: 0.4, sun: '#ffb06a', sunI: 1.7, fill: '#ff9a55', fillI: 0.55, exposure: 0.9 },
+    light: { sky: '#ffe0b8', ground: '#5a3420', hemi: 0.4, sun: '#ffb06a', sunI: 1.7, fill: '#ff9a55', fillI: 0.55, exposure: 0.9, bg: '#2a1a12' },
     floors: { hub: '#f0c08f' },
     mood: { beams: ['#ffb066', '#fff1d6', '#ffb066'], pools: ['#ffb066', '#ffd9a0', '#fff1d6'], screenHue: 0.08, screenSat: 0.9,
       balloons: ['#e6a23c', '#c4572e', '#2f8f83'], confetti: ['#e6a23c', '#c4572e', '#2f8f83', '#fff1d6'], sparkle: '#ffd27a', sparkleGain: 1.4 },
@@ -230,7 +230,7 @@ const THEMES = {
   },
 
   princess: { // crowns, styling and royal photos: soft lilac light, a giant crown over the hall, a red carpet, a throne
-    light: { sky: '#fff0ff', ground: '#e2c4ff', hemi: 0.52, sun: '#fff4f8', sunI: 2.2, fill: '#ffc1ec', fillI: 0.6, exposure: 0.9 },
+    light: { sky: '#fff0ff', ground: '#e2c4ff', hemi: 0.52, sun: '#fff4f8', sunI: 2.2, fill: '#ffc1ec', fillI: 0.6, exposure: 0.9, bg: '#24163a' },
     floors: { hub: '#f6d6f0' },
     mood: { beams: ['#d6b3ff', '#fff3d6', '#d6b3ff'], pools: ['#d6b3ff', '#ffd1ec', '#fff3d6'], screenHue: 0.8, screenSat: 0.7,
       balloons: ['#c9a3ff', '#ffd1ec', '#e6c47e'], confetti: ['#c9a3ff', '#ffd1ec', '#e6c47e', '#ffffff'], sparkle: '#ffe6a0', sparkleGain: 1.8 },
@@ -271,7 +271,7 @@ const THEMES = {
   },
 
   pajama: { // pajamas, games, snacks: an evening glow, floor pillows and a board game, a moon and stars overhead
-    light: { sky: '#b8b0ff', ground: '#2e2448', hemi: 0.36, sun: '#ffcf9e', sunI: 1.15, fill: '#a98bff', fillI: 0.55, exposure: 0.9 },
+    light: { sky: '#b8b0ff', ground: '#2e2448', hemi: 0.36, sun: '#ffcf9e', sunI: 1.15, fill: '#a98bff', fillI: 0.55, exposure: 0.9, bg: '#151a3c' },
     floors: { hub: '#d3c8f4' },
     mood: { beams: ['#b9a8ff', '#fff2c4', '#b9a8ff'], pools: ['#b9a8ff', '#ffd1ec', '#fff2c4'], screenHue: 0.7, screenSat: 0.6,
       balloons: ['#b7d8ff', '#ffd1ec', '#fff0aa'], confetti: ['#b7d8ff', '#ffd1ec', '#fff0aa', '#ffffff'], sparkle: '#fff2b0', sparkleGain: 1.8 },
@@ -307,7 +307,7 @@ const THEMES = {
   },
 
   japan: { // Japanese pop culture: daylight, a red torii at the entrance, cherry trees, paper lanterns, falling petals
-    light: { sky: '#ffffff', ground: '#ffd3df', hemi: 0.5, sun: '#fff4ea', sunI: 2.1, fill: '#ffbfd2', fillI: 0.55, exposure: 0.88 },
+    light: { sky: '#ffffff', ground: '#ffd3df', hemi: 0.5, sun: '#fff4ea', sunI: 2.1, fill: '#ffbfd2', fillI: 0.55, exposure: 0.88, bg: '#2a1424' },
     floors: { hub: '#ffe0e6' },
     mood: { beams: ['#ff8fb8', '#ffffff', '#ff8fb8'], pools: ['#ffb7c9', '#ffffff', '#ff8fb8'], screenHue: 0.97, screenSat: 0.8,
       balloons: ['#e8283c', '#ffffff', '#ffb7c9'], confetti: ['#ffb7c9', '#ffffff', '#e8283c', '#ffd9e2'], sparkle: '#ffe3ec' },
@@ -358,7 +358,7 @@ const THEMES = {
   },
 
   camping: { // indoor camping: dusk, tents round a campfire, pine trees, string lights, fireflies
-    light: { sky: '#7d93c9', ground: '#14231a', hemi: 0.3, sun: '#ffa45c', sunI: 0.95, fill: '#4a6cff', fillI: 0.4, exposure: 0.92 },
+    light: { sky: '#7d93c9', ground: '#14231a', hemi: 0.3, sun: '#ffa45c', sunI: 0.95, fill: '#4a6cff', fillI: 0.4, exposure: 0.92, bg: '#0f1a2b' },
     floors: { hub: '#a8d39a' },
     mood: { beams: ['#ffb066', '#ffe7c4', '#ffb066'], beamGain: 0.6, pools: ['#ff9a3c', '#ffd27a', '#fff1d6'], poolGain: 0.7, screenHue: 0.07, screenSat: 0.8,
       balloons: ['#2f7d4f', '#ff9a3c', '#f3e6c8'], confetti: ['#2f7d4f', '#ff9a3c', '#f3e6c8', '#ffd27a'], sparkle: '#ffd27a', sparkleGain: 0.6 },
@@ -420,7 +420,7 @@ const THEMES = {
   },
 
   horror: { // light, playful horror: dim green light, a mini haunted walk, floating ghosts, pumpkins, ground fog
-    light: { sky: '#8fa3a0', ground: '#14141c', hemi: 0.26, sun: '#b8c7ff', sunI: 0.7, fill: '#8a3cff', fillI: 0.55, exposure: 0.92 },
+    light: { sky: '#8fa3a0', ground: '#14141c', hemi: 0.26, sun: '#b8c7ff', sunI: 0.7, fill: '#8a3cff', fillI: 0.55, exposure: 0.92, bg: '#0c100e' },
     floors: { hub: '#a19cb3', live: '#3b2a4a' },
     mood: { beams: ['#7a3cff', '#b9ffb0', '#7a3cff'], pools: ['#7a3cff', '#5aff9a', '#b9b3d6'], screenHue: 0.33, screenSat: 0.8, flicker: 1,
       balloons: ['#1b1b1f', '#ff7a1a', '#7a3cff'], confetti: ['#1b1b1f', '#ff7a1a', '#7a3cff', '#5aff9a'], sparkle: '#b9ffb0', sparkleGain: 0.5 },
@@ -648,6 +648,7 @@ export function mountThemes(ctx) {
   const cur = {
     sky: hemi.color.clone(), ground: hemi.groundColor.clone(), hemi: hemi.intensity, sun: sun.color.clone(), sunI: sun.intensity,
     fill: fill.color.clone(), fillI: fill.intensity, exposure: renderer.toneMappingExposure,
+    bg: ctx.scene.background?.isColor ? ctx.scene.background.clone() : new THREE.Color(EVERYDAY.bg),
   };
   const target = {};
   const built = {}; // id → { group, api, items, p, from, since }
@@ -674,14 +675,14 @@ export function mountThemes(ctx) {
   };
   const aim = (id) => {
     const L = THEMES[id].light;
-    Object.assign(target, { sky: new THREE.Color(L.sky), ground: new THREE.Color(L.ground), hemi: L.hemi, sun: new THREE.Color(L.sun), sunI: L.sunI, fill: new THREE.Color(L.fill), fillI: L.fillI, exposure: L.exposure });
+    Object.assign(target, { sky: new THREE.Color(L.sky), ground: new THREE.Color(L.ground), hemi: L.hemi, sun: new THREE.Color(L.sun), sunI: L.sunI, fill: new THREE.Color(L.fill), fillI: L.fillI, exposure: L.exposure, bg: new THREE.Color(L.bg || EVERYDAY.bg) });
     target.floors = {};
     const tint = DRESS[id]?.tint ? new THREE.Color(DRESS[id].tint) : null;
     Object.entries(floors).forEach(([zone, f]) => { target.floors[zone] = THEMES[id].floors?.[zone] ? new THREE.Color(THEMES[id].floors[zone]) : tint ? f.base.clone().multiply(tint) : f.base.clone(); });
     target.walls = walls.map((w) => (tint ? w.base.clone().multiply(tint) : w.base.clone()));
   };
   const ease = (k) => {
-    cur.sky.lerp(target.sky, k); cur.ground.lerp(target.ground, k); cur.sun.lerp(target.sun, k); cur.fill.lerp(target.fill, k);
+    cur.sky.lerp(target.sky, k); cur.ground.lerp(target.ground, k); cur.bg.lerp(target.bg, k); cur.sun.lerp(target.sun, k); cur.fill.lerp(target.fill, k);
     cur.hemi += (target.hemi - cur.hemi) * k; cur.sunI += (target.sunI - cur.sunI) * k; cur.fillI += (target.fillI - cur.fillI) * k; cur.exposure += (target.exposure - cur.exposure) * k;
     Object.entries(target.floors).forEach(([zone, c]) => floors[zone].mat.color.lerp(c, k));
     walls.forEach((w, i) => w.mat.color.lerp(target.walls[i], k));
@@ -690,6 +691,8 @@ export function mountThemes(ctx) {
     hemi.color.copy(cur.sky); hemi.groundColor.copy(cur.ground); hemi.intensity = cur.hemi * jitter;
     sun.color.copy(cur.sun); sun.intensity = cur.sunI * jitter; fill.color.copy(cur.fill); fill.intensity = cur.fillI;
     renderer.toneMappingExposure = cur.exposure;
+    if (ctx.scene.background?.isColor) ctx.scene.background.copy(cur.bg); // the sky (and the haze over the far lawns)
+    ctx.scene.fog?.color.copy(cur.bg);
   };
   const pop = (b) => {
     const n = b.items.length, d = Math.min(0.03, 0.5 / Math.max(1, n));

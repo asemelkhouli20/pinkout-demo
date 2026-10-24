@@ -66,6 +66,14 @@ export function initTour() {
     scene?.setTheme(theme);
   }));
 
+  /* ---------- Phones: a card shows the essentials (a quarter of the screen at most); "Details" opens the rest ---------- */
+  function openCard(card, open) {
+    card.toggleAttribute('data-open', open);
+    $('[data-card-more]', card)?.setAttribute('aria-expanded', String(open));
+    if (!open) card.scrollTop = 0;
+  }
+  $$('[data-card-more]', root).forEach((b) => b.addEventListener('click', () => { const card = b.closest('.stop-card'); openCard(card, !card.hasAttribute('data-open')); }));
+
   /* ---------- Mini floor plan: the zones, the visitor loop, "you are here" ---------- */
   const planBox = $('[data-tour-plan]', root);
   if (planBox) {
@@ -90,8 +98,10 @@ export function initTour() {
   let position = 0;
   const plan = $$('[data-plan-zone]', root);
   const here = $('[data-plan-here]', root);
+  let shown = -1;
   function progress() {
     const active = Math.min(last, Math.max(0, Math.round(position)));
+    if (active !== shown) { shown = active; $$('.stop-card[data-open]', root).forEach((c) => openCard(c, false)); } // each chapter starts compact
     const zone = zoneOf(active);
     stops.forEach((li, i) => li.toggleAttribute('data-active', i === active));
     plan.forEach((r) => r.toggleAttribute('data-on', r.dataset.planZone === zone));
@@ -132,6 +142,7 @@ export function initTour() {
       scrollTo(0, start + dist * e);
       if (k < 1) { requestAnimationFrame(frame); return; }
       animating = false;
+      measure(); // the stop we landed on, before a queued move picks the next one
       if (queued) { const d = queued; queued = 0; step(d); }
     };
     requestAnimationFrame(frame);
@@ -158,32 +169,25 @@ export function initTour() {
     const card = target.closest?.('.stop-card');
     return !!card && card.scrollHeight > card.clientHeight + 2 && (dir > 0 ? card.scrollTop + card.clientHeight < card.scrollHeight - 1 : card.scrollTop > 0);
   };
-  /* Wheel and trackpad: one flick = one stop. A flick ramps up, peaks, then a trackpad keeps sending a fading
-     "momentum" stream for a second or more; all of that is one flick. A new flick is recognised by a pause, a change of
-     direction, or (inside the momentum) the strength having faded well below the peak and then surging back up.
-     A flick made while the camera is moving waits its turn. */
-  let lastWheel = 0, lastDir = 0, peak = 0, trough = 0, lastStep = 0;
-  const freshFlick = (e) => {
-    const now = performance.now(), dir = Math.sign(e.deltaY);
-    const mag = Math.abs(e.deltaY) * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1); // lines / pages → pixels
-    let fresh = false;
-    if (now - lastWheel > 160 || dir !== lastDir) { fresh = true; peak = trough = mag; }
-    else if (mag >= peak) { peak = trough = mag; }                                          // still ramping up: same flick
-    else {
-      trough = Math.min(trough, mag);
-      if (trough < peak * 0.45 && mag > trough * 2.2 && mag > 15 && now - lastStep > 350) { fresh = true; peak = trough = mag; } // a new push
-    }
-    lastWheel = now; lastDir = dir;
-    if (fresh) lastStep = now;
-    return fresh;
-  };
+  /* Wheel and trackpad: one gesture = one stop, however far or long the scroll. A gesture is a continuous stream of
+     wheel events in one direction (a trackpad's whole momentum tail included); a new one starts only after a short
+     pause or when the direction turns. A gesture started while the camera is still moving goes next, once. */
+  const QUIET = 300; // ms without wheel events that ends a gesture
+  let lastWheel = 0, gestureDir = 0, gestureOnCard = false;
   addEventListener('wheel', (e) => {
     if (e.ctrlKey || Math.abs(e.deltaY) < 1) return;
-    const dir = Math.sign(e.deltaY);
-    const fresh = freshFlick(e);
-    if (!animating && cardScrolls(e.target, dir)) return;
-    if (animating) { e.preventDefault(); if (fresh) queued = dir; return; }
-    if (!fresh && holds(dir)) { e.preventDefault(); return; } // the tail of the flick that moved us
+    const now = performance.now(), dir = Math.sign(e.deltaY);
+    const continuing = now - lastWheel < QUIET && dir === gestureDir;
+    lastWheel = now;
+    if (continuing) { // the rest of a gesture: it scrolls the card it started on, or it already moved us
+      if (gestureOnCard && cardScrolls(e.target, dir)) return;
+      if (holds(dir)) e.preventDefault();
+      return;
+    }
+    gestureDir = dir;                                                // a new gesture
+    gestureOnCard = false;
+    if (animating) { e.preventDefault(); queued = dir; return; }
+    if (cardScrolls(e.target, dir)) { gestureOnCard = true; return; } // a long card scrolls its own text first
     if (step(dir)) e.preventDefault();
   }, { passive: false });
   addEventListener('keydown', (e) => {
@@ -215,7 +219,8 @@ export function initTour() {
 
   render();
   on('lang', render);
-  addEventListener('scroll', measure, { passive: true });
+  let measuring = 0; // at most once per frame: scroll events can come faster than the screen redraws
+  addEventListener('scroll', () => { measuring ||= requestAnimationFrame(() => { measuring = 0; measure(); }); }, { passive: true });
   addEventListener('resize', () => { if (live() && pinned() && !animating) scrollTo(0, stopTop(Math.round(position))); measure(); });
   measure();
 
@@ -228,7 +233,7 @@ export function initTour() {
   new IntersectionObserver(([en], obs) => {
     if (!en.isIntersecting) return;
     obs.disconnect();
-    const load = () => import('./tour3d.js?v=37');
+    const load = () => import('./tour3d.js?v=41');
     load().catch(() => new Promise((r) => setTimeout(r, 900)).then(load)) // one retry on a flaky network
       .then((m) => { scene = m.mount(stage, { zones: ZONES, data, get, on, onPick: jump }); scene.setTheme(theme); measure(); })
       .catch((err) => { root.classList.remove('is-live'); root.dataset.error = String(err?.message || err); console.warn('Tour 3D unavailable:', err); }); // falls back to the illustrated stops

@@ -18,7 +18,9 @@
    "size": "≈ {size}",
    "themes": "Themed days",
    "themeNote": "Programme idea, not a dated event",
-   "sponsorTheme": "Sponsor this theme"
+   "sponsorTheme": "Sponsor this theme",
+   "more": "Details",
+   "less": "Close"
   },
   "ar": {
    "zoneOf": "المحطة {n} من 8",
@@ -37,7 +39,9 @@
    "size": "≈ {size}",
    "themes": "أيام بثيمات",
    "themeNote": "فكرة برنامج، وليست فعالية بتاريخ محدد",
-   "sponsorTheme": "رعاية هذه الثيمة"
+   "sponsorTheme": "رعاية هذه الثيمة",
+   "more": "التفاصيل",
+   "less": "إغلاق"
   }
  },
  "intro": {

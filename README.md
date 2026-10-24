@@ -1,8 +1,6 @@
 # PinkOut Partners
 
-> **Beauty page handoff (24 Oct 2026):** Read [the beauty journal implementation guide](docs/beauty-journal.md) and [structured AI context](docs/beauty-journal-context.json) before editing `beauty.html`. They describe all 18 app images and every journey step. The latest user direction includes **home and venue** services. This page currently contains intentional local customizations; the build script will overwrite them from older partials.
-
-Partner website for PinkOut (Riyadh): a home page plus **one page per partner type**, `event.html`, `beauty.html` and `shop.html`. Static HTML/CSS/JS, GSAP + Three.js vendored, English-first with Arabic (RTL).
+Partner website for PinkOut (Riyadh). The home page `index.html` is the **event partners' page** (it opens on the venue tour); `beauty.html` and `shop.html` are the other partner types. Static HTML/CSS/JS, GSAP + Three.js vendored, English-first with Arabic (RTL).
 
 Who belongs where: **event partners** get the whole event (the venue tour: `tour.js` + `tour3d.js` over the miniature in `venue.js`, content in `src/tour.json`); **beauty service** and **e-commerce** partners work in the PinkOut app, so their pages tell the story on a phone (`assets/js/phone.js`, screens in `src/partials/phone-*.html`).
 
@@ -22,15 +20,14 @@ The four pages are assembled from `src/partials/` so the header, footer, form an
 python3 tools/build_pages.py
 ```
 
-Edit `src/partials/*.html` (or the page list in `tools/build_pages.py`), then run the script. Don't edit `index.html`, `event.html`, `beauty.html` or `shop.html` directly; they say so at the top. The output is plain static HTML, so deployment is unchanged.
+Edit `src/partials/*.html` (or the page list in `tools/build_pages.py`), then run the script. Don't edit `index.html`, `beauty.html` or `shop.html` directly; they say so at the top. (A page that must be kept by hand goes in `HAND_MAINTAINED` in the script.) The old home page is archived in `_archive/old-home/`. The output is plain static HTML, so deployment is unchanged.
 
 ## Useful links
 
 - `/?for=event`, `/?for=beauty`, `/?for=shop`: personal welcome for each partner type (send these in outreach).
 - `/?apply=beauty`: opens the beauty application directly.
-- `/#world/beauty`: the 3D map focused on a zone (works on every page with the map).
-- `/beauty.html`, `/shop.html`, `/event.html`: the partner-type pages. Their map opens pre-filtered to that partner's zones.
-- `/event.html?walk=4`: opens a partner page at a walk-through chapter (e.g. the sponsor's stage moment).
+- `/`: the event partners' page (the venue tour, with the themed-day switcher on the map). Old `/event.html` links redirect here (`deploy/nginx.conf`).
+- `/beauty.html`, `/shop.html`: the app partner pages; `/beauty.html?walk=4` opens a chapter of the app journey.
 - `/?lang=ar`: opens in Arabic.
 - `/?motion=off`: no animation (for still screenshots and demos; the footer toggle does the same for visitors).
 
@@ -44,7 +41,6 @@ Story text, camera keyframes and the name-sign position live in `src/journey.jso
 - `applicationEndpoint`: `null` = preview mode (nothing is sent). Set a same-origin JSON POST URL to turn sending on (payload shape in `docs/system-design.md`).
 - `decks`: the three partner decks (sent on request).
 
-Audience figures: in `index.html`, fill a `.stat` and remove its `data-pending` attribute. Pending stats never show.
 
 ## Files
 

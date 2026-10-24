@@ -6,7 +6,7 @@ import { ZONES } from './data.js?v=20';
 import { AR } from './copy.js?v=21';
 import { initForm, openApplication } from './form.js?v=21';
 import { initJourney } from './journey.js?v=20';
-import { initTour } from './tour.js?v=39';
+import { initTour } from './tour.js?v=44';
 
 const reducedMotionQuery = matchMedia('(prefers-reduced-motion: reduce)');
 const phoneQuery = matchMedia('(max-width: 800px)');

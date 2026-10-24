@@ -137,9 +137,8 @@ def closing_for(track, t):
 '''
 
 
-# Pages kept by hand: never overwritten by this script. beauty.html carries the hand-built beauty journal
-# (see docs/beauty-journal.md), which the partials do not have.
-HAND_MAINTAINED = {'beauty.html'}
+# Pages kept by hand: never overwritten by this script (add a page here before editing it directly).
+HAND_MAINTAINED = set()
 
 
 def page(path, page_id, title, title_ar, description, og_image, preload, sections):
@@ -162,6 +161,19 @@ def page(path, page_id, title, title_ar, description, og_image, preload, section
     print('wrote', path or 'index.html', f'({len(html) // 1024} KB)')
 
 
+def tour_modulepreload():
+    """The tour's 3D modules load one after another (app → tour → tour3d → three, venue, crowd). On the home page they
+    are needed at once, so the browser is told to fetch them all in parallel from the start. The versions are read from
+    the import lines themselves, so the hints always match what the code asks for."""
+    js = ROOT / 'assets' / 'js'
+    ver = lambda src, name: re.search(rf"{re.escape(name)}\?v=(\d+)", (js / src).read_text(encoding='utf-8')).group(1)
+    tour = ver('app.js', './tour.js')
+    tour3d = ver('tour.js', './tour3d.js')
+    mods = [f'tour.js?v={tour}', f'tour3d.js?v={tour3d}', f"vendor/three.module.min.js?v={ver('tour3d.js', './vendor/three.module.min.js')}",
+            f"venue.js?v={ver('tour3d.js', './venue.js')}", f"crowd.js?v={ver('tour3d.js', './crowd.js')}", f"park.js?v={ver('tour3d.js', './park.js')}"]
+    return ''.join(f'<link rel="modulepreload" href="assets/js/{m}">\n' for m in mods)
+
+
 # ---------- Pages ----------
 # The event page is the home page (index.html): the site opens on the venue tour. (The old home page, with the three
 # partner doors and the zone map, was retired on 24 Oct 2026; it is kept in _archive/old-home/.)
@@ -172,6 +184,8 @@ for track, t in TRACKS.items():
     preload = f'<link rel="preload" href="assets/images/{t["hero"]}?v=1" as="image" fetchpriority="high">\n' if t['hero'] else ''
     story = tour_for() if track == 'event' else journey_for(track, t)  # event: the venue tour; others: the app journey
     hero = [] if track == 'event' else [part(f'track-{track}-hero')]
+    if track == 'event':
+        preload += tour_modulepreload()
     page('' if track == 'event' else f'{track}.html', track, t['title'], t['title_ar'], t['description'], t['og_image'], preload,
          hero + [story, part(f'track-{track}'),
           faq_for(track), other_ways(track), closing_for(track, t)])

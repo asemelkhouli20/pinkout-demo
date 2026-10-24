@@ -54,6 +54,7 @@ def _intro(ui):
     facts = ''.join(f'<li data-tx="i.facts.{k}">{esc(f)}</li>' for k, f in enumerate(intro['facts']))
     return f'''      <li class="tour__stop tour__stop--intro" data-stop="0" id="stop-overview">
         <article class="stop-card stop-card--intro">
+          <button class="stop-card__more" type="button" data-card-more aria-expanded="false"><span data-tx="u.more">{esc(ui["more"])}</span><span data-tx="u.less">{esc(ui["less"])}</span></button>
           <span class="eyebrow" data-tx="i.kicker">{esc(intro["kicker"])}</span>
           <h1 id="tour-title" class="stop-card__title" data-tx="i.title">{_brand(intro["title"], ui["default"])}</h1>
           <p class="stop-card__what" data-tx="i.text">{_brand(intro["text"], ui["default"])}</p>
@@ -76,9 +77,13 @@ def _zone(i, z, ui):
     gets = ''.join(f'<li><span class="stop-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true">{ICONS[ic]}</svg></span>'
                    f'<span data-tx="z.{i - 1}.gets.{k}">{esc(g)}</span></li>' for k, (ic, g) in enumerate(zip(z['icons'], en['gets'])))
     beauty = ' tour__fallback--beauty' if zone == 'beauty' else ''
+    # the journey so far, like pages read in a journal: one segment per stop, filled up to this one
+    progress = ''.join('<i data-now></i>' if k == i else '<i data-done></i>' if k < i else '<i></i>' for k in range(1, len(TOUR['zones']) + 1))
     return f'''      <li class="tour__stop" data-stop="{i}" id="stop-{zid}" style="--zone-c:var(--zone-{zone})">
         <article class="stop-card">
+          <button class="stop-card__more" type="button" data-card-more aria-expanded="false"><span data-tx="u.more">{esc(ui["more"])}</span><span data-tx="u.less">{esc(ui["less"])}</span></button>
           <div class="stop-card__head"><span class="stop-card__num" aria-hidden="true">{i:02d}</span><div><span class="stop-card__of" data-tx="u.zoneOf" data-n="{i}">{esc(ui["zoneOf"].replace("{n}", str(i)))}</span><span class="stop-card__tag" data-tx="z.{i - 1}.tag">{esc(en["tag"])}</span></div></div>
+          <div class="stop-card__progress" aria-hidden="true">{progress}</div>
           <h3 class="stop-card__title"{name_tx}>{esc(name)}</h3>
           <p class="stop-card__what" data-tx="z.{i - 1}.what">{esc(en["what"])}</p>
           <div class="stop-card__block" data-reveal="1"><h4 data-tx="u.can">{_brand(ui["can"], ui["default"])}</h4><ul class="stop-card__can">{can}</ul></div>
@@ -96,6 +101,7 @@ def _finale(i, ui):
                  for j, (k, p) in enumerate(zip(keys, fin['packages'])))
     return f'''      <li class="tour__stop tour__stop--finale" data-stop="{i}" id="stop-finale">
         <article class="stop-card stop-card--finale">
+          <button class="stop-card__more" type="button" data-card-more aria-expanded="false"><span data-tx="u.more">{esc(ui["more"])}</span><span data-tx="u.less">{esc(ui["less"])}</span></button>
           <span class="eyebrow" data-tx="f.kicker">{esc(fin["kicker"])}</span>
           <h3 class="stop-card__title" data-tx="f.title">{_brand(fin["title"], ui["default"])}</h3>
           <p class="stop-card__what" data-tx="f.text">{_brand(fin["text"], ui["default"])}</p>

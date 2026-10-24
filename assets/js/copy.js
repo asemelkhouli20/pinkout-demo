@@ -20,7 +20,7 @@ export const AR = {
   navLabel: 'الأقسام',
   navEvent: 'شركاء الفعاليات',
   navBeauty: 'خدمات التجميل',
-  navShop: 'التجارة الإلكترونية',
+  navShop: 'المتجر',
   navWorld: 'العالم',
   navFaq: 'أسئلة شائعة',
   ctaPartner: 'الانضمام كشريك',

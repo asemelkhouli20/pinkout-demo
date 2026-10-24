@@ -245,8 +245,8 @@ export function buildPark(scene, { coarse = false, venue } = {}) {
   // building out: an apron of ivory marble along the walls (where the carts stand), a promenade of rose fish-scale
   // tiles, the market in a pink-and-ivory harlequin, and between the booth rows a rose runner strewn with flowers; gold
   // inlays mark where one part meets the next, a stone kerb holds it all against the lawn.
-  // Every layer sits clearly above the one under it and also pulls itself forward in the depth buffer (polygonOffset),
-  // so no two of them ever fight over the same pixels when the camera moves.
+  // Every layer sits clearly above the one under it (0.012 apart: with the camera's near plane at 0.8 the depth buffer
+  // tells them apart even at the far edge of the park), so no two of them fight over the same pixels.
   const tile = (units, draw) => { const t = canvasTexture(256, 256, draw); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1 / units, 1 / units); t.anisotropy = 4; return t; };
   const vary = (hex, k) => { c.set(hex).offsetHSL(0, 0, (rnd() - 0.5) * k); return `#${c.getHexString()}`; };
   const marbleApron = tile(2.6, (g, w, h) => { // berry marble with blush veins: a dark frame that sets off the pale building
@@ -287,7 +287,6 @@ export function buildPark(scene, { coarse = false, venue } = {}) {
     });
   });
     const layer = (geo, material, k) => { // k: how many steps above the lawn this layer lies
-    Object.assign(material, { polygonOffset: true, polygonOffsetFactor: -k, polygonOffsetUnits: -4 * k });
     const m = flat(geo, material, G + k * 0.012); root.add(m); return m;
   };
   // the paving gets dimmer the further it lies from the building, so the eye goes to the venue, not the square
@@ -421,10 +420,9 @@ export function buildPark(scene, { coarse = false, venue } = {}) {
   const fairyCol = ['#ffe2a8', '#ff8fb8', '#fff6e0', '#ffd0e2'];
   bulbs.forEach(([x, y, z], i) => { place(fairy, i, x, y, z, 1); fairy.setColorAt(i, c.set(fairyCol[i % 4])); });
   root.add(fairy);
-  // a pool lies on the paving, whose layers pull themselves forward in depth (polygonOffset, up to -5 / -20 in layer());
-  // the pool must pull further still, or at some camera angles the paving covers it and the light blinks off and on
-  const poolMaterial = (opacity) => new THREE.MeshBasicMaterial({ map: glowTex, transparent: true, opacity, depthWrite: false, blending: THREE.AdditiveBlending,
-    polygonOffset: true, polygonOffsetFactor: -10, polygonOffsetUnits: -40 });
+  // a pool lies a clear step above the top paving layer (no depth nudging: a nudge strong enough to win against the
+  // paving could also push the glow through the walls and carts standing on it)
+  const poolMaterial = (opacity) => new THREE.MeshBasicMaterial({ map: glowTex, transparent: true, opacity, depthWrite: false, blending: THREE.AdditiveBlending });
   const pools = [
     ...lamps.map(([x, z]) => [x, z, 2.4, WARM]),
     ...booths.map((b) => [b.x + Math.sin(b.yaw) * 0.9, b.z + Math.cos(b.yaw) * 0.9, 1.7, b.name === 'Photo Booth' ? '#ff8fc8' : WARM]),

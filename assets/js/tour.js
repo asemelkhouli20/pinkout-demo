@@ -309,7 +309,7 @@ export function initTour() {
   new IntersectionObserver(([en], obs) => {
     if (!en.isIntersecting) return;
     obs.disconnect();
-    const load = () => import('./tour3d.js?v=53');
+    const load = () => import('./tour3d.js?v=54');
     load().catch(() => new Promise((r) => setTimeout(r, 900)).then(load)) // one retry on a flaky network
       .then((m) => { scene = m.mount(stage, { zones: ZONES, data, get, on, onPick: jump, onReady: ready }); scene.setTheme(theme); measure(); })
       .catch((err) => { root.classList.remove('is-live'); root.dataset.error = String(err?.message || err); console.warn('Tour 3D unavailable:', err); }); // falls back to the illustrated stops

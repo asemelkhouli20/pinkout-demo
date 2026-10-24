@@ -11,7 +11,7 @@
 //   each world's doorway (in its colours), sparkles in the air.
 // People are two instanced meshes (bodies + heads), so a hundred people cost two draw calls; each effect is one more.
 import * as THREE from './vendor/three.module.min.js?v=1';
-import { toX, toZ, W, D, U, LOOK } from './venue.js?v=31';
+import { toX, toZ, W, D, U, LOOK } from './venue.js?v=32';
 
 const OUTFITS = ['#ff3d8b', '#2b1220', '#ffffff', '#ff8fb8', '#ddcffb', '#2b1220', '#fff0aa', '#c7efdf', '#df004c', '#ffd9c2', '#2b1220', '#f6d3dd'];
 const SKIN = ['#f1c7a8', '#d9a37f', '#b97f5c', '#e8b896'];

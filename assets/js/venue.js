@@ -198,7 +198,7 @@ function chair(k, mx, my, yaw, color = P.cream, sitter = false, base = 0) {
   const c = k.at(mx, my, yaw);
   c.R(0, 0, 0.5, 0.5, 0.14, color, base + 0.31, FABRIC, 0.06);
   c.R(0, -0.22, 0.5, 0.14, 0.45, color, base + 0.4, FABRIC, 0.06);
-  c.C(0, 0, 0.03, 0.31, P.gold, base, GOLD); c.C(0, 0, 0.16, 0.02, P.gold, base, GOLD);
+  c.C(0, 0, 0.03, 0.31, P.gold, base, GOLD); c.C(0, 0, 0.16, 0.035, P.gold, base, GOLD); // the foot stands above the floor (0.02 m), never level with it
   if (sitter) k.spot('sit', mx, my, yaw, base + 0.45);
 }
 function armchair(k, mx, my, yaw, color = P.cream, sitter = false, base = 0) {
@@ -474,7 +474,9 @@ function furnish(zone, k) {
       walls(k, 30.3, 0.9, 49.4, 12.0, 's', 11);
       [[32.7, P.blush, 'sweets'], [37.2, P.lilac, 'bears'], [41.7, P.butter, 'accessories'], [46.6, P.peach, 'fashion']].forEach(([mx, c, kind]) => {
         const bay = new THREE.Mesh(archGeometry(k.M(3.9), k.M(3.2), k.M(0.25), k.M(0.5)), mat(c, GLOSS)); bay.position.set(k.X(mx), 0, k.Z(1.5)); k.group.add(bay);
-        const tr = new THREE.Mesh(archGeometry(k.M(3.5), k.M(3.0), k.M(0.05), k.M(0.54)), mat(P.gold, GOLD)); tr.position.set(k.X(mx), 0, k.Z(1.5)); k.group.add(tr);
+        // the gold lining stands just proud of the bay's inner surface (inner radius 1.67 against the bay's 1.70, same
+        // centre): at the same radius the two fought for every pixel and the arch sides flickered as the camera moved
+        const tr = new THREE.Mesh(archGeometry(k.M(3.44), k.M(2.97), k.M(0.05), k.M(0.54)), mat(P.gold, GOLD)); tr.position.set(k.X(mx), 0, k.Z(1.5)); k.group.add(tr);
         if (kind === 'fashion') {
           const rail = k.C(mx, 1.6, 0.025, 2.6, P.gold, 1.65, GOLD); rail.rotation.z = Math.PI / 2;
           for (let i = 0; i < 7; i++) k.R(mx - 1.05 + i * 0.35, 1.6, 0.1, 0.5, 0.95, [P.pink, '#ffffff', P.lilac, P.cherry, P.butter, P.sage, P.blush][i], 0.65, FABRIC, 0.03);

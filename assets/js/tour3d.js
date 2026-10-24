@@ -9,9 +9,9 @@
 // Kept light: pixel density steps down by itself when frames run slow, layout is measured on resize (and twice a second
 // at a stop, for the bubbles), never every frame, and the themed days load on the first theme click.
 import * as THREE from './vendor/three.module.min.js?v=1';
-import { buildVenue, studioEnvironment, toX, toZ, U } from './venue.js?v=31';
-import { liveLayer } from './crowd.js?v=35';
-import { buildPark } from './park.js?v=12';
+import { buildVenue, studioEnvironment, toX, toZ, U } from './venue.js?v=32';
+import { liveLayer } from './crowd.js?v=36';
+import { buildPark } from './park.js?v=13';
 
 const P = ([x, y, h]) => new THREE.Vector3(toX(x), h, toZ(y)); // plan metres + height (units) → scene
 
@@ -68,7 +68,7 @@ export function mount(stageEl, { zones, data, get, on, onPick, onReady }) {
   const useTheme = (id) => {
     wantTheme = id;
     if (!themes && id === 'default') return;
-    loadingThemes ||= import('./themes3d.js?v=8').then((m) => { themes = m.mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); });
+    loadingThemes ||= import('./themes3d.js?v=9').then((m) => { themes = m.mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); });
     loadingThemes.then(() => { themes.set(wantTheme); if (reduced() || !running) draw(0); });
   };
 
@@ -278,13 +278,13 @@ export function mount(stageEl, { zones, data, get, on, onPick, onReady }) {
     return ray.intersectObjects(targets, true).find((h) => shown(h.object)) || null;
   };
   // rings of light spreading on the ground
-  const ringMat = () => new THREE.MeshBasicMaterial({ color: '#ff8fc8', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, polygonOffset: true, polygonOffsetFactor: -12, polygonOffsetUnits: -48 });
+  const ringMat = () => new THREE.MeshBasicMaterial({ color: '#ff8fc8', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
   const ringGeo = new THREE.RingGeometry(0.82, 1, 48).rotateX(-Math.PI / 2);
   const rings = Array.from({ length: 4 }, () => { const m = new THREE.Mesh(ringGeo, ringMat()); m.visible = false; m.renderOrder = 2; scene.add(m); return { m, life: 0 }; });
   let ringNext = 0;
   const ripple = (at, colour = '#ff8fc8', size = 1.6) => {
     const r = rings[ringNext++ % rings.length];
-    r.m.position.set(at.x, at.y + 0.02, at.z); r.m.material.color.set(colour); r.size = size; r.life = 1; r.m.visible = true;
+    r.m.position.set(at.x, at.y + 0.04, at.z); // a clear step above whatever was touched r.m.material.color.set(colour); r.size = size; r.life = 1; r.m.visible = true;
   };
   // a name that pops up for a moment where you clicked (and one that follows the mouse)
   const chip = (cls) => { const el = document.createElement('span'); el.className = cls; el.toggleAttribute('data-hidden', true); labelsLayer.append(el); return el; };

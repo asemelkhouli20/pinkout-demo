@@ -32,86 +32,487 @@
     },
     "ui": {
       "en": {
-        "scroll": "Scroll to follow her"
+        "scroll": "Scroll to follow her booking",
+        "step": "Step",
+        "of": "of",
+        "can": "What you get",
+        "gets": "The value for you",
+        "route": "Her booking",
+        "details": "Details",
+        "less": "Less",
+        "her": "Her app",
+        "you": "Your app",
+        "photo": "Add your photo",
+        "photoHint": "See yourself in the app. It stays on this device."
       },
       "ar": {
-        "scroll": "التمرير لمتابعة القصة"
+        "scroll": "التمرير لمتابعة الحجز",
+        "step": "الخطوة",
+        "of": "من",
+        "can": "ما يحصل عليه الشريك",
+        "gets": "القيمة للشريك",
+        "route": "رحلة الحجز",
+        "details": "التفاصيل",
+        "less": "أقل",
+        "her": "تطبيق العميلة",
+        "you": "تطبيق الخبيرة",
+        "photo": "إضافة صورة",
+        "photoHint": "لرؤية الملف داخل التطبيق. تبقى على هذا الجهاز فقط."
       }
     },
     "chapters": [
       {
+        "bg": "home",
+        "route": {
+          "en": "Service",
+          "ar": "الخدمة"
+        },
         "en": {
-          "kicker": "Thursday evening",
-          "title": "Imagine {brand} in her pocket.",
-          "text": "Princess Day is this weekend. She wants the full look, without leaving home. Here's how she finds you."
+          "kicker": "She opens Beauty",
+          "title": "She starts with what she needs.",
+          "text": "Makeup, hair, nails, lashes, henna or skincare. Your services sit in the categories she browses.",
+          "can": [
+            "List every service you offer",
+            "Set your own durations and prices",
+            "Show up in every category you work in"
+          ]
         },
         "ar": {
-          "kicker": "مساء الخميس",
-          "title": "{brand} في متناول يدها.",
-          "text": "يوم الأميرات هذا الأسبوع. تريد الإطلالة كاملة دون مغادرة المنزل. هكذا تصل إلى {brand}."
-        }
+          "kicker": "تفتح قسم التجميل",
+          "title": "تبدأ بما تحتاجه.",
+          "text": "مكياج، شعر، أظافر، رموش، حنّاء أو عناية بالبشرة. خدمات الخبيرة حاضرة في الفئات التي تتصفّحها.",
+          "can": [
+            "إدراج كل الخدمات المقدّمة",
+            "تحديد المدة والسعر لكل خدمة",
+            "الظهور في كل فئة ذات صلة"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "search",
+            "en": "Found by service",
+            "ar": "الظهور عند البحث عن الخدمة"
+          },
+          {
+            "icon": "star",
+            "en": "Seen by a women-first audience",
+            "ar": "جمهور نسائي أولاً"
+          },
+          {
+            "icon": "clock",
+            "en": "Your prices, your timings",
+            "ar": "الأسعار والمواعيد بيد الخبيرة"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 24,
+            "en": "Makeup for Saturday",
+            "ar": "مكياج ليوم السبت"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 70,
+            "en": "Your services, listed",
+            "ar": "خدمات الخبيرة مدرجة"
+          }
+        ]
       },
       {
+        "bg": "lounge",
+        "route": {
+          "en": "Where",
+          "ar": "المكان"
+        },
         "en": {
-          "kicker": "Open",
-          "title": "She opens PinkOut.",
-          "text": "Beauty at home, sorted by what she needs tonight: makeup, hair, nails, lashes, henna and skincare."
+          "kicker": "At home, or at PinkOut",
+          "title": "She chooses where.",
+          "text": "At home, she adds her address and only artists who cover her area appear. At PinkOut, she picks a location with a free station.",
+          "can": [
+            "Work at homes, at PinkOut locations, or both",
+            "Set your coverage area and travel charge",
+            "Use a partner station, no salon of your own needed"
+          ]
         },
         "ar": {
-          "kicker": "الفتح",
-          "title": "تفتح تطبيق PinkOut.",
-          "text": "خدمات التجميل في المنزل، مرتّبة حسب ما تحتاجه الليلة: مكياج وشعر وأظافر ورموش وحنّاء وعناية بالبشرة."
-        }
+          "kicker": "في المنزل أو في PinkOut",
+          "title": "تختار المكان.",
+          "text": "في المنزل تُدخل عنوانها، فلا تظهر إلا الخبيرات اللواتي يغطّين منطقتها. وفي PinkOut تختار موقعاً فيه محطة متاحة.",
+          "can": [
+            "العمل في المنازل أو في مواقع PinkOut أو كليهما",
+            "تحديد منطقة الخدمة ورسوم التنقل",
+            "استخدام محطة لدى شريك دون صالون خاص"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "store",
+            "en": "A station when you need one",
+            "ar": "محطة عند الحاجة"
+          },
+          {
+            "icon": "people",
+            "en": "Clients in your area",
+            "ar": "عميلات في منطقة الخدمة"
+          },
+          {
+            "icon": "repeat",
+            "en": "One calendar for both",
+            "ar": "تقويم واحد للمكانين"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 22,
+            "en": "At home · Riyadh",
+            "ar": "في المنزل · الرياض"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 66,
+            "en": "Only if you cover her area",
+            "ar": "فقط ضمن منطقة الخدمة"
+          }
+        ]
       },
       {
+        "bg": "home",
+        "route": {
+          "en": "Artists",
+          "ar": "الخبيرات"
+        },
         "en": {
-          "kicker": "Discover",
+          "kicker": "Artists, by name",
           "title": "{brand}, where she is looking.",
-          "text": "Artists near her, free this weekend, with their work right there to compare."
+          "text": "She compares individual artists who are free when she is: their work, prices and ratings. She chooses a person, not a team.",
+          "can": [
+            "Appear when you are free",
+            "Lead with your best looks",
+            "Stand out on ratings"
+          ]
         },
         "ar": {
-          "kicker": "الاكتشاف",
+          "kicker": "خبيرات بالاسم",
           "title": "{brand} حيث تبحث.",
-          "text": "خبيرات قريبات ومتاحات في عطلة الأسبوع، وأعمالهن أمامها للمقارنة."
-        }
+          "text": "تقارن بين خبيرات بأسمائهن، متاحات في وقتها: أعمالهن وأسعارهن وتقييماتهن. تختار خبيرة بعينها لا فريقاً.",
+          "can": [
+            "الظهور في أوقات التوفّر",
+            "تقديم أفضل الإطلالات أولاً",
+            "التميّز بالتقييمات"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "people",
+            "en": "People, not salons",
+            "ar": "أشخاص لا صالونات"
+          },
+          {
+            "icon": "eye",
+            "en": "Your work comes first",
+            "ar": "الأعمال في المقدمة"
+          },
+          {
+            "icon": "star",
+            "en": "Ratings that build",
+            "ar": "تقييمات تتراكم"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 30,
+            "en": "Free this Saturday",
+            "ar": "متاحة يوم السبت"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 52,
+            "en": "Your looks, up front",
+            "ar": "الإطلالات في المقدمة"
+          }
+        ]
       },
       {
+        "bg": "henna",
+        "route": {
+          "en": "Profile",
+          "ar": "الملف"
+        },
         "en": {
           "kicker": "Your profile",
           "title": "She sees your work.",
-          "text": "Your services, your portfolio, your Instagram: everything she needs to choose you."
+          "text": "Portfolio, services, durations, prices, ratings and where you work: everything she needs to choose you.",
+          "can": [
+            "Build a portfolio of your looks",
+            "Link your Instagram",
+            "Show where and when you work"
+          ]
         },
         "ar": {
-          "kicker": "الملف",
-          "title": "ترى الأعمال.",
-          "text": "الخدمات والأعمال وحساب إنستغرام: كل ما تحتاجه لاختيار {brand}."
-        }
+          "kicker": "الملف الشخصي",
+          "title": "ترى أعمال {brand}.",
+          "text": "معرض الأعمال والخدمات ومدّتها وأسعارها والتقييمات وأماكن العمل: كل ما تحتاجه للاختيار.",
+          "can": [
+            "معرض لأفضل الإطلالات",
+            "ربط حساب إنستغرام",
+            "أماكن العمل وأوقاته"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "camera",
+            "en": "A portfolio that sells",
+            "ar": "أعمال تُقنع"
+          },
+          {
+            "icon": "heart",
+            "en": "Saved by clients",
+            "ar": "حفظ العميلات للملف"
+          },
+          {
+            "icon": "sparkle",
+            "en": "Your name as your brand",
+            "ar": "الاسم علامة بحد ذاته"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 26,
+            "en": "★★★★★ reviews",
+            "ar": "تقييمات ★★★★★"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 44,
+            "en": "Your portfolio",
+            "ar": "معرض الأعمال"
+          }
+        ]
       },
       {
+        "bg": "home",
+        "route": {
+          "en": "Book",
+          "ar": "الحجز"
+        },
         "en": {
-          "kicker": "Booked",
-          "title": "One tap, and it's booked.",
-          "text": "Saturday, 18:30, at her home. The booking comes to you; she gets her evening back."
+          "kicker": "Booked and paid",
+          "title": "One tap. Booked and paid.",
+          "text": "She picks the service, day and time, sees the full price with any travel charge and pays in the app. The booking lands in your calendar, or waits for you to accept.",
+          "can": [
+            "Accept requests, or confirm instantly",
+            "Time blocked, travel included",
+            "Paid through the app"
+          ]
         },
         "ar": {
-          "kicker": "الحجز",
-          "title": "لمسة واحدة، وتمّ الحجز.",
-          "text": "السبت، 18:30، في منزلها. الحجز يصل إلى {brand}، والمساء يعود لها."
-        }
+          "kicker": "الحجز والدفع",
+          "title": "لمسة واحدة: حجز ودفع.",
+          "text": "تختار الخدمة واليوم والوقت، وترى السعر كاملاً مع أي رسوم تنقل، وتدفع في التطبيق. ويصل الحجز إلى تقويم الخبيرة، أو ينتظر قبولها.",
+          "can": [
+            "قبول الطلبات أو التأكيد الفوري",
+            "وقت محجوز مع التنقل",
+            "الدفع عبر التطبيق"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "clock",
+            "en": "No double bookings",
+            "ar": "لا حجوزات متداخلة"
+          },
+          {
+            "icon": "hand",
+            "en": "Payment handled",
+            "ar": "الدفع مُدار"
+          },
+          {
+            "icon": "repeat",
+            "en": "Changes in one place",
+            "ar": "التعديلات في مكان واحد"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 30,
+            "en": "Paid in the app",
+            "ar": "تم الدفع في التطبيق"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 62,
+            "en": "New booking · Sat 18:30",
+            "ar": "حجز جديد · السبت 18:30"
+          }
+        ]
       },
       {
+        "bg": "home",
+        "route": {
+          "en": "On the day",
+          "ar": "يوم الموعد"
+        },
         "en": {
-          "kicker": "After",
-          "title": "The look, credited to {brand}.",
-          "text": "She shares the photo, the look carries your name, and next time she books again."
+          "kicker": "On the day",
+          "title": "She follows you to the door.",
+          "text": "Reminders, chat and every status as it changes: confirmed, on the way, arrived, in progress. At PinkOut, she checks in and your station is ready.",
+          "can": [
+            "Message her before the visit",
+            "Update your status as you go",
+            "Address and prep details in hand"
+          ]
         },
         "ar": {
-          "kicker": "ما بعد الموعد",
-          "title": "الإطلالة منسوبة إلى {brand}.",
-          "text": "تشارك الصورة، والإطلالة تحمل اسم {brand}، وفي المرة القادمة تحجز من جديد."
-        }
+          "kicker": "يوم الموعد",
+          "title": "تتابع الموعد حتى الباب.",
+          "text": "تذكير ومحادثة وكل حالة لحظة تغيّرها: مؤكد، في الطريق، الوصول، قيد التنفيذ. وفي PinkOut تسجّل حضورها والمحطة جاهزة.",
+          "can": [
+            "مراسلة العميلة قبل الزيارة",
+            "تحديث الحالة خطوة بخطوة",
+            "العنوان وتفاصيل التحضير جاهزة"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "people",
+            "en": "Clear updates both ways",
+            "ar": "تحديثات واضحة للطرفين"
+          },
+          {
+            "icon": "clock",
+            "en": "Arrive on time",
+            "ar": "وصول في الموعد"
+          },
+          {
+            "icon": "store",
+            "en": "Station ready at PinkOut",
+            "ar": "محطة جاهزة في PinkOut"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 28,
+            "en": "On the way",
+            "ar": "في الطريق"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 58,
+            "en": "Tap: Arrived",
+            "ar": "لمسة: وصلت"
+          }
+        ]
+      },
+      {
+        "bg": "henna",
+        "route": {
+          "en": "Review",
+          "ar": "التقييم"
+        },
+        "en": {
+          "kicker": "After the look",
+          "title": "Rated, and credited to {brand}.",
+          "text": "You mark it complete, she rates you, and the review lands on your profile. The look carries your name, and she books you again.",
+          "can": [
+            "Reviews on your profile",
+            "Earnings and payouts in one view",
+            "First visits that become regulars"
+          ]
+        },
+        "ar": {
+          "kicker": "بعد الإطلالة",
+          "title": "تقييم، والإطلالة باسم {brand}.",
+          "text": "تُختم الجلسة، فتقيّمها العميلة ويُضاف التقييم إلى الملف. والإطلالة تحمل اسم الخبيرة، وتعود العميلة للحجز من جديد.",
+          "can": [
+            "تقييمات على الملف",
+            "الأرباح والدفعات في مكان واحد",
+            "زيارات أولى تتحوّل إلى دائمة"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "star",
+            "en": "Reputation that grows",
+            "ar": "سمعة تكبر"
+          },
+          {
+            "icon": "gift",
+            "en": "Earnings tracked",
+            "ar": "أرباح واضحة"
+          },
+          {
+            "icon": "repeat",
+            "en": "Repeat bookings",
+            "ar": "حجوزات متكررة"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 30,
+            "en": "★★★★★ Loved it",
+            "ar": "★★★★★ رائعة"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 60,
+            "en": "+ Earnings recorded",
+            "ar": "+ تم تسجيل الأرباح"
+          }
+        ]
       }
-    ]
+    ],
+    "tour": true,
+    "intro": {
+      "en": {
+        "kicker": "Your craft. Her booking.",
+        "title": "Be the artist she books [[by name]].",
+        "text": "When the PinkOut app launches, women in Riyadh book beauty with a person, not a salon: at home or at a PinkOut location. Follow one booking from her first tap to her review, and see what you get at every step.",
+        "facts": [
+          "At home or at PinkOut",
+          "Your own calendar",
+          "Paid in the app",
+          "Rated by her"
+        ]
+      },
+      "ar": {
+        "kicker": "الخبرة بالاسم، والحجز بلمسة.",
+        "title": "الخبيرة التي تُحجز [[بالاسم]].",
+        "text": "عند إطلاق تطبيق PinkOut، تحجز النساء في الرياض خدمات التجميل مع خبيرة بعينها لا مع صالون: في المنزل أو في أحد مواقع PinkOut. رحلة حجز واحد من أول لمسة حتى التقييم، وما يحصل عليه الشريك في كل خطوة.",
+        "facts": [
+          "في المنزل أو في PinkOut",
+          "تقويم شخصي",
+          "الدفع في التطبيق",
+          "تقييمات العميلات"
+        ]
+      }
+    },
+    "bgs": {
+      "home": "themes/princess-960.webp",
+      "lounge": "worlds/beauty-1600.webp",
+      "henna": "themes/henna-960.webp"
+    },
+    "photoStep": 4
   },
   "shop": {
     "mode": "app",
@@ -121,85 +522,455 @@
     },
     "ui": {
       "en": {
-        "scroll": "Scroll to follow her"
+        "scroll": "Scroll to follow her order",
+        "step": "Step",
+        "of": "of",
+        "can": "What you get",
+        "gets": "The value for you",
+        "details": "Details",
+        "less": "Less",
+        "her": "Her app",
+        "you": "Your shop",
+        "photo": "Add your logo",
+        "photoHint": "See your brand in the app. It stays on this device."
       },
       "ar": {
-        "scroll": "التمرير لمتابعة القصة"
+        "scroll": "التمرير لمتابعة الطلب",
+        "step": "الخطوة",
+        "of": "من",
+        "can": "ما يحصل عليه الشريك",
+        "gets": "القيمة للشريك",
+        "details": "التفاصيل",
+        "less": "أقل",
+        "her": "تطبيق العميلة",
+        "you": "لوحة المتجر",
+        "photo": "إضافة الشعار",
+        "photoHint": "لرؤية العلامة داخل التطبيق. يبقى على هذا الجهاز فقط."
       }
     },
     "chapters": [
       {
+        "bg": "market",
         "en": {
-          "kicker": "Sunday afternoon",
-          "title": "Imagine {brand} in her pocket.",
-          "text": "Her best friend's birthday is on Tuesday. She needs a gift, and she's scrolling PinkOut."
+          "kicker": "She opens the shop",
+          "title": "She starts with who it is for.",
+          "text": "Beauty, fashion, accessories, sweets, gifts and lifestyle, picked for her world. She searches \"birthday gift\".",
+          "can": [
+            "A shop in the categories she browses",
+            "Found when she searches",
+            "Your catalogue, your prices"
+          ]
         },
         "ar": {
-          "kicker": "عصر الأحد",
-          "title": "{brand} في متناول يدها.",
-          "text": "عيد ميلاد صديقتها المقرّبة يوم الثلاثاء. تبحث عن هدية، وتتصفّح تطبيق PinkOut."
-        }
-      },
-      {
-        "en": {
-          "kicker": "Browse",
-          "title": "She opens the shop.",
-          "text": "Beauty, fashion, accessories, sweets, gifts and lifestyle, picked for her world."
+          "kicker": "تفتح المتجر",
+          "title": "تبدأ بمن تريد إهداءه.",
+          "text": "جمال، موضة، إكسسوارات، حلويات، هدايا وأسلوب حياة، مختارة لعالمها. تبحث عن \"هدية عيد ميلاد\".",
+          "can": [
+            "متجر ضمن الفئات التي تتصفّحها",
+            "الظهور عند البحث",
+            "الكتالوج والأسعار بيد العلامة"
+          ]
         },
-        "ar": {
-          "kicker": "التصفّح",
-          "title": "تفتح المتجر.",
-          "text": "جمال وأزياء وإكسسوارات وحلويات وهدايا ونمط حياة، منتقاة لعالمها."
-        }
+        "gets": [
+          {
+            "icon": "search",
+            "en": "Found by search",
+            "ar": "الظهور في البحث"
+          },
+          {
+            "icon": "star",
+            "en": "A women-first audience",
+            "ar": "جمهور نسائي أولاً"
+          },
+          {
+            "icon": "repeat",
+            "en": "Open all year round",
+            "ar": "حضور على مدار العام"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 24,
+            "en": "Birthday gift",
+            "ar": "هدية عيد ميلاد"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 66,
+            "en": "Your shop, listed",
+            "ar": "المتجر مُدرج"
+          }
+        ]
       },
       {
+        "bg": "market",
         "en": {
           "kicker": "Featured",
           "title": "{brand}, in the Gift Edit.",
-          "text": "Featured moments, like gift edits and themed-day picks, put your products in front of her."
+          "text": "Featured moments, like gift edits and themed-day picks, put your products in front of her first.",
+          "can": [
+            "A place in gift edits",
+            "Themed-day picks",
+            "Your product leads the row"
+          ]
         },
         "ar": {
-          "kicker": "المميّز",
+          "kicker": "مميّز",
           "title": "{brand} في تشكيلة الهدايا.",
-          "text": "لحظات مميّزة، مثل تشكيلات الهدايا واختيارات أيام الثيمات، تضع المنتجات أمامها."
-        }
+          "text": "لحظات مميّزة مثل تشكيلات الهدايا واختيارات أيام الثيمات تضع المنتجات أمامها أولاً.",
+          "can": [
+            "مكان في تشكيلات الهدايا",
+            "اختيارات أيام الثيمات",
+            "المنتج في مقدمة الصف"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "gift",
+            "en": "Seen at gifting moments",
+            "ar": "الظهور في مواسم الهدايا"
+          },
+          {
+            "icon": "eye",
+            "en": "Your product first",
+            "ar": "المنتج أولاً"
+          },
+          {
+            "icon": "sparkle",
+            "en": "Picks that feel curated",
+            "ar": "اختيارات منتقاة"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 30,
+            "en": "Gift Edit",
+            "ar": "تشكيلة الهدايا"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 52,
+            "en": "In the Gift Edit",
+            "ar": "في تشكيلة الهدايا"
+          }
+        ]
       },
       {
+        "bg": "market",
         "en": {
           "kicker": "Your story",
           "title": "She meets {brand}.",
-          "text": "Your brand page tells her who made it and why. That's what makes her choose you."
+          "text": "Your brand page, with your story, your products and your ratings, tells her who made it. That is what makes her choose you.",
+          "can": [
+            "A brand page with your story",
+            "Your logo and your look",
+            "Your full range in one place"
+          ]
         },
         "ar": {
           "kicker": "الحكاية",
-          "title": "تتعرّف على {brand}.",
-          "text": "صفحة العلامة تحكي من صنع المنتج ولماذا. هذا ما يجعلها تختار {brand}."
-        }
+          "title": "تتعرّف إلى {brand}.",
+          "text": "صفحة العلامة، بحكايتها ومنتجاتها وتقييماتها، تخبرها من صنع المنتج. وهذا ما يجعلها تختار {brand}.",
+          "can": [
+            "صفحة للعلامة بحكايتها",
+            "الشعار والهوية",
+            "كل المنتجات في مكان واحد"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "heart",
+            "en": "Followed by her",
+            "ar": "متابعة العميلات"
+          },
+          {
+            "icon": "store",
+            "en": "Your own shop front",
+            "ar": "واجهة متجر خاصة"
+          },
+          {
+            "icon": "star",
+            "en": "Ratings that build",
+            "ar": "تقييمات تتراكم"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 26,
+            "en": "★★★★★ brand",
+            "ar": "علامة ★★★★★"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 46,
+            "en": "Your brand page",
+            "ar": "صفحة العلامة"
+          }
+        ]
       },
       {
+        "bg": "market",
         "en": {
-          "kicker": "In her bag",
-          "title": "Added to bag.",
-          "text": "Your product, her gift, ordered in a minute."
+          "kicker": "The product",
+          "title": "Into her bag.",
+          "text": "Your photos, your price and delivery in Riyadh. One tap and it is in her bag.",
+          "can": [
+            "Product pages with your photos",
+            "Your price, clearly shown",
+            "Stock you control"
+          ]
         },
         "ar": {
-          "kicker": "الحقيبة",
-          "title": "أُضيف إلى الحقيبة.",
-          "text": "المنتج، والهدية، والطلب في دقيقة."
-        }
+          "kicker": "المنتج",
+          "title": "إلى الحقيبة.",
+          "text": "صور المنتج وسعره والتوصيل داخل الرياض. لمسة واحدة ويصبح في الحقيبة.",
+          "can": [
+            "صفحات منتجات بصور العلامة",
+            "سعر واضح",
+            "مخزون تحت السيطرة"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "camera",
+            "en": "Your product, shown well",
+            "ar": "عرض يليق بالمنتج"
+          },
+          {
+            "icon": "hand",
+            "en": "Add to bag in one tap",
+            "ar": "إضافة بلمسة"
+          },
+          {
+            "icon": "search",
+            "en": "Easy to find again",
+            "ar": "سهل الوصول مجدداً"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 30,
+            "en": "Added to bag",
+            "ar": "أُضيف إلى الحقيبة"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 60,
+            "en": "Stock updated",
+            "ar": "تم تحديث المخزون"
+          }
+        ]
       },
       {
+        "bg": "market",
+        "en": {
+          "kicker": "Checkout",
+          "title": "Paid in a minute.",
+          "text": "She sends it as a gift to her friend's address with a note, sees the full price with delivery and pays in the app. The order lands in your dashboard.",
+          "can": [
+            "Orders straight to your dashboard",
+            "Gift notes and wrapping flagged",
+            "Paid through the app"
+          ]
+        },
+        "ar": {
+          "kicker": "الدفع",
+          "title": "الدفع في دقيقة.",
+          "text": "ترسله هدية إلى عنوان صديقتها مع بطاقة، وترى السعر كاملاً مع التوصيل، وتدفع في التطبيق. ويصل الطلب إلى لوحة المتجر.",
+          "can": [
+            "الطلبات مباشرة إلى لوحة المتجر",
+            "البطاقات والتغليف واضحة",
+            "الدفع عبر التطبيق"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "hand",
+            "en": "Payment handled",
+            "ar": "الدفع مُدار"
+          },
+          {
+            "icon": "gift",
+            "en": "Gift orders made easy",
+            "ar": "طلبات هدايا سهلة"
+          },
+          {
+            "icon": "clock",
+            "en": "Every order in one place",
+            "ar": "كل الطلبات في مكان واحد"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 30,
+            "en": "Paid in the app",
+            "ar": "تم الدفع في التطبيق"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 62,
+            "en": "New order · Gift",
+            "ar": "طلب جديد · هدية"
+          }
+        ]
+      },
+      {
+        "bg": "home",
+        "en": {
+          "kicker": "Tuesday",
+          "title": "She follows it to the door.",
+          "text": "You confirm and pack it; she sees every step as it happens: confirmed, gift-wrapped, shipped, delivered.",
+          "can": [
+            "Update the status as you go",
+            "Tracking shared with her",
+            "Questions in one place"
+          ]
+        },
+        "ar": {
+          "kicker": "الثلاثاء",
+          "title": "تتابعه حتى الباب.",
+          "text": "يؤكَّد الطلب ويُجهَّز لدى العلامة، وترى كل خطوة لحظة حدوثها: مؤكد، مغلّف، مشحون، تم التوصيل.",
+          "can": [
+            "تحديث الحالة خطوة بخطوة",
+            "مشاركة التتبع معها",
+            "الأسئلة في مكان واحد"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "people",
+            "en": "Fewer \"where is it?\" messages",
+            "ar": "أسئلة أقل عن الطلب"
+          },
+          {
+            "icon": "clock",
+            "en": "On-time delivery",
+            "ar": "توصيل في الموعد"
+          },
+          {
+            "icon": "heart",
+            "en": "A gift that feels cared for",
+            "ar": "هدية بعناية"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 28,
+            "en": "On its way",
+            "ar": "في الطريق"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 58,
+            "en": "Marked as shipped",
+            "ar": "تم الشحن"
+          }
+        ]
+      },
+      {
+        "bg": "home",
         "en": {
           "kicker": "After",
           "title": "And she comes back.",
-          "text": "The gift lands, her friend asks where it came from, and {brand} is one tap away for both of them."
+          "text": "The gift lands, she rates {brand}, her friend asks where it came from, and you are one tap away for both of them.",
+          "can": [
+            "Reviews on your brand page",
+            "Earnings and payouts in one view",
+            "Customers who order again"
+          ]
         },
         "ar": {
-          "kicker": "ما بعد الطلب",
-          "title": "ثم تعود من جديد.",
-          "text": "تصل الهدية، تسأل صديقتها عن مصدرها، و{brand} على بعد لمسة لكلتيهما."
-        }
+          "kicker": "بعد الطلب",
+          "title": "وتعود من جديد.",
+          "text": "تصل الهدية، وتقيّم {brand}، وتسأل صديقتها عن مصدرها، و{brand} على بُعد لمسة من كلتيهما.",
+          "can": [
+            "تقييمات على صفحة العلامة",
+            "الأرباح والدفعات في مكان واحد",
+            "عميلات يطلبن مجدداً"
+          ]
+        },
+        "gets": [
+          {
+            "icon": "star",
+            "en": "Reputation that grows",
+            "ar": "سمعة تكبر"
+          },
+          {
+            "icon": "gift",
+            "en": "Earnings tracked",
+            "ar": "أرباح واضحة"
+          },
+          {
+            "icon": "repeat",
+            "en": "Repeat orders",
+            "ar": "طلبات متكررة"
+          }
+        ],
+        "moments": [
+          {
+            "side": "her",
+            "x": 84,
+            "y": 30,
+            "en": "★★★★★ Loved it",
+            "ar": "★★★★★ رائعة"
+          },
+          {
+            "side": "you",
+            "x": 11,
+            "y": 60,
+            "en": "+ Earnings recorded",
+            "ar": "+ تم تسجيل الأرباح"
+          }
+        ]
       }
-    ]
+    ],
+    "tour": true,
+    "intro": {
+      "en": {
+        "kicker": "Your products. Her pocket.",
+        "title": "Be the brand she [[gifts]].",
+        "text": "When the PinkOut app launches, women in Riyadh shop beauty, fashion, gifts and treats from brands picked for her world. Follow one order from her first tap to her review.",
+        "facts": [
+          "A shop in the app",
+          "Paid in the app",
+          "Delivered in Riyadh",
+          "Rated by her"
+        ]
+      },
+      "ar": {
+        "kicker": "المنتجات في متناول يدها.",
+        "title": "العلامة التي [[تُهدى]].",
+        "text": "عند إطلاق تطبيق PinkOut، تتسوّق النساء في الرياض الجمال والموضة والهدايا والحلويات من علامات مختارة لعالمها. رحلة طلب واحد من أول لمسة حتى التقييم.",
+        "facts": [
+          "متجر في التطبيق",
+          "الدفع في التطبيق",
+          "توصيل داخل الرياض",
+          "تقييمات العميلات"
+        ]
+      }
+    },
+    "bgs": {
+      "market": "worlds/market-1600.webp",
+      "home": "themes/pajama-960.webp"
+    },
+    "photoStep": 3
   }
 }

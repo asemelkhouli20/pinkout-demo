@@ -14,6 +14,7 @@ import re
 from pathlib import Path
 
 from tour_markup import tour_for
+from apptour_markup import apptour_for
 
 ROOT = Path(__file__).resolve().parent.parent
 P = ROOT / 'src' / 'partials'
@@ -34,7 +35,7 @@ TRACKS = {
         title='E-commerce partners · PinkOut Partners', title_ar='شركاء التجارة الإلكترونية · شركاء PinkOut',
         description='Brands and sellers: sell your products in the PinkOut app when it launches, all year round. PinkOut is coming soon to Riyadh.',
         og_image='worlds/hero-1600.webp', hero=None,
-        apply_key='applyShop', apply='Apply as seller', deck_key='deckShop', deck='E-commerce deck'),
+        apply_key='applyShop', apply='Apply as seller', deck_key='deckShop', deck='Shop deck'),
 }
 
 
@@ -212,8 +213,10 @@ def tour_modulepreload():
 # its hero (title, brand name). Beauty service and e-commerce partners work through the app: a hero, then the app journey.
 for track, t in TRACKS.items():
     preload = f'<link rel="preload" href="assets/images/{t["hero"]}?v=1" as="image" fetchpriority="high">\n' if t['hero'] else ''
-    story = tour_for() if track == 'event' else journey_for(track, t) + loop_for(track)  # event: the venue tour; others: the app journey, then one booking/order in three views
-    hero = [] if track == 'event' else [part(f'track-{track}-hero')]
+    app_tour = track != 'event' and JOURNEY[track].get('tour')  # opens on its stage, like the event tour
+    app = (apptour_for(track, t, JOURNEY, part(f'phone-{track}')) if app_tour else journey_for(track, t)) if track != 'event' else ''
+    story = tour_for() if track == 'event' else app + loop_for(track)  # event: the venue tour; others: her booking/order, then three views
+    hero = [] if track == 'event' or app_tour else [part(f'track-{track}-hero')]
     if track == 'event':
         preload += tour_modulepreload()
     page('' if track == 'event' else f'{track}.html', track, t['title'], t['title_ar'], t['description'], t['og_image'], preload,

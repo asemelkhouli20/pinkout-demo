@@ -569,3 +569,11 @@ input[type="email"].field__control, input[type="tel"].field__control { direction
 .signature > *, .profile-mock > *, .profile-mock__top > *, .benefits > * { min-inline-size: 0; }
 @media (max-width: 800px) { .signature { padding: var(--space-4); gap: var(--space-5); } .profile-mock, .product-mock { inline-size: 100%; } }
 .btn--block { white-space: normal; text-align: center; }
+/* hero profile: services with durations (the price is the partner's own), where she works, next free time */
+.mock-stars { color: #e8a300; letter-spacing: 0.05em; }
+.mock-svc { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.mock-svc li { display: grid; grid-template-columns: minmax(0, 1fr) auto 44px; gap: 10px; align-items: center; padding: 8px 12px; border-radius: 12px; background: var(--c-canvas); font-size: 14px; }
+.mock-svc small { color: var(--c-text-2); }
+.mock-svc i { block-size: 7px; border-radius: 99px; background: rgb(125 22 63 / 0.14); }
+.mock-where { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.mock-where .chip { min-block-size: 26px; padding: 2px 10px; font-size: 12px; }

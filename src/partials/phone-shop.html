@@ -1,4 +1,6 @@
       <div class="phone" data-phone aria-hidden="true">
+        <div class="ph-status"><b class="t-ltr" data-ph-clock>15:20</b><span class="ph-status__icons"><svg viewBox="0 0 18 12"><path d="M1 11h2V8H1zM5 11h2V6H5zM9 11h2V4H9zM13 11h2V1h-2z"/></svg><svg viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.3 3.3 0 0 0-4.4 0zM3.4 6.3a7 7 0 0 1 9.2 0l1.4-1.6a9.2 9.2 0 0 0-12 0z"/></svg><span class="ph-battery"><i></i></span></span></div>
+        <span class="ph-sweep"></span>
         <!-- 0 · lock screen: the nudge -->
         <div class="phone__screen phone__screen--lock" data-screen="0">
           <div class="ph-lock"><span data-i18n="phSunday">Sunday</span><b class="t-ltr">15:20</b></div>
@@ -8,17 +10,17 @@
         <div class="phone__screen" data-screen="1">
           <div class="ph-bar"><span class="ph-logo">PinkOut</span><span class="ph-me"></span></div>
           <b class="ph-h" data-i18n="phsShop">Shop</b>
-          <span class="ph-search" data-i18n="phsSearch">Gifts, beauty, sweets…</span>
+          <span class="ph-search"><span class="ph-type" data-i18n="phsTyping">Birthday gift</span></span>
           <div class="ph-cats">
             <span style="--c:var(--c-pink)"><i></i><b data-i18n="catBeauty">Beauty</b></span>
             <span style="--c:var(--c-lavender)"><i></i><b data-i18n="catFashion">Fashion</b></span>
             <span style="--c:var(--c-butter)"><i></i><b data-i18n="catAccessories">Accessories</b></span>
             <span style="--c:var(--c-peach)"><i></i><b data-i18n="catSweets">Sweets &amp; treats</b></span>
-            <span style="--c:var(--zone-make)"><i></i><b data-i18n="catGifts">Gifts</b></span>
+            <span class="is-on" style="--c:var(--zone-make)"><i></i><b data-i18n="catGifts">Gifts</b></span>
             <span style="--c:var(--zone-move)"><i></i><b data-i18n="catLifestyle">Lifestyle</b></span>
           </div>
           <div class="ph-banner ph-banner--product"><img src="assets/images/stickers/shopping-tote.webp?v=1" alt="" width="280" height="280" loading="lazy"><b data-i18n="phsBanner">The Gift Edit</b></div>
-          <span class="ph-tap" style="--x:50%;--y:80%"></span>
+          <span class="ph-tap" style="--x:50%;--y:52%"></span>
           <div class="ph-tabs"><i class="is-on"></i><i></i><i></i><i></i></div>
         </div>
         <!-- 2 · the Gift Edit: the partner's product first -->
@@ -37,7 +39,7 @@
         <!-- 3 · the brand page -->
         <div class="phone__screen phone__screen--flush" data-screen="3">
           <div class="ph-cover ph-cover--brand"></div>
-          <div class="ph-profile"><span class="ph-av ph-av--lg" data-brand-initial>Y</span><b data-brand>Your brand</b><span class="ph-chips"><span data-i18n="madeRiyadh">Made in Riyadh</span></span></div>
+          <div class="ph-profile"><span class="ph-av ph-av--lg" data-brand-initial>Y</span><b data-brand>Your brand</b><small><span class="ph-star">★★★★★</span> · <span data-i18n="madeRiyadh">Made in Riyadh</span></small></div>
           <span class="ph-label" data-i18n="phStory">Our story</span>
           <div class="ph-lines"><i></i><i></i><i></i></div>
           <span class="ph-label" data-i18n="phProducts">Products</span>
@@ -54,16 +56,46 @@
           <div class="ph-hero-img"><img src="assets/images/stickers/perfume.webp?v=1" alt="" width="280" height="280" loading="lazy"></div>
           <small class="ph-muted" data-brand>Your brand</small>
           <b class="ph-h" data-i18n="yourProduct">Your product</b>
-          <div class="ph-chips"><span data-i18n="giftEdit">Gift edit</span><span data-i18n="madeRiyadh">Made in Riyadh</span></div>
+          <div class="ph-chips"><span data-i18n="giftEdit">Gift edit</span><span data-i18n="phDelivered">Delivered in Riyadh</span></div>
+          <div class="ph-lines"><i></i><i></i></div>
           <span class="ph-btn" data-i18n="phAddBag">Add to bag</span>
           <div class="ph-toast"><span class="ph-check">✓</span><span data-i18n="phAdded">Added to bag</span></div>
         </div>
-        <!-- 5 · after: on its way, and one tap to come back -->
+        <!-- 5 · checkout: a gift, her friend's address, full price, paid -->
         <div class="phone__screen" data-screen="5">
-          <div class="ph-done ph-done--static"><span class="ph-check">✓</span><b data-i18n="phOnWay">On its way</b><small><span data-i18n="phOrderFrom">Order from</span> <span data-brand>Your brand</span></small></div>
-          <div class="ph-row"><i></i><span data-i18n="phGiftFriend">A gift for a friend</span></div>
+          <b class="ph-h" data-i18n="phCheckout">Checkout</b>
+          <div class="ph-opt is-on"><span class="ph-opt__icon"><svg viewBox="0 0 24 24"><path d="M4 11h16v10H4zM3 7h18v4H3zM12 7v14"/><path d="M12 7c-1.5-3-5-3-5-1s3 1 5 1zm0 0c1.5-3 5-3 5-1s-3 1-5 1z"/></svg></span><span><b data-i18n="phSendGift">Send as a gift</b><small data-i18n="phGiftText">Her note inside, no prices</small></span><i class="ph-radio"></i></div>
+          <div class="ph-row"><i></i><span data-i18n="phFriendAddress">Her friend · Riyadh</span></div>
+          <div class="ph-sum">
+            <span data-i18n="yourProduct">Your product</span><i></i>
+            <span data-i18n="phDelivery">Delivery</span><i></i>
+            <b data-i18n="phTotal">Total</b><i></i>
+          </div>
+          <span class="ph-btn" data-i18n="phPayOrder">Pay</span>
+          <div class="ph-done"><span class="ph-confetti"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="ph-check">✓</span><b data-i18n="phOrdered">Order placed</b><small><span data-i18n="phOrderFrom">Order from</span> <span data-brand>Your brand</span></small></div>
+        </div>
+        <!-- 6 · following the order -->
+        <div class="phone__screen" data-screen="6">
+          <span class="ph-label" data-i18n="phGiftFriend">A gift for a friend</span>
+          <b class="ph-h" data-i18n="phOnWay">On its way</b>
+          <div class="ph-map"><svg viewBox="0 0 200 90" preserveAspectRatio="none"><path class="ph-map__roads" d="M0 30H200M0 62H200M46 0V90M120 0V90M168 0V90"/><path class="ph-map__route" d="M24 78C46 72 46 62 70 62S118 56 120 40 150 30 172 22"/></svg><span class="ph-map__me"></span><span class="ph-map__pin"></span><span class="ph-map__eta t-ltr"><span class="ph-eta"></span> min</span></div>
+          <ol class="ph-track">
+            <li class="is-done" data-i18n="phStPlaced">Order placed</li>
+            <li class="is-done"><span data-i18n="phStConfirmedBy">Confirmed by</span> <span data-brand>Your brand</span></li>
+            <li class="is-done" data-i18n="phStPacked">Gift-wrapped</li>
+            <li class="is-now" data-i18n="phStShipped">Shipped</li>
+            <li data-i18n="phStDelivered">Delivered</li>
+          </ol>
+          <div class="ph-place ph-place--parcel"><img src="assets/images/stickers/perfume.webp?v=1" alt="" width="280" height="280" loading="lazy"><span class="ph-place__txt"><span><b data-brand>Your brand</b><small data-i18n="phGiftText">Her note inside, no prices</small></span><span class="ph-check">✓</span></span></div>
+          <div class="ph-actions ph-actions--3"><span class="ph-pill" data-i18n="phTrack">Track</span><span class="ph-pill" data-i18n="phHelp">Help</span></div>
+        </div>
+        <!-- 7 · after: delivered, rated, and one tap to come back -->
+        <div class="phone__screen" data-screen="7">
+          <div class="ph-done ph-done--static"><span class="ph-check">✓</span><b data-i18n="phDeliveredFriend">Delivered to her friend</b><small><span data-i18n="phOrderFrom">Order from</span> <span data-brand>Your brand</span></small></div>
           <div class="ph-hero-img ph-hero-img--gift"><img src="assets/images/stickers/perfume.webp?v=1" alt="" width="280" height="280" loading="lazy"></div>
+          <div class="ph-rate"><b><span data-i18n="phRate">Rate</span> <span data-brand>Your brand</span></b><span class="ph-star ph-star--lg">★★★★★</span></div>
           <span class="ph-btn" data-i18n="phOrderAgain">Order again</span>
           <div class="ph-hearts"><i>♥</i><i>♥</i><i>♥</i></div>
+          <div class="ph-toast"><span class="ph-check">✓</span><span data-i18n="phReviewed">Review posted</span></div>
         </div>
       </div>

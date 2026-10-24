@@ -2,7 +2,7 @@
 // the page by tools/build_pages.py. The same record steps from request to review; each glass card shows what that
 // person sees at that step. Without this script the section stays a short list of who sees what.
 import { get, on, $, $$ } from './store.js?v=20';
-import { brandName } from './journey.js?v=20';
+import { brandName } from './journey.js?v=23';
 
 const ICONS = {
   person: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>',

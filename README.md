@@ -50,6 +50,7 @@ Story text, camera keyframes and the name-sign position live in `src/journey.jso
   - `app.js` (page), `form.js` (application), `i18n.js` + `copy.js` (EN/AR), `store.js` (state), `data.js` (zones), `motion.js` (GSAP)
   - `tour.js` + `tour3d.js` (the venue tour), `venue.js` (the model), `crowd.js` (visitors), `park.js` (the park around it), `themes3d.js` (themed days)
   - `journey.js` + `phone.js` (the app journeys on the beauty and e-commerce pages)
+  - beauty.html and shop.html open on a stage like the event tour: `tools/apptour_markup.py` builds it from `src/journey.json` (`"tour": true`), `journey.js` plays it (backdrops, bubbles, live phone, the partner's name and photo, kept on the device only)
   - `loop.js` ("One booking / one order, three views" on those pages; content in `src/loop-beauty.json` and `src/loop-shop.json`, then rebuild)
   - `vendor/`
 - `docs/`: brief, content, system design, UX, wireframe, design system, motion notes, components, QA

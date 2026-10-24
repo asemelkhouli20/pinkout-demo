@@ -1,11 +1,11 @@
 // PinkOut Partners — page controller.
 // Layers: HTML works alone → this adds behaviour → motion.js adds GSAP → tour.js adds the 3D venue tour.
 import { get, set, on, safeStore, $, $$ } from './store.js?v=20';
-import { initI18n, t } from './i18n.js?v=23';
-import { initForm, openApplication } from './form.js?v=24';
-import { initJourney } from './journey.js?v=20';
+import { initI18n, t } from './i18n.js?v=24';
+import { initForm, openApplication } from './form.js?v=25';
+import { initJourney } from './journey.js?v=23';
 import { initTour } from './tour.js?v=73';
-import { initLoop } from './loop.js?v=1';
+import { initLoop } from './loop.js?v=4';
 
 const reducedMotionQuery = matchMedia('(prefers-reduced-motion: reduce)');
 const phoneQuery = matchMedia('(max-width: 800px)');

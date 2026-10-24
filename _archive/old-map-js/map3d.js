@@ -2,7 +2,7 @@
 // The model comes from venue.js (concept floor plan). The HTML zone chips stay the real controls.
 // The event page has its own, richer experience: the scroll tour (tour.js / tour3d.js).
 import * as THREE from './vendor/three.module.min.js?v=1';
-import { buildVenue, studioEnvironment, back } from './venue.js?v=30';
+import { buildVenue, studioEnvironment, back } from './venue.js?v=31';
 
 /** ghost a material to k × its own opacity (glass stays glass); solid again at k = 1 */
 const fade = (m, k) => {
@@ -45,6 +45,10 @@ export function mount(stage, api) {
 
   const venue = buildVenue(api.zones);
   scene.add(venue.root);
+  // the venue has no ground of its own any more (the tour stands it in a park); catch its shadows here
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(160, 160), new THREE.ShadowMaterial({ opacity: 0.18 }));
+  ground.rotation.x = -Math.PI / 2; ground.position.y = -0.31; ground.receiveShadow = true;
+  scene.add(ground);
   const zones = venue.zones.map((v) => {
     const z = v.data;
     const label = document.createElement('button');

@@ -4,17 +4,18 @@
 // At a stop, what happens there pops up over the spot where it happens (its "inside" items, one by one), with a
 // little burst of icons, once; a bubble that would sit under the card or on another one stays hidden. Zone name
 // labels only show in the overview and the finale (at a stop, the card names the zone).
-// At the finale the map unlocks: drag to orbit, tap a zone to jump back to its stop.
+// The map answers the pointer everywhere: the camera leans after the mouse, a drag looks around (at the finale it
+// orbits freely), and a click or tap makes something happen (see "The pointer" below).
 // Kept light: pixel density steps down by itself when frames run slow, layout is measured on resize (and twice a second
 // at a stop, for the bubbles), never every frame, and the themed days load on the first theme click.
 import * as THREE from './vendor/three.module.min.js?v=1';
-import { buildVenue, studioEnvironment, toX, toZ, U } from './venue.js?v=30';
-import { liveLayer } from './crowd.js?v=34';
-import { buildPark } from './park.js?v=2';
+import { buildVenue, studioEnvironment, toX, toZ, U } from './venue.js?v=31';
+import { liveLayer } from './crowd.js?v=35';
+import { buildPark } from './park.js?v=12';
 
 const P = ([x, y, h]) => new THREE.Vector3(toX(x), h, toZ(y)); // plan metres + height (units) → scene
 
-export function mount(stageEl, { zones, data, get, on, onPick }) {
+export function mount(stageEl, { zones, data, get, on, onPick, onReady }) {
   const canvas = document.createElement('canvas');
   canvas.className = 'tour__canvas';
   canvas.setAttribute('aria-hidden', 'true');
@@ -35,7 +36,7 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   renderer.toneMappingExposure = 0.95; // night in the park: themes3d.js EVERYDAY holds the same values
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.3, 300);
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.8, 300);
   scene.environment = studioEnvironment(renderer);
   const hemi = new THREE.HemisphereLight(0xb8c4ff, 0x2a2440, 0.36); // a cool night sky above, dark lawns below
   scene.add(hemi);
@@ -50,6 +51,12 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   const fill = new THREE.DirectionalLight(0xffcf9e, 0.75); // warm light from inside the venue and the stalls
   fill.position.set(10, 8, -12);
   scene.add(fill);
+  // a soft light from high above that falls on the building only: the venue is the bright heart of the night,
+  // the park around it stays in the dark (no shadow, no fall-off: one cone, edge softened)
+  const spot = new THREE.SpotLight(0xfff1f4, 1.3, 0, Math.atan(16 / 34), 0.35, 0);
+  spot.position.set(0, 34, 0);
+  spot.target.position.set(0, 0, 0);
+  scene.add(spot, spot.target);
 
   const venue = buildVenue(zones);
   scene.add(venue.root);
@@ -61,7 +68,7 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   const useTheme = (id) => {
     wantTheme = id;
     if (!themes && id === 'default') return;
-    loadingThemes ||= import('./themes3d.js?v=7').then((m) => { themes = m.mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); });
+    loadingThemes ||= import('./themes3d.js?v=8').then((m) => { themes = m.mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); });
     loadingThemes.then(() => { themes.set(wantTheme); if (reduced() || !running) draw(0); });
   };
 
@@ -135,6 +142,8 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   let target = 0;
   let current = reduced() ? 0 : -0.4; // a short dolly-in on first view
   let orbit = 0;      // finale: free look (drag)
+  let nudge = 0, nudgeHome = false;      // at a stop: drag to look around a little; it settles back when the stop changes
+  const lean = { x: 0, y: 0, tx: 0, ty: 0 }; // the camera leans a touch towards the mouse
   let orbitAuto = 0;
   let narrow = false;
   const pos = new THREE.Vector3();
@@ -176,7 +185,10 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
     const exploring = current > last - 0.3;
     if (!reduced()) {
       if (exploring && !drag) orbitAuto += dt * 0.08;
-      off.applyAxisAngle(THREE.Object3D.DEFAULT_UP, (exploring ? orbit + orbitAuto : 0) + Math.sin(t * 0.25) * 0.035);
+      lean.x += (lean.tx - lean.x) * Math.min(1, dt * 3); lean.y += (lean.ty - lean.y) * Math.min(1, dt * 3);
+      if (!drag && nudgeHome) nudge *= Math.pow(0.08, dt);
+      off.applyAxisAngle(THREE.Object3D.DEFAULT_UP, (exploring ? orbit + orbitAuto : nudge) + Math.sin(t * 0.25) * 0.035 - lean.x * 0.07);
+      off.y *= 1 + lean.y * 0.05;
       off.y += Math.sin(t * 0.4) * 0.15;                                  // a slow breath, like a camera on a crane
     } else if (exploring) off.applyAxisAngle(THREE.Object3D.DEFAULT_UP, orbit);
     camera.position.copy(look).add(off);
@@ -216,13 +228,13 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
     if (at && (blocksAt < 0 || t - blocksAt > 0.5)) measureBlocks(t); // the card slides in: look again twice a second
     const placed = [];
     moments.forEach((list, i) => list.forEach((mo) => {
-      const want = i + 1 === at && (reduced() || atTime > 0.5 + mo.k * 0.55);
+      const want = i + 1 === at && (reduced() || atTime > 0.15 + mo.k * 0.12);
       const fresh = want && mo.el.hasAttribute('data-hidden');
       mo.el.toggleAttribute('data-hidden', !want);
       if (!want) return;
       proj.copy(mo.pos).project(camera);
       const x = (proj.x * 0.5 + 0.5) * width, y = (-proj.y * 0.5 + 0.5) * height;
-      mo.el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+      mo.el.style.translate = `calc(${x.toFixed(1)}px - 50%) calc(${y.toFixed(1)}px - 100% - 10px)`; // not transform: scale must not shrink the position
       if (!mo.w) { mo.w = mo.el.offsetWidth; mo.h = mo.el.offsetHeight; }
       const w = mo.w, h = mo.h;
       const box = [x - w / 2, y - h - 16, x + w / 2, y - 4]; // the bubble and its tail
@@ -234,17 +246,121 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
       placed.push(box);
       if (fresh && !reduced()) live.burst(mo.pos, data.zones[i].moment.icons, coarse ? 1 : 2);
     }));
+
+    rings.forEach((r) => {
+      if (r.life <= 0) return;
+      r.life -= (dt || 0.016) * 1.4;
+      const k = 1 - Math.max(0, r.life);
+      r.m.scale.setScalar(0.2 + k * r.size);
+      r.m.material.opacity = Math.max(0, r.life) * 0.9;
+      r.m.visible = r.life > 0;
+    });
+    const pingOn = t < ping.until;
+    if (pingOn) {
+      proj.copy(ping.at).project(camera);
+      ping.el.style.translate = `calc(${((proj.x * 0.5 + 0.5) * width).toFixed(1)}px - 50%) calc(${((-proj.y * 0.5 + 0.5) * height).toFixed(1)}px - 100% - 10px)`;
+    }
+    if (pingOn === ping.el.hasAttribute('data-hidden')) ping.el.toggleAttribute('data-hidden', !pingOn);
   }
 
-  /* Finale: drag to orbit */
-  let drag = null;
+  /* The pointer. Drag: look around (the finale: orbit freely). Mouse: the camera leans after it, and whatever can be
+     clicked shows a hand. Click / tap: everything answers — a vendor pops what it sells and says its
+     name, the wheel spins up, the fountain leaps, visitors hop, a world in the overview takes you there, and anywhere
+     else a ring of light spreads where you touched. */
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0.3);
+  const targets = [venue.root, ...park.pick];
+  const zoneOf = (o) => { while (o && !o.userData.zone) o = o.parent; return o?.userData.zone || null; };
+  const castAt = (e) => {
+    const r = canvas.getBoundingClientRect();
+    ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const shown = (o) => { for (; o; o = o.parent) if (!o.visible) return false; return true; }; // hidden things (a themed day's) never catch a click
+    return ray.intersectObjects(targets, true).find((h) => shown(h.object)) || null;
+  };
+  // rings of light spreading on the ground
+  const ringMat = () => new THREE.MeshBasicMaterial({ color: '#ff8fc8', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, polygonOffset: true, polygonOffsetFactor: -12, polygonOffsetUnits: -48 });
+  const ringGeo = new THREE.RingGeometry(0.82, 1, 48).rotateX(-Math.PI / 2);
+  const rings = Array.from({ length: 4 }, () => { const m = new THREE.Mesh(ringGeo, ringMat()); m.visible = false; m.renderOrder = 2; scene.add(m); return { m, life: 0 }; });
+  let ringNext = 0;
+  const ripple = (at, colour = '#ff8fc8', size = 1.6) => {
+    const r = rings[ringNext++ % rings.length];
+    r.m.position.set(at.x, at.y + 0.02, at.z); r.m.material.color.set(colour); r.size = size; r.life = 1; r.m.visible = true;
+  };
+  // a name that pops up for a moment where you clicked (and one that follows the mouse)
+  const chip = (cls) => { const el = document.createElement('span'); el.className = cls; el.toggleAttribute('data-hidden', true); labelsLayer.append(el); return el; };
+  const ping = { el: chip('tour__ping'), at: new THREE.Vector3(), until: 0 };
+  const say = (text, at) => { ping.el.textContent = text; ping.at.copy(at); ping.until = performance.now() / 1000 + 1.6; };
+  const tapAt = new THREE.Vector3();
+  const tap = (e) => {
+    const hit = castAt(e);
+    if (!hit) { // the lawn, the sky: a ring of light where the ground is
+      if (ray.ray.intersectPlane(groundPlane, tapAt)) { ripple(tapAt, '#bfe2ff'); live.burst(tapAt.clone().setY(tapAt.y + 0.2), ['sparkle'], 3); }
+      return;
+    }
+    tapAt.copy(hit.point);
+    const answer = park.react(hit);
+    if (answer) {
+      const at = answer.at || tapAt.clone().setY(tapAt.y + 0.4);
+      live.burst(at, answer.icons, coarse ? Math.ceil(answer.n / 2) : answer.n);
+      ripple(answer.at ? answer.at.clone().setY(-0.3) : tapAt, '#ffd0e2', answer.kind === 'wheel' ? 4 : 1.8);
+      if (answer.label) say(answer.label, at);
+      return;
+    }
+    const zone = zoneOf(hit.object);
+    if (zone) {
+      const stopIdx = data.zones.findIndex((q) => (q.zone || q.id) === zone) + 1;
+      const name = venue.zones.find((z) => z.data.id === zone)?.data.name;
+      const here = stopAt(current);
+      if (!here || (here.zone || here.id) !== zone) { // the overview, or another world: go there
+        ripple(tapAt, '#ff8fc8', 2.2);
+        if (name) say(name, tapAt.clone().setY(tapAt.y + 0.5));
+        if (stopIdx > 0) onPick(stopIdx);
+        return;
+      }
+      const icons = (here.moment?.icons || []).filter(Boolean);
+      live.burst(tapAt.clone().setY(tapAt.y + 0.3), icons.length ? [...icons, 'heart'] : ['heart', 'sparkle'], coarse ? 3 : 5);
+      ripple(tapAt, '#ff8fc8', 1.2);
+      return;
+    }
+    live.burst(tapAt.clone().setY(tapAt.y + 0.3), ['sparkle', 'heart'], 3); // the walls, the roof
+    ripple(tapAt, '#ffe2a8', 1.2);
+  };
+  let drag = null, hoverAt = 0;
   canvas.addEventListener('pointerdown', (e) => {
-    if (current < last - 0.3) return;
-    drag = { x: e.clientX, orbit };
-    canvas.setPointerCapture(e.pointerId);
+    drag = { x: e.clientX, y: e.clientY, orbit, nudge, moved: false, mouse: e.pointerType === 'mouse', at: performance.now() };
+    if (drag.mouse) canvas.setPointerCapture(e.pointerId);
   });
-  canvas.addEventListener('pointermove', (e) => { if (drag) { orbit = drag.orbit + (e.clientX - drag.x) * 0.006; if (reduced() || !running) draw(0); } });
-  canvas.addEventListener('pointerup', () => { drag = null; });
+  canvas.addEventListener('pointermove', (e) => {
+    const r = canvas.getBoundingClientRect();
+    if (e.pointerType === 'mouse') { lean.tx = ((e.clientX - r.left) / r.width) * 2 - 1; lean.ty = ((e.clientY - r.top) / r.height) * 2 - 1; }
+    if (drag) {
+      const dx = e.clientX - drag.x;
+      if (Math.abs(dx) + Math.abs(e.clientY - drag.y) > 6) drag.moved = true;
+      if (drag.mouse && drag.moved) { // touch drags belong to the page's scrolling
+        if (current > last - 0.3) orbit = drag.orbit + dx * 0.006;
+        else { nudge = Math.max(-0.9, Math.min(0.9, drag.nudge + dx * 0.005)); nudgeHome = false; }
+        canvas.style.cursor = 'grabbing';
+        if (reduced() || !running) draw(0);
+      }
+      return;
+    }
+    if (e.pointerType !== 'mouse' || performance.now() - hoverAt < 90) return; // hover: ten looks a second at most
+    hoverAt = performance.now();
+    const hit = castAt(e);
+    let o = hit?.object;
+    while (o && !o.userData.pick && !o.userData.zone) o = o.parent;
+    canvas.style.cursor = o ? 'pointer' : ''; // a hand over what answers a click; no labels following the mouse
+  });
+  const release = (e) => {
+    if (!drag) return;
+    const wasTap = !drag.moved && performance.now() - drag.at < 600;
+    drag = null;
+    canvas.style.cursor = '';
+    if (wasTap) { tap(e); if (reduced() || !running) draw(0); }
+  };
+  canvas.addEventListener('pointerup', release);
+  canvas.addEventListener('pointercancel', () => { drag = null; });
+  canvas.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { lean.tx = lean.ty = 0; } });
 
   /* Loop: only while the stage is on screen and the tab is visible */
   let visible = false;
@@ -281,8 +397,10 @@ export function mount(stageEl, { zones, data, get, on, onPick }) {
   resize();
   wake();
   stageEl.dataset.mode = '3d';
+  // the venue has drawn (shaders compiled in that first draw): two frames later, let the loading film go
+  requestAnimationFrame(() => requestAnimationFrame(() => { stageEl.toggleAttribute('data-ready', true); onReady?.(); }));
   return {
-    setPosition(c) { target = c; if (reduced() || !running) draw(0); },
+    setPosition(c) { if (Math.round(c) !== Math.round(target)) nudgeHome = true; target = c; if (reduced() || !running) draw(0); },
     setTheme(id) { useTheme(id); },
   };
 }

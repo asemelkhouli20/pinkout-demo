@@ -47,11 +47,6 @@ def fill(template, values):
     return out
 
 
-def world(track, eyebrow_key, eyebrow, title_key, title, hint_key, hint):
-    return fill(part('world'), dict(track=track, world_eyebrow_key=eyebrow_key, world_eyebrow=eyebrow,
-                                    world_title_key=title_key, world_title=title, world_hint_key=hint_key, world_hint=hint))
-
-
 def faq_for(track):
     html = part('faq')
     html = re.sub(r'\s*<div class="faq-filter".*?</div>', '', html, flags=re.S)       # no filter on a track page

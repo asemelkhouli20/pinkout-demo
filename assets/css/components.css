@@ -54,31 +54,52 @@ button.chip:hover { box-shadow: inset 0 0 0 2px var(--c-text); }
 .chip[aria-pressed="true"], .chip[aria-current="true"] { --chip-bg: var(--c-action); color: #fff; box-shadow: none; }
 .chip[aria-pressed="true"].chip--dot::before { box-shadow: inset 0 0 0 2px #fff; }
 
-/* ---------- C4 Header ---------- */
+/* ---------- C4 Header ----------
+   No bar across the page: the header is three floating glass pieces (the logo, the links, the actions) and the page
+   (on the home page, the 3D venue) shows between them. The header itself is see-through and lets clicks pass;
+   only its pieces catch them. */
 .site-header {
+  --glass: rgb(255 246 249 / 0.8);
+  --glass-edge: 0 10px 28px -16px rgb(125 22 63 / 0.55), inset 0 0 0 1px rgb(255 255 255 / 0.75);
   position: sticky; inset-block-start: 0; z-index: 40;
-  display: flex; align-items: center; gap: var(--space-4);
-  min-block-size: var(--header-h); padding: var(--space-3) calc(var(--gutter) + var(--space-3));
-  background: rgb(255 245 248 / 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  transition: padding var(--t-ui) var(--ease-out), box-shadow var(--t-ui);
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--space-3); /* logo | links, centred | actions */
+  min-block-size: var(--header-h); padding: var(--space-3) calc(var(--gutter) + var(--space-2));
+  pointer-events: none;
 }
-.site-header[data-compact] { box-shadow: 0 1px 0 var(--c-line), var(--shadow-pop); padding-block: var(--space-2); }
-.site-header__logo { display: inline-flex; flex: none; }
-.site-header__logo img { block-size: 36px; inline-size: auto; }
-.site-nav { margin-inline-start: auto; display: flex; gap: 2px; padding: 5px; border-radius: var(--radius-pill); background: var(--c-surface); box-shadow: inset 0 0 0 1px var(--c-line); }
-.site-nav a { display: inline-flex; align-items: center; min-block-size: 36px; padding: 4px 14px; border-radius: var(--radius-pill); font-size: var(--fs-small); font-weight: var(--fw-medium); text-decoration: none; white-space: nowrap; transition: background-color var(--t-micro); }
-.site-nav a:hover { background: rgb(125 22 63 / 0.06); }
-.site-nav a[aria-current="true"] { background: var(--c-pink); font-weight: var(--fw-bold); }
-.site-header__actions { display: flex; align-items: center; gap: var(--space-2); }
+.site-header > * { pointer-events: auto; }
+.site-header__logo, .site-nav, .site-header__actions {
+  border-radius: var(--radius-pill); background: var(--glass); box-shadow: var(--glass-edge);
+  backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+/* the logo gets its own chip, with a soft pink glow behind the wordmark */
+.site-header__logo {
+  justify-self: start; display: inline-flex; align-items: center; flex: none; min-block-size: 48px; padding: 6px 18px;
+  background: radial-gradient(90% 120% at 50% 50%, rgb(255 214 230 / 0.9), transparent 70%), var(--glass);
+  transition: transform var(--t-micro) var(--ease-out), box-shadow var(--t-micro);
+}
+.site-header__logo:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -14px rgb(223 0 76 / 0.55), inset 0 0 0 1px rgb(255 255 255 / 0.85); }
+.site-header__logo img { block-size: 34px; inline-size: auto; filter: drop-shadow(0 2px 6px rgb(223 0 76 / 0.25)); }
+.site-nav { justify-self: center; display: flex; gap: 2px; padding: 5px; }
+.site-nav a { display: inline-flex; align-items: center; min-block-size: 38px; padding: 4px 14px; border-radius: var(--radius-pill); font-size: var(--fs-small); font-weight: var(--fw-medium); text-decoration: none; white-space: nowrap; transition: background-color var(--t-micro); }
+.site-nav a:hover { background: rgb(125 22 63 / 0.07); }
+.site-nav a[aria-current="true"], .site-nav a[aria-current="page"] { background: var(--c-pink); font-weight: var(--fw-bold); }
+.site-header__actions { justify-self: end; display: flex; align-items: center; gap: 4px; padding: 5px; }
+.site-header__actions .btn--sm { min-block-size: 38px; }
 .lang-switch { min-inline-size: var(--tap); }
 .menu-btn { display: none; }
-@media (max-width: 1100px) { .site-nav a.nav-optional { display: none; } }
+@media (max-width: 960px) and (min-width: 801px) { .site-nav a { padding-inline: 10px; } }
+/* Phones: two small pieces, the logo and the actions (one button + the menu); everything else is the page */
 @media (max-width: 800px) {
   .site-nav, .site-header .lang-switch { display: none; }
-  .site-header__actions { margin-inline-start: auto; }
-  .menu-btn { display: inline-flex; }
-  .site-header__logo img { block-size: 30px; }
+  .site-header { grid-template-columns: auto 1fr; min-block-size: 0; padding: 8px 10px 0; gap: var(--space-2); }
+  .site-header__logo { min-block-size: 46px; padding: 4px 14px; }
+  .site-header__logo img { block-size: 27px; }
+  .site-header__actions { margin-inline-start: auto; gap: 4px; padding: 4px; }
+  .site-header__actions .btn--sm { min-block-size: 38px; padding: 6px 14px; font-size: 13px; }
+  .menu-btn { display: inline-flex; inline-size: 38px; min-block-size: 38px; }
+  .menu-btn svg { inline-size: 18px; }
 }
+@media (prefers-reduced-transparency: reduce) { .site-header__logo, .site-nav, .site-header__actions { --glass: rgb(255 246 249 / 0.97); backdrop-filter: none; -webkit-backdrop-filter: none; } }
 
 /* ---------- C5 Mobile menu sheet ---------- */
 .menu-sheet {
@@ -110,23 +131,6 @@ button.chip:hover { box-shadow: inset 0 0 0 2px var(--c-text); }
 .block--sky { --block-bg: var(--c-sky); }
 .block--rose { --block-bg: var(--c-rose); }
 
-/* ---------- C8 Hero ---------- */
-.hero { margin: 0 var(--gutter); border-radius: var(--radius-block); overflow: clip; display: grid; min-block-size: min(88svh, 820px); position: relative; background: var(--c-rose); }
-.hero__film, .hero__poster { grid-area: 1 / 1; inline-size: 100%; block-size: 100%; object-fit: cover; }
-.hero__panel {
-  grid-area: 1 / 1; align-self: end; justify-self: start; z-index: 1;
-  display: grid; gap: var(--space-4); max-inline-size: 640px; margin: clamp(12px, 3vw, 32px);
-  padding: clamp(20px, 3vw, 36px); border-radius: var(--radius-card); background: var(--c-surface);
-}
-.hero__panel h1 span { color: var(--c-action); }
-.hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-block-start: var(--space-2); }
-.hero__pause { grid-area: 1 / 1; align-self: start; justify-self: end; z-index: 1; margin: var(--space-4); }
-@media (max-width: 560px) {
-  .hero { min-block-size: 92svh; }
-  .hero__panel { margin: var(--space-2); }
-  .hero__actions .btn { flex: 1 1 100%; }
-}
-
 /* ---------- C9 Reason card ---------- */
 .reason { display: grid; gap: var(--space-3); align-content: start; padding: var(--space-6); border-radius: var(--radius-card); background: var(--c-surface); }
 .reason__icon { display: grid; place-items: center; inline-size: 56px; block-size: 56px; border-radius: 50%; background: var(--icon-bg, var(--c-pink)); }
@@ -148,12 +152,6 @@ button.chip:hover { box-shadow: inset 0 0 0 2px var(--c-text); }
 .zone-panel[data-empty] .zone-panel__body { background: var(--c-surface); }
 
 /* ---------- C11 Map stage ---------- */
-.map-stage { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius-card); background: radial-gradient(120% 90% at 50% 30%, var(--c-surface), var(--c-pink)); overflow: clip; }
-.map-stage canvas, .map-stage svg, .map-stage .map-stage__poster { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
-.map-stage__poster { object-fit: cover; transition: opacity var(--t-enter); }
-.map-stage[data-mode="3d"] .map-stage__poster { opacity: 0; pointer-events: none; }
-.map-stage__labels { position: absolute; inset: 0; pointer-events: none; }
-.map-stage__note { margin-block-start: var(--space-3); font-size: var(--fs-small); color: var(--c-text-2); }
 .zone-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-block-start: var(--space-4); }
 @media (max-width: 800px) {
   .zone-chips { flex-wrap: nowrap; overflow-x: auto; padding-block-end: var(--space-2); scroll-snap-type: x proximity; margin-inline: calc(var(--block-pad) * -1); padding-inline: var(--block-pad); }
@@ -402,29 +400,6 @@ input[type="email"].field__control, input[type="tel"].field__control { direction
 .indicative { font-size: var(--fs-small); color: var(--c-text-2); }
 .indicative::before { content: "≈ "; font-weight: var(--fw-bold); }
 
-/* ---------- C32 Comparison table ---------- */
-.compare-wrap { overflow-x: auto; border-radius: var(--radius-card); background: var(--c-surface); box-shadow: inset 0 0 0 1px var(--c-line); }
-.compare { inline-size: 100%; min-inline-size: 640px; border-collapse: collapse; font-size: 15px; }
-.compare caption { padding: var(--space-4) var(--space-5) 0; text-align: start; font-weight: var(--fw-bold); }
-.compare th, .compare td { padding: var(--space-4) var(--space-5); text-align: start; vertical-align: top; border-block-end: 1px solid var(--c-line); }
-.compare thead th { font-size: var(--fs-small); color: var(--c-text-2); font-weight: var(--fw-medium); }
-.compare tbody th { font-weight: var(--fw-bold); white-space: nowrap; }
-.compare tbody tr:last-child > * { border-block-end: 0; }
-.compare .yes { color: var(--c-ok); font-weight: var(--fw-bold); }
-.compare .partial { color: var(--c-text-2); }
-
-/* ---------- C33 Sticky enquiry bar (phones) ---------- */
-.cta-bar {
-  position: fixed; inset-inline: var(--space-3); inset-block-end: calc(var(--space-3) + env(safe-area-inset-bottom)); z-index: 45;
-  display: none; align-items: center; gap: var(--space-2); padding: var(--space-2); border-radius: var(--radius-pill);
-  background: var(--c-surface); box-shadow: var(--shadow-pop), inset 0 0 0 1px var(--c-line);
-  transition: transform var(--t-ui) var(--ease-out), opacity var(--t-ui);
-}
-.cta-bar .btn { flex: 1; }
-.cta-bar[data-hidden] { transform: translateY(140%); opacity: 0; pointer-events: none; }
-@media (max-width: 800px) { .cta-bar { display: flex; } }
-.cta-bar--demo { position: relative; inset: auto; display: flex; max-inline-size: 380px; }
-
 /* ---------- C34 Section intro for partners: "why it matters to you" line ---------- */
 .so-what { display: inline-flex; gap: var(--space-2); align-items: baseline; padding: 6px 14px; border-radius: var(--radius-input); background: var(--c-canvas); font-size: 15px; font-weight: var(--fw-medium); }
 .so-what b { color: var(--c-action); }
@@ -514,7 +489,13 @@ input[type="email"].field__control, input[type="tel"].field__control { direction
 .typecard span { font-size: 14px; color: var(--c-text-2); }
 
 .steps--4 { grid-template-columns: repeat(4, 1fr); }
-@media (max-width: 800px) { .steps--4 { grid-template-columns: 1fr; } }
+@media (max-width: 800px) {
+  /* phones: the four steps as a compact 2 × 2 */
+  .steps--4 { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .steps--4 .step { grid-template-columns: 1fr; padding: 14px; border-radius: 16px; background: rgb(255 255 255 / 0.62); }
+  .steps--4 .step::before { grid-row: auto; inline-size: 32px; block-size: 32px; font-size: 14px; }
+  .steps--4 .step b { font-size: 16px; }
+}
 
 /* Grid children may shrink below their content width (prevents clipped cards on phones) */
 .doors > *, .channels > *, .track-grid > *, .track-head > *, .fit > *, .stats > *, .zone-panel > *, .lib-grid > * { min-inline-size: 0; }

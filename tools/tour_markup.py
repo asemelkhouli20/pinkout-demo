@@ -125,6 +125,23 @@ def _themes(ui):
 '''
 
 
+def _loader(ui):
+    """Shown until the 3D venue has drawn its first frame: the hero film (poster first), the worlds cycling on it."""
+    seen, worlds = set(), []
+    for z in TOUR['zones']:
+        zone = z.get('zone', z['id'])
+        if zone not in seen:
+            seen.add(zone)
+            worlds.append(f'<span style="--i:{len(worlds)};--c:var(--zone-{zone})">{esc(ZONE_FACTS[zone]["name"])}</span>')
+    return f'''      <div class="tour__loader" data-tour-loader aria-hidden="true">
+        <picture><source media="(max-width: 800px)" srcset="assets/images/hero-pinkout-fun-mobile-poster.jpg?v=1"><img class="tour__loader-poster" src="assets/images/hero-pinkout-fun-poster.jpg?v=1" alt="" width="1280" height="720" fetchpriority="high"></picture>
+        <video class="tour__loader-film" muted loop playsinline preload="none" tabindex="-1" data-src-desktop="assets/video/hero-pinkout-fun.mp4?v=1" data-src-mobile="assets/video/hero-pinkout-fun-mobile.mp4?v=1"></video>
+        <div class="tour__loader-worlds" style="--n:{len(worlds)}">{''.join(worlds)}</div>
+        <p class="tour__loader-note"><span data-tx="u.loading">{esc(ui["loading"])}</span><i></i></p>
+      </div>
+'''
+
+
 def tour_for():
     ui = TOUR['ui']['en']
     n = len(TOUR['zones']) + 2
@@ -136,7 +153,7 @@ def tour_for():
     <script type="application/json" data-tour-data>{payload}</script>
     <a class="skip-link tour__skip" href="#event" data-tx="u.skip">{esc(ui["skip"])}</a>
     <div class="tour__stage" data-tour-stage>
-      <div class="tour__labels" data-tour-labels aria-hidden="true"></div>
+{_loader(ui)}      <div class="tour__labels" data-tour-labels aria-hidden="true"></div>
       <div class="tour__plan" data-tour-plan aria-hidden="true"><span class="tour__plan-title" data-tx="u.plan">{esc(ui["plan"])}</span></div>
 {_themes(ui)}    </div>
     <ol class="tour__stops">

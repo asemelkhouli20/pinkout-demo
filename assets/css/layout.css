@@ -4,61 +4,7 @@
 .block > .container { position: relative; }
 .block .section-head { margin-block-end: clamp(24px, 3.5vw, 44px); }
 
-/* ---------- Hero ---------- */
-.hero__poster, .hero__film { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
-.hero__panel { position: relative; }
-.hero picture { display: contents; }
-.hero__film { opacity: 0; transition: opacity 600ms var(--ease-out); }
-.hero__film[data-playing] { opacity: 1; }
-.hero__panel h1 .hero__line1 { color: var(--c-text); }
-.hero h1 span:not(.hero__line1) { color: var(--c-action); }
-.hero__panel .glance { margin-block-start: var(--space-2); }
-
-/* ---------- Why ---------- */
-.reasons { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
-@media (max-width: 900px) { .reasons { grid-template-columns: 1fr; } }
-
-/* ---------- World ---------- */
-.track-filter { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-block-end: var(--space-5); }
-.world-grid { display: grid; grid-template-columns: 1.45fr 1fr; gap: var(--space-5); align-items: start; }
-.world-grid > * { min-inline-size: 0; }
-@media (max-width: 960px) { .world-grid { grid-template-columns: 1fr; } }
-.map-stage { aspect-ratio: 16 / 11; touch-action: pan-y; }
-.map-stage canvas { cursor: grab; }
-.map-stage canvas:active { cursor: grabbing; }
-.map-stage__labels button {
-  position: absolute; inset-inline-start: 0; inset-block-start: 0; translate: -50% -50%;
-  padding: 4px 10px; border: 0; border-radius: var(--radius-pill); background: rgb(255 255 255 / 0.92);
-  color: var(--c-text); font: var(--fw-bold) 12px/1.3 var(--font); white-space: nowrap; pointer-events: auto;
-  box-shadow: 0 6px 16px -8px rgb(125 22 63 / 0.5); transition: opacity var(--t-ui), background-color var(--t-micro);
-}
-[dir="rtl"] .map-stage__labels button { inset-inline-start: auto; left: 0; }
-.map-stage__labels button[aria-pressed="true"] { background: var(--c-action); color: #fff; }
-.map-stage__labels button[data-off] { opacity: 0.3; }
-.map-stage__hint { position: absolute; inset-block-start: var(--space-3); inset-inline-start: 50%; translate: calc(-50% * var(--dir)) 0; padding: 4px 12px; border-radius: var(--radius-pill); background: rgb(255 255 255 / 0.85); font-size: 12px; font-weight: var(--fw-medium); pointer-events: none; opacity: 0; transition: opacity var(--t-ui); }
-.map-stage[data-mode="3d"] .map-stage__hint, .map-stage[data-mode="2d"] .map-stage__hint { opacity: 1; }
-.map-stage[data-mode="2d"] .map-stage__poster { opacity: 0; }
-.zone-chips .chip[data-off] { opacity: 0.4; }
-.zone-panel { position: sticky; inset-block-start: calc(var(--header-h) + var(--space-4)); }
-@media (max-width: 960px) { .zone-panel { position: static; } }
-.zone-panel__body { transition: background-color var(--t-ui); }
-
-/* 2D fallback map */
-.map-2d { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
-.map-2d .zone { cursor: pointer; }
-.map-2d .zone rect { stroke: rgb(125 22 63 / 0.25); stroke-width: 0.15; transition: opacity var(--t-ui); }
-.map-2d .zone[data-selected] rect { stroke: var(--c-action); stroke-width: 0.45; }
-.map-2d .zone[data-off] { opacity: 0.3; }
-.map-2d text { font-family: var(--font); font-weight: var(--fw-bold); fill: var(--c-text); text-anchor: middle; pointer-events: none; }
-
-/* ---------- Audience ---------- */
-.audience { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
-.audience > * { min-inline-size: 0; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-3); }
-.stats:not(:has(.stat:not([data-pending]))) { display: none; } /* no real figures yet → no empty box */
-.journey { margin-block-start: var(--space-7); }
-.journey li::after { box-shadow: 0 0 0 4px var(--c-butter); }
-@media (max-width: 900px) { .audience { grid-template-columns: 1fr; } }
+/* ---------- Partner-type pages: hero ---------- */
 
 /* ---------- Tracks ---------- */
 .track .benefits__title { margin-block: var(--space-8) var(--space-4); }
@@ -66,9 +12,28 @@
 .packages { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
 .packages > * { min-inline-size: 0; }
 @media (max-width: 1100px) { .packages { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .packages { grid-template-columns: 1fr; } }
+/* phones: the options are a row to swipe through (the next card peeks in), not four tall cards one under another */
+@media (max-width: 700px) {
+  .packages {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 86%; gap: 10px;
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
+    margin-inline: calc(-1 * var(--block-pad)); padding: 4px var(--block-pad) 12px; scroll-padding-inline: var(--block-pad);
+  }
+  .packages::-webkit-scrollbar { display: none; }
+  .packages > * { scroll-snap-align: start; }
+  .packages .package { padding: 20px; gap: var(--space-3); }
+}
 .indicative { margin-block-start: var(--space-3); }
-.compare-wrap { margin-block-start: var(--space-6); }
+/* what the proposal agrees: short ticks, not a paragraph */
+.scope-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.scope-list li {
+  display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 16px;
+  background: rgb(255 255 255 / 0.62); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.8); font-weight: var(--fw-medium); line-height: 1.4;
+}
+.scope-list li::before {
+  content: ""; flex: none; inline-size: 20px; block-size: 20px; margin-block-start: 1px; border-radius: 50%;
+  background: var(--c-action) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E") center / 14px no-repeat;
+}
 .fit__summary:empty { display: none; }
 
 
@@ -99,7 +64,6 @@
 .menu-sheet__actions { display: grid; gap: var(--space-3); }
 
 /* ---------- Sticky bar room on phones ---------- */
-@media (max-width: 800px) { .site-footer { margin-block-end: calc(var(--space-9) + env(safe-area-inset-bottom)); } }
 
 /* ---------- Form inputs styled as approved chips / type cards ---------- */
 .chip-input { position: relative; display: inline-flex; }
@@ -160,12 +124,6 @@ label.typecard:has(input:focus-visible) { outline: 3px solid var(--c-focus); out
 @media (max-width: 900px) { .page-hero { grid-template-columns: 1fr; } .page-hero__media { order: -1; } .page-hero__media img { aspect-ratio: 16 / 10; } }
 .doors--two { grid-template-columns: repeat(2, 1fr); }
 @media (max-width: 900px) { .doors--two { grid-template-columns: 1fr; } }
-/* Phones: the zone chips are the controls; keep the 3D map uncluttered */
-@media (max-width: 800px) {
-  .map-stage { aspect-ratio: 4 / 3; }
-  .map-stage__hint { display: none; }
-  .map-stage__labels button:not([aria-pressed="true"]) { display: none; }
-}
 
 /* =========================================================================
    Partner walk-through (journey.js / journey3d.js) · class .walk (".journey" is the audience timeline)
@@ -409,6 +367,11 @@ body[data-page="event"] .site-header { position: fixed; inset-inline: 0; }
 .tour__skip:not(:focus) { clip-path: inset(50%); inline-size: 1px; block-size: 1px; overflow: hidden; white-space: nowrap; padding: 0; }
 .tour__stage { display: none; }
 .tour__stops { display: grid; gap: var(--block-gap); margin: var(--block-gap) var(--gutter) 0; padding: 0; list-style: none; }
+/* without 3D the stops are an illustrated list: the first one starts below the floating header, and a stop's
+   links land with the header's room kept (the -margin above is only for the live tour) */
+.tour:not(.is-live) .tour__stops { padding-block-start: calc(var(--header-h) + var(--space-3)); }
+.tour:not(.is-live), .tour:not(.is-live) .tour__stop { scroll-margin-block-start: calc(var(--header-h) + var(--space-3)); }
+@media (max-width: 700px) { .tour:not(.is-live) .tour__stop { padding: 14px 14px 22px; gap: var(--space-4); } }
 .tour__stop { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-5); align-items: center; padding: var(--block-pad); border-radius: var(--radius-block); background: var(--c-surface); }
 .tour__fallback { margin: 0; overflow: clip; border-radius: var(--radius-card); }
 .tour__fallback img { inline-size: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
@@ -484,7 +447,7 @@ body[data-page="event"] .site-header { position: fixed; inset-inline: 0; }
   /* phones: a lighter blur and a more solid glass (a big blur over a moving 3D scene costs a lot of GPU time there) */
   .tour.is-live .stop-card { background: linear-gradient(160deg, rgb(255 255 255 / 0.93), rgb(255 240 246 / 0.88)); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .tour__themes { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); background: rgb(255 255 255 / 0.9); }
-  body[data-page="event"] .site-header { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  body[data-page="event"] :is(.site-header__logo, .site-nav, .site-header__actions) { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 }
 .tour.is-live .tour__scroll, .tour.is-live .tour__explore { display: block; color: var(--c-text-2); }
 /* one world per screen: the card arrives with its world */
@@ -497,28 +460,31 @@ body[data-page="event"] .site-header { position: fixed; inset-inline: 0; }
   position: absolute; inset-block-start: 0; left: 0; translate: -50% -50%; z-index: 1;
   display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border: 0; border-radius: var(--radius-pill);
   background: #fff; color: var(--c-text); font: var(--fw-bold) 12px/1.3 var(--font); white-space: nowrap; cursor: pointer;
-  box-shadow: 0 8px 20px -10px rgb(0 0 0 / 0.6); transition: opacity 300ms var(--ease-out), padding 300ms var(--ease-out);
+  box-shadow: 0 8px 20px -10px rgb(0 0 0 / 0.6); transition: opacity 150ms var(--ease-out), padding 200ms var(--ease-out);
 }
 .tour__labels button::before { content: ""; inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--zone-c); box-shadow: 0 0 0 1px rgb(125 22 63 / 0.25); }
 .tour__labels button[data-hidden] { opacity: 0; pointer-events: none; }
 .tour__labels button[data-current] { padding: 8px 16px; background: var(--c-action); color: #fff; font-size: 14px; }
 .tour__stage:not([data-exploring]) .tour__labels button { pointer-events: none; }
 /* Moments: what happens at the stop on show, popping up over the spot where it happens (a little speech bubble) */
-.tour__moment {
-  will-change: transform;
+.tour__moment, .tour__ping {
+  will-change: translate, opacity;
   position: absolute; inset-block-start: 0; left: 0; z-index: 1; pointer-events: none;
   display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 14px;
   background: #fff; color: var(--c-text); font: var(--fw-bold) 12.5px/1.25 var(--font); white-space: nowrap;
   box-shadow: 0 10px 24px -12px rgb(0 0 0 / 0.65), inset 0 -3px 0 color-mix(in srgb, var(--zone-c, var(--c-pink)) 70%, #fff);
-  translate: -50% calc(-100% - 10px); transition: opacity 350ms var(--ease-out), scale 450ms cubic-bezier(.34, 1.56, .64, 1);
+  /* placed by tour3d.js through `translate` (never transform: the scale below must grow the bubble where it stands) */
+  transition: opacity 160ms var(--ease-out), scale 160ms var(--ease-out);
 }
-.tour__moment::before { content: ""; inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--zone-c, var(--c-pink)); box-shadow: 0 0 0 1px rgb(125 22 63 / 0.25); }
-.tour__moment::after { /* the tail, pointing at the spot */
+.tour__moment::before, .tour__ping::before { content: ""; inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--zone-c, var(--c-pink)); box-shadow: 0 0 0 1px rgb(125 22 63 / 0.25); }
+.tour__moment::after, .tour__ping::after { /* the tail, pointing at the spot */
   content: ""; position: absolute; left: 50%; inset-block-end: -6px; inline-size: 12px; block-size: 12px; translate: -50% 0; rotate: 45deg;
   background: #fff; border-radius: 0 0 3px 0; z-index: -1;
 }
-.tour__moment[data-hidden], .tour__moment[data-off] { opacity: 0; scale: 0.6; }
-@media (prefers-reduced-motion: reduce) { .tour__moment { transition: none; } }
+.tour__moment[data-hidden], .tour__moment[data-off], .tour__ping[data-hidden] { opacity: 0; scale: 0.92; }
+/* what a click names (a vendor, a world) */
+.tour__ping { --zone-c: var(--c-pink); }
+@media (prefers-reduced-motion: reduce) { :is(.tour__moment, .tour__ping) { transition: none; } }
 /* Themed days: one pill of icons at the bottom of the map (where the stop rail used to be); a click dresses the whole
    venue for that day (themes3d.js). Phones: across the top, under the header. */
 .tour__themes {
@@ -585,11 +551,11 @@ body[data-page="event"] .site-header { position: fixed; inset-inline: 0; }
 @media (max-width: 1100px) and (min-width: 801px) { .tour__plan { inline-size: 170px; } .tour.is-live .stop-card { max-inline-size: 400px; } }
 /* Phones: the venue fills the screen, the card is a sheet at the bottom (scrolls inside if it is long) */
 @media (max-width: 800px) {
-  .tour.is-live .tour__stop { justify-content: flex-end; align-items: stretch; padding: calc(var(--header-h) + 56px) 10px calc(88px + env(safe-area-inset-bottom)); } /* room for the sticky enquiry bar */
+  .tour.is-live .tour__stop { justify-content: flex-end; align-items: stretch; padding: calc(var(--header-h) + 56px) 10px calc(10px + env(safe-area-inset-bottom)); } /* the card sits at the very bottom */
   .tour.is-live .stop-card { max-inline-size: none; max-block-size: 50svh; padding: 18px; border-radius: 22px; }
   .tour__plan { display: none; }
   .tour__labels button[data-current] { padding: 6px 12px; font-size: 13px; }
-  .tour__moment { padding: 4px 9px; font-size: 11px; }
+  :is(.tour__moment, .tour__ping) { padding: 4px 9px; font-size: 11px; }
   .stop-card__num { font-size: 40px; }
   .stop-card__title { font-size: 30px; }
 }
@@ -609,6 +575,21 @@ body[data-page="event"] .site-header { position: fixed; inset-inline: 0; }
 /* Details heading on track pages */
 .track:not(.track--hero) > .container > .section-head { margin-block-end: var(--space-6); }
 .walk:not(.is-live) .eyebrow--white { background: var(--c-butter); }
+
+/* Desktop, short screens: a card that would not fit (tour.js sets data-tight) shows its short version and a "Details"
+   button, so it never becomes a scrolling box that catches the scroll meant for the tour */
+@media (min-width: 801px) {
+  .tour.is-live .stop-card[data-tight]:not([data-open]) :is(.stop-card__block, .stop-card__facts, .stop-card__packages, .tour__scroll, .tour__explore) { display: none; }
+  .tour.is-live .stop-card[data-tight] { position: relative; }
+  .tour.is-live .stop-card[data-tight] .stop-card__head, .tour.is-live .stop-card[data-tight] > .eyebrow { padding-inline-end: 96px; }
+  .tour.is-live .stop-card[data-tight] .stop-card__more {
+    display: inline-flex; align-items: center; position: absolute; z-index: 1; inset-block-start: 14px; inset-inline-end: 14px;
+    min-block-size: 32px; padding: 4px 14px; border: 0; border-radius: var(--radius-pill);
+    background: var(--c-action); color: #fff; font: var(--fw-bold) 13px/1 var(--font); cursor: pointer;
+  }
+  .tour.is-live .stop-card[data-tight] .stop-card__more span + span, .stop-card[data-tight][data-open] .stop-card__more span:first-child { display: none; }
+  .stop-card[data-tight][data-open] .stop-card__more span + span { display: inline; }
+}
 
 /* Phones: the chapter card is a compact sheet, a quarter of the screen at most, so the venue stays the star. It shows
    the chapter, its title and two lines; "Details" opens the rest (it scrolls inside, and closes on the next chapter). */
@@ -633,3 +614,56 @@ body[data-page="event"] .site-header { position: fixed; inset-inline: 0; }
   .stop-card__more span + span, .stop-card[data-open] .stop-card__more span:first-child { display: none; }
   .stop-card[data-open] .stop-card__more span + span { display: inline; }
 }
+
+/* Loading: until the 3D venue has drawn, the hero film plays (its poster first) with the worlds cycling on it.
+   tour3d.js marks the stage data-ready; the loader then fades away and the film is stopped. */
+.tour__loader { display: none; }
+.tour.is-live .tour__loader {
+  display: block; position: absolute; inset: 0; z-index: 4; overflow: hidden; background: #1a0712; /* above the venue's labels */
+  transition: opacity 800ms var(--ease-out), visibility 0s linear 800ms;
+}
+.tour__stage[data-ready] .tour__loader { opacity: 0; visibility: hidden; }
+.tour__loader-poster, .tour__loader-film { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.tour__loader-film { opacity: 0; transition: opacity 600ms var(--ease-out); }
+.tour__loader-film[data-playing] { opacity: 1; }
+.tour__loader::after { content: ""; position: absolute; inset: 0; background: radial-gradient(90% 80% at 60% 50%, rgb(26 7 18 / 0.25), rgb(26 7 18 / 0.72)); }
+.tour__loader-worlds {
+  position: absolute; z-index: 1; inset-block: 0; inset-inline: calc(clamp(16px, 4vw, 56px) + 450px) 0;
+  display: grid; place-items: center; pointer-events: none;
+}
+.tour__loader-worlds span {
+  grid-area: 1 / 1; display: inline-flex; align-items: center; gap: 0.35em;
+  color: #fff; font: 800 clamp(34px, 5.6vw, 84px) / 1 var(--font); letter-spacing: -0.01em; text-shadow: 0 6px 30px rgb(0 0 0 / 0.45);
+  opacity: 0; animation: tour-world calc(var(--n) * 1.4s) var(--ease-out) infinite; animation-delay: calc(var(--i) * 1.4s);
+}
+.tour__loader-worlds span::before { content: ""; inline-size: 0.32em; block-size: 0.32em; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 3px rgb(255 255 255 / 0.85); }
+@keyframes tour-world {
+  0% { opacity: 0; transform: translateY(22px) scale(0.96); }
+  3% { opacity: 1; transform: none; }
+  11% { opacity: 1; transform: none; }
+  14.3% { opacity: 0; transform: translateY(-18px) scale(1.02); }
+  100% { opacity: 0; }
+}
+.tour__loader-note {
+  position: absolute; z-index: 1; inset-block-end: 28px; inset-inline: calc(clamp(16px, 4vw, 56px) + 450px) 0; margin: 0;
+  display: grid; justify-items: center; gap: 10px; color: rgb(255 255 255 / 0.85); font: 700 13px/1 var(--font); letter-spacing: 0.08em; text-transform: uppercase;
+}
+.tour__loader-note i { inline-size: 120px; block-size: 3px; border-radius: 2px; background: linear-gradient(90deg, transparent, #ff8fb8, transparent) 0 0 / 50% 100% no-repeat, rgb(255 255 255 / 0.2); animation: tour-loading 1.4s linear infinite; }
+@keyframes tour-loading { from { background-position: -60px 0, 0 0; } to { background-position: 120px 0, 0 0; } }
+/* the floor plan and the theme bar wait for the venue */
+.tour.is-live .tour__stage:not([data-ready]) :is(.tour__plan, .tour__themes) { opacity: 0; pointer-events: none; }
+.tour.is-live .tour__stage :is(.tour__plan, .tour__themes) { transition: opacity 600ms var(--ease-out) 300ms; }
+@media (max-width: 1100px) and (min-width: 801px) { .tour__loader-worlds, .tour__loader-note { inset-inline-start: calc(clamp(16px, 4vw, 56px) + 400px); } }
+@media (max-width: 800px) {
+  /* phones: the card is a small sheet at the bottom; the worlds cycle in the space above it */
+  .tour__loader-worlds { inset-inline: 0; inset-block: calc(var(--header-h) + 50px) 32%; }
+  .tour__loader-worlds span { font-size: clamp(30px, 9vw, 44px); }
+  .tour__loader-note { inset-inline: 0; inset-block-end: auto; inset-block-start: 58%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour__loader-worlds span { animation: none; }
+  .tour__loader-worlds span:first-child { opacity: 1; }
+  .tour__loader-note i { animation: none; }
+}
+html[data-motion="off"] .tour__loader-worlds span { animation: none; }
+html[data-motion="off"] .tour__loader-worlds span:first-child { opacity: 1; }

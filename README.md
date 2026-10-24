@@ -44,19 +44,15 @@ Story text, camera keyframes and the name-sign position live in `src/journey.jso
 
 ## Files
 
-- `index.html`, `privacy.html`, `credits.html`, `404.html`
+- `index.html` (event partners: the venue tour), `beauty.html`, `shop.html` (generated), `privacy.html`, `credits.html`, `404.html`
 - `assets/css/`: `tokens` → `base` → `components` → `layout`
 - `assets/js/`:
-  - `app.js` (page)
-  - `form.js` (application)
-  - `i18n.js` + `copy.js` (EN/AR)
-  - `store.js` (state)
-  - `data.js` (zones)
-  - `motion.js` (GSAP)
-  - `map3d.js` / `map2d.js` (map)
+  - `app.js` (page), `form.js` (application), `i18n.js` + `copy.js` (EN/AR), `store.js` (state), `data.js` (zones), `motion.js` (GSAP)
+  - `tour.js` + `tour3d.js` (the venue tour), `venue.js` (the model), `crowd.js` (visitors), `park.js` (the park around it), `themes3d.js` (themed days)
+  - `journey.js` + `phone.js` (the app journeys on the beauty and e-commerce pages)
   - `vendor/`
 - `docs/`: brief, content, system design, UX, wireframe, design system, motion notes, components, QA
-- `wireframe.html`, `components.html`: internal review files (blocked by nginx)
+- `_archive/`: retired pages and code (old home, internal wireframe and component pages, the old zone map), kept for reference
 - `deploy/nginx.conf`: gzip, caching, HTTPS, 404, and it blocks the internal files
 
 ## Version rule

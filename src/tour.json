@@ -20,7 +20,8 @@
    "themeNote": "Programme idea, not a dated event",
    "sponsorTheme": "Sponsor this theme",
    "more": "Details",
-   "less": "Close"
+   "less": "Close",
+   "loading": "Opening the venue"
   },
   "ar": {
    "zoneOf": "المحطة {n} من 8",
@@ -41,14 +42,15 @@
    "themeNote": "فكرة برنامج، وليست فعالية بتاريخ محدد",
    "sponsorTheme": "رعاية هذه الثيمة",
    "more": "التفاصيل",
-   "less": "إغلاق"
+   "less": "إغلاق",
+   "loading": "جاري فتح المكان"
   }
  },
  "intro": {
   "cam": [
    25,
-   66,
-   38
+   96.5,
+   29.6
   ],
   "look": [
    25,

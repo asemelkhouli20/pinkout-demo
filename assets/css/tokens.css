@@ -84,7 +84,7 @@
     --block-gap: 12px;
     --radius-block: 24px;
     --radius-card: 20px;
-    --header-h: 64px;
+    --header-h: 54px; /* the floating header pieces: 8px margin + 46px */
   }
 }
 

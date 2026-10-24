@@ -126,7 +126,7 @@ export function initTour() {
   };
 
   /* ---------- World by world: one scroll, swipe or key press moves exactly one stop ---------- */
-  let animating = false;
+  let animating = false, landedAt = 0, run = 0;
   let queued = 0; // a flick or swipe that came in while the camera was still moving: it goes as soon as it lands
   const stopTop = (i) => stops[i].getBoundingClientRect().top + scrollY;
   const scrollToY = (y) => {
@@ -134,14 +134,16 @@ export function initTour() {
     if (Math.abs(dist) < 2) return;
     if (get('motion') !== 'full') { scrollTo(0, y); return; }
     const dur = Math.min(1000, 620 + Math.abs(dist) * 0.08);
-    const t0 = performance.now();
+    const t0 = performance.now(), mine = ++run; // a newer move (a click on the plan, say) takes over from this one
     animating = true;
     const frame = (now) => {
+      if (mine !== run) return;
       const k = Math.min(1, (now - t0) / dur);
       const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
       scrollTo(0, start + dist * e);
       if (k < 1) { requestAnimationFrame(frame); return; }
       animating = false;
+      landedAt = performance.now();
       measure(); // the stop we landed on, before a queued move picks the next one
       if (queued) { const d = queued; queued = 0; step(d); }
     };
@@ -164,31 +166,54 @@ export function initTour() {
     return true;
   };
   const holds = (dir) => animating || (live() && pinned() && !atEdge(dir));
-  /** a long card scrolls its own content first */
-  const cardScrolls = (target, dir) => {
-    const card = target.closest?.('.stop-card');
-    return !!card && card.scrollHeight > card.clientHeight + 2 && (dir > 0 ? card.scrollTop + card.clientHeight < card.scrollHeight - 1 : card.scrollTop > 0);
+  /** A long card scrolls its own text first, but only the card on show, and only when the pointer is really over it.
+   *  (Not the event's target: when the page moves under a still mouse, browsers keep reporting the element that WAS
+   *  under it, often the previous stop's card, now off screen. Scrolling that hidden card swallowed the scroll and the
+   *  tour looked stuck until the mouse moved.) */
+  const overCard = (x, y, dir) => {
+    const card = stops[Math.min(last, Math.max(0, Math.round(position)))]?.querySelector('.stop-card');
+    // only a card opened with "Details" scrolls its own text; otherwise a scroll always moves the tour
+    if (!card?.hasAttribute('data-open') || card.scrollHeight <= card.clientHeight + 2) return false;
+    const r = card.getBoundingClientRect();
+    if (x < r.left || x > r.right || y < r.top || y > r.bottom) return false;
+    return dir > 0 ? card.scrollTop + card.clientHeight < card.scrollHeight - 1 : card.scrollTop > 0;
   };
-  /* Wheel and trackpad: one gesture = one stop, however far or long the scroll. A gesture is a continuous stream of
-     wheel events in one direction (a trackpad's whole momentum tail included); a new one starts only after a short
-     pause or when the direction turns. A gesture started while the camera is still moving goes next, once. */
-  const QUIET = 300; // ms without wheel events that ends a gesture
-  let lastWheel = 0, gestureDir = 0, gestureOnCard = false;
+  /* Wheel and trackpad: one push = one stop, never a stop missed and never a double.
+     - A push starts after a short pause, when the direction turns, or when the scroll speeds up again after it had
+       been fading (a trackpad flicked again before its momentum ran out).
+     - A trackpad's momentum tail after a push is swallowed while it fades.
+     - Scrolling that keeps going at full strength after the camera has landed (a mouse wheel still spinning, fingers
+       still moving) is more scrolling, not a tail: it moves on to the next stop.
+     - A push made while the camera is still moving goes next, once. */
+  const QUIET = 300; // ms without wheel events that ends a push
+  let lastWheel = 0, gestureDir = 0, gestureOnCard = false, peak = 0, prevAbs = 0, fading = false, strong = 0;
   addEventListener('wheel', (e) => {
     if (e.ctrlKey || Math.abs(e.deltaY) < 1) return;
     const now = performance.now(), dir = Math.sign(e.deltaY);
-    const continuing = now - lastWheel < QUIET && dir === gestureDir;
+    const amount = Math.abs(e.deltaY) * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1);
+    let fresh = now - lastWheel >= QUIET || dir !== gestureDir;
+    if (!fresh && fading && amount > prevAbs * 1.8 && amount > 6) fresh = true; // a new flick inside a fading tail
     lastWheel = now;
-    if (continuing) { // the rest of a gesture: it scrolls the card it started on, or it already moved us
-      if (gestureOnCard && cardScrolls(e.target, dir)) return;
-      if (holds(dir)) e.preventDefault();
+    if (fresh) { gestureDir = dir; peak = amount; fading = false; strong = 0; gestureOnCard = false; }
+    else { peak = Math.max(peak, amount); if (amount < peak * 0.5) fading = true; }
+    prevAbs = amount;
+
+    if (fresh) {
+      if (animating) { e.preventDefault(); queued = dir; return; }
+      if (overCard(e.clientX, e.clientY, dir)) { gestureOnCard = true; return; } // the card's own text first
+      if (step(dir)) e.preventDefault();
       return;
     }
-    gestureDir = dir;                                                // a new gesture
-    gestureOnCard = false;
-    if (animating) { e.preventDefault(); queued = dir; return; }
-    if (cardScrolls(e.target, dir)) { gestureOnCard = true; return; } // a long card scrolls its own text first
-    if (step(dir)) e.preventDefault();
+    if (gestureOnCard) {
+      if (overCard(e.clientX, e.clientY, dir)) return;
+      gestureOnCard = false;                    // the card's text has run out: the same scroll carries on to the next stop
+      if (!animating && step(dir)) { e.preventDefault(); return; }
+    }
+    if (!holds(dir)) return;                    // past the tour's ends the page scrolls as usual
+    e.preventDefault();
+    if (!animating && now - landedAt > 120 && amount >= peak * 0.6) { // still scrolling hard after landing: next stop
+      if (++strong >= 2) { strong = 0; peak = amount; step(dir); }
+    } else strong = 0;
   }, { passive: false });
   addEventListener('keydown', (e) => {
     if (e.target.closest('input, textarea, select, button, a, [contenteditable], dialog')) return;
@@ -206,7 +231,7 @@ export function initTour() {
     if (touchY === null) return;
     const dy = touchY - e.touches[0].clientY, dir = Math.sign(dy);
     if (!dir) return;
-    if (!touchUsed && !animating && cardScrolls(e.target, dir)) return;
+    if (!touchUsed && !animating && overCard(e.touches[0].clientX, e.touches[0].clientY, dir)) return;
     if (touchUsed) { e.preventDefault(); return; }
     if (animating) { e.preventDefault(); if (Math.abs(dy) > 36) { queued = dir; touchUsed = true; } return; }
     if (holds(dir) || (live() && arriving(dir))) {
@@ -217,11 +242,23 @@ export function initTour() {
   addEventListener('touchend', () => { touchY = null; touchUsed = false; }, { passive: true });
   plan.forEach((r) => r.addEventListener('click', () => jump(data.zones.findIndex((z) => (z.zone || z.id) === r.dataset.planZone) + 1)));
 
+  /* Desktop: a card that does not fit the screen (a laptop's height) shows its short version with a "Details" button,
+     like on phones, instead of a scrolling box that would catch the scroll meant for the tour. Tall screens keep the
+     whole card. */
+  const phone = matchMedia('(max-width: 800px)');
+  const fitCards = () => {
+    if (!live()) return;
+    $$('.stop-card', root).forEach((card) => {
+      if (card.hasAttribute('data-open')) return;
+      card.removeAttribute('data-tight');
+      if (!phone.matches && card.scrollHeight > card.clientHeight + 2) card.setAttribute('data-tight', '');
+    });
+  };
   render();
-  on('lang', render);
+  on('lang', () => { render(); fitCards(); });
   let measuring = 0; // at most once per frame: scroll events can come faster than the screen redraws
   addEventListener('scroll', () => { measuring ||= requestAnimationFrame(() => { measuring = 0; measure(); }); }, { passive: true });
-  addEventListener('resize', () => { if (live() && pinned() && !animating) scrollTo(0, stopTop(Math.round(position))); measure(); });
+  addEventListener('resize', () => { if (live() && pinned() && !animating) scrollTo(0, stopTop(Math.round(position))); fitCards(); measure(); });
   measure();
 
   /* ---------- Live mode (3D) only when the device can do it well ---------- */
@@ -230,12 +267,20 @@ export function initTour() {
   const lowPower = (navigator.hardwareConcurrency || 4) <= 2 || (navigator.deviceMemory || 4) <= 1;
   if (!stage || !canWebGL || saveData || lowPower) return;
   root.classList.add('is-live');
+  requestAnimationFrame(fitCards); document.fonts?.ready.then(fitCards); // once the live layout (and its fonts) apply
+  /* Loading: the hero film plays under the cycling worlds until the venue is drawn (poster only without motion) */
+  const loader = $('[data-tour-loader]', stage), film = loader && $('video', loader);
+  if (film && get('motion') === 'full') {
+    film.src = matchMedia('(max-width: 800px)').matches ? film.dataset.srcMobile : film.dataset.srcDesktop;
+    film.play().then(() => film.setAttribute('data-playing', '')).catch(() => {}); // autoplay blocked: the poster stays
+  }
+  const ready = () => setTimeout(() => { if (film) { film.pause(); film.removeAttribute('src'); film.load(); } loader?.remove(); }, 1000); // after the fade
   new IntersectionObserver(([en], obs) => {
     if (!en.isIntersecting) return;
     obs.disconnect();
-    const load = () => import('./tour3d.js?v=41');
+    const load = () => import('./tour3d.js?v=53');
     load().catch(() => new Promise((r) => setTimeout(r, 900)).then(load)) // one retry on a flaky network
-      .then((m) => { scene = m.mount(stage, { zones: ZONES, data, get, on, onPick: jump }); scene.setTheme(theme); measure(); })
+      .then((m) => { scene = m.mount(stage, { zones: ZONES, data, get, on, onPick: jump, onReady: ready }); scene.setTheme(theme); measure(); })
       .catch((err) => { root.classList.remove('is-live'); root.dataset.error = String(err?.message || err); console.warn('Tour 3D unavailable:', err); }); // falls back to the illustrated stops
   }, { rootMargin: '600px 0px' }).observe(root);
 }

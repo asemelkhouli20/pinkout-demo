@@ -674,13 +674,11 @@ export function buildVenue(zoneData) {
   const spots = [];
   const shell = new THREE.Group();
   scene.add(shell);
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(160, 160), new THREE.ShadowMaterial({ opacity: 0.18 }));
-  ground.rotation.x = -Math.PI / 2; ground.position.y = -0.31; ground.receiveShadow = true;
-  scene.add(ground);
+  // no ground plane of its own: the park's lawn and paving (park.js) catch the venue's shadows
   const sk = makeKit(shell, toX, toZ, spots, 'passage');
   sk.R(25, 22.5, 51.2, 46.2, 0.75, '#f3d9e1', -0.75, GLOSS, 0.15);
   const lobby = new THREE.Mesh(new THREE.BoxGeometry(5.1 / U, 0.008, 12.4 / U), mat('#ffffff', marble('#f8d3df', '#ffffff')));
-  lobby.position.set(toX(2.8), 0.004, toZ(22.3)); lobby.userData.keep = true; shell.add(lobby);
+  lobby.position.set(toX(2.8), 0.014, toZ(22.3)); // over the passage floor, never level with it lobby.userData.keep = true; shell.add(lobby);
   // outer walls: the west wall is solid; the entrance door is in the north wall, the exit door in the south wall
   const wall = (mx, my, w, d) => { sk.B(mx, my, w, d, 2.6, P.white, 0, GLOSS); sk.B(mx, my, w + 0.04, d + 0.04, 0.06, P.gold, 2.6, GOLD); };
   wall(-0.25, 22.5, 0.5, 46); wall(50.25, 22.5, 0.5, 46);
@@ -713,7 +711,7 @@ export function buildVenue(zoneData) {
       floor.userData.keep = true; floor.userData.floor = z.id; // themes3d.js tints a floor for a themed day
       group.add(floor);
       // the inlay border: a band of the zone's edge colour just inside the floor, a hair above it
-      const b = 0.35 / U, top = fy + 0.004 + 0.003, edge = mat(LOOK[z.id].edge, GLOSS);
+      const b = 0.35 / U, top = fy + 0.004 + 0.006, edge = mat(LOOK[z.id].edge, GLOSS);
       [[cx, cz - d / 2 + b / 2, w, b], [cx, cz + d / 2 - b / 2, w, b], [cx - w / 2 + b / 2, cz, b, d - 2 * b], [cx + w / 2 - b / 2, cz, b, d - 2 * b]].forEach(([bx, bz, bw, bd]) => {
         const band = new THREE.Mesh(new THREE.BoxGeometry(bw, 0.004, bd), edge);
         band.position.set(bx, top, bz);
@@ -728,7 +726,7 @@ export function buildVenue(zoneData) {
     return { data: z, group, anchor: new THREE.Vector3(toX(lx), 1.2, toZ(ly)) };
   });
   scene.traverse((o) => {
-    if (!o.isMesh || o === ground) return;
+    if (!o.isMesh) return;
     o.castShadow = true; o.receiveShadow = true;
     if (o.material.isMeshStandardMaterial && o.material.metalness < 0.5) o.material.envMapIntensity = 0.55; // shading and shadows read; gold and mirrors keep their shine
   });

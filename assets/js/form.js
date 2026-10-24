@@ -2,7 +2,7 @@
 // Steps: [type] → about (branch) → details → review → done. Preview mode while CONFIG.applicationEndpoint is null.
 import { CONFIG } from './config.js?v=20';
 import { get, on, safeStore, $, $$ } from './store.js?v=20';
-import { t } from './i18n.js?v=20';
+import { t } from './i18n.js?v=21';
 import { ZONES, THEMES } from './data.js?v=20';
 
 const ICONS = {

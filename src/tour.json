@@ -1,11 +1,11 @@
 {
- "_note": "Event page tour: one continuous scroll through the venue. Camera keys are [planX m, planY m, height units] (plan 50 x 45 m). Stop order = the visitor loop (user, 24 Oct 2026): 01 Passage in, 02 Hub, 03 Make, 04 Market, 05 Live, 06 Beauty, 07 Move, 08 out through the Pink Passage exit. A stop with 'zone' films that venue zone (08 = passage); 'here' = its dot on the mini plan; 'rects' = the part of the zone it covers. 'moment' = what happens when the stop is on show: 'spots' place each 'inside' item in the model ([planX m, planY m, height m], same order), 'icons' float up from there and from people nearby. Taglines and 'inside' lists come from the client's zone descriptions (24 Oct 2026); stop 08 copy is ours (DRAFT). {brand} = the name the partner types. Arabic is DRAFT and neutral (no direct address). Facts from PinkOut_Knowledge_Base.md: no prices, no audience numbers. 'themes' = the themed-day switcher on the map (themes3d.js): names from data.js THEMES, lines from the knowledge base's themed-day concepts (Arabic DRAFT); default = the everyday look.",
+ "_note": "Event page tour: one continuous scroll through the venue. Camera keys are [planX m, planY m, height units] (plan 50 x 45 m). Stop order = the visitor loop (user, 24 Oct 2026): 01 Passage in, 02 Hub, 03 Make, 04 Market, 05 Live, 06 Beauty, 07 Move, 08 out through the Pink Passage exit. A stop with 'zone' films that venue zone (08 = passage); 'here' = its dot on the mini plan; 'rects' = the part of the zone it covers. 'moment' = what happens when the stop is on show: 'spots' place each 'inside' item in the model ([planX m, planY m, height m], same order), 'icons' float up from there and from people nearby. Taglines and 'inside' lists come from the client's zone descriptions (24 Oct 2026); stop 08 copy is ours (DRAFT). {brand} = the name the partner types. Arabic is DRAFT; partner copy addresses the brand team directly. Facts from PinkOut_Knowledge_Base.md: no prices, no audience numbers. 'themes' = the themed-day switcher on the map (themes3d.js): names from data.js THEMES, lines from the knowledge base's themed-day concepts (Arabic DRAFT); default = the everyday look.",
  "ui": {
   "en": {
    "zoneOf": "Stop {n} of 8",
    "inside": "Inside",
    "can": "What {brand} can do",
-   "gets": "What {brand} gets",
+   "gets": "The value for {brand}",
    "enquire": "Enquire about {zone}",
    "default": "your brand",
    "skip": "Skip the tour",
@@ -24,7 +24,7 @@
    "zoneOf": "المحطة {n} من 8",
    "inside": "في الداخل",
    "can": "ما يمكن لـ{brand} تقديمه",
-   "gets": "ما تحصل عليه {brand}",
+   "gets": "القيمة لـ{brand}",
    "enquire": "الاستفسار عن {zone}",
    "default": "العلامة",
    "skip": "تخطّي الجولة",
@@ -52,9 +52,9 @@
    0
   ],
   "en": {
-   "kicker": "PinkOut · Your Own World",
-   "title": "Seven connected worlds. All open to {brand}.",
-   "text": "An event created for women to explore, play, create and spend a fun day together: beauty, workshops, shopping, movement, live entertainment and café moments in one colourful place. Here is each world, and what it can do for {brand}.",
+   "kicker": "Your brand. Her next discovery.",
+   "title": "Give customers a reason to choose {brand}.",
+   "text": "Put your products in her hands, your story in the spotlight and your brand in her day. PinkOut brings beauty, shopping, creativity and entertainment together in a women-first destination coming soon to Riyadh. Explore where your investment could work hardest.",
    "facts": [
     "50 × 45 m concept plan",
     "7 connected worlds",
@@ -63,9 +63,9 @@
    ]
   },
   "ar": {
-   "kicker": "PinkOut · عالمها الخاص",
-   "title": "سبعة عوالم متّصلة، وكلها مفتوحة لـ{brand}.",
-   "text": "فعالية صُمّمت للنساء للاستكشاف واللعب والإبداع وقضاء يوم ممتع معاً: جمال، ورش، تسوّق، حركة، ترفيه حيّ، ولحظات مقهى في مكان واحد ملوّن. هنا كل عالم، وما يمكن أن يقدّمه لـ{brand}.",
+   "kicker": "علامتكم. اكتشافها القادم.",
+   "title": "امنحوا الزائرات سبباً لاختيار {brand}.",
+   "text": "ضعوا منتجاتكم بين يديها، وقصتكم في دائرة الاهتمام، وعلامتكم ضمن يومها. تجمع PinkOut الجمال والتسوّق والإبداع والترفيه في وجهة مصمّمة للنساء، قريباً في الرياض. اكتشفوا أين يمكن لاستثماركم أن يحقق القيمة الأنسب لأهدافكم.",
    "facts": [
     "مخطط مبدئي 50 × 45 م",
     "7 عوالم متّصلة",
@@ -91,14 +91,14 @@
     "tag": "Your adventure starts here",
     "what": "A pink gateway of light, mirrors and art, where the outside world fades and the PinkOut experience begins. Every visit starts and ends here.",
     "can": [
-     "Name the entrance",
-     "Build a signature art installation",
-     "Own the first (and last) photo moment"
+     "Brand the entrance",
+     "Create a signature art installation",
+     "Build a photo moment around your brand"
     ],
     "gets": [
-     "The first impression of every visit",
-     "Photos shared on social",
-     "Décor in your colours"
+     "Make your brand her first discovery",
+     "A photo setting featuring your identity",
+     "Visibility at arrival and departure"
     ],
     "inside": [
      "Sculptural entrance arches",
@@ -112,14 +112,14 @@
     "tag": "المغامرة تبدأ من هنا",
     "what": "بوابة وردية من الضوء والمرايا والفن، يتلاشى عندها العالم الخارجي وتبدأ تجربة PinkOut. كل زيارة تبدأ وتنتهي هنا.",
     "can": [
-     "تسمية المدخل",
-     "تركيب فني مميّز",
-     "امتلاك أول (وآخر) لحظة تصوير"
+     "إبراز هويتكم عند المدخل",
+     "ابتكار تركيب فني مميّز",
+     "تصميم لحظة تصوير حول علامتكم"
     ],
     "gets": [
-     "الانطباع الأول في كل زيارة",
-     "صور تُشارك على المنصات",
-     "ديكور بألوان العلامة"
+     "علامتكم أول ما تكتشفه الزائرة",
+     "مساحة تصوير تحمل هويتكم",
+     "ظهور عند الوصول والمغادرة"
     ],
     "inside": [
      "أقواس مدخل منحوتة",
@@ -192,9 +192,9 @@
      "Café collaboration: cups, menu, sampling"
     ],
     "gets": [
-     "Every visitor passes through",
-     "Long, relaxed dwell time",
-     "A space that resets for your brand"
+     "Introduce your product during a café break",
+     "Space for relaxed customer conversations",
+     "Sampling linked to a shared social moment"
     ],
     "inside": [
      "PinkOut Café",
@@ -212,9 +212,9 @@
      "تعاون مع المقهى: أكواب، قائمة، تذوّق"
     ],
     "gets": [
-     "كل زائرة تمرّ من هنا",
-     "وقت بقاء طويل ومريح",
-     "مساحة تتجدّد لكل علامة"
+     "تقديم منتجكم خلال استراحة المقهى",
+     "مساحة لحوار مريح مع الزائرات",
+     "تجربة منتجكم ضمن لحظة تجمع الصديقات"
     ],
     "inside": [
      "مقهى PinkOut",
@@ -278,9 +278,9 @@
      "Personalise your product: engrave, embroider"
     ],
     "gets": [
-     "Hands-on time with your brand",
-     "A keepsake that goes home",
-     "Content made by visitors"
+     "Time spent creating with your product",
+     "A branded keepsake to take home",
+     "A chance to hear what customers like"
     ],
     "inside": [
      "Bracelet & charm bars",
@@ -299,9 +299,9 @@
      "تخصيص المنتج: نقش أو تطريز"
     ],
     "gets": [
-     "وقت تفاعلي مع العلامة",
-     "تذكار يذهب معها إلى المنزل",
-     "محتوى تصنعه الزائرات"
+     "وقت تقضيه الزائرة في الإبداع بمنتجكم",
+     "تذكار بهويتكم تأخذه معها إلى المنزل",
+     "فرصة لسماع ما يعجب الزائرات"
     ],
     "inside": [
      "ركن الأساور والتعليقات",
@@ -371,9 +371,9 @@
      "Sponsor the zone"
     ],
     "gets": [
-     "Shoppers in discovery mode",
-     "A store-like setting for your product",
-     "Gifting moments"
+     "A physical space to showcase and sell",
+     "Direct conversations before purchase",
+     "A setting to introduce your next launch"
     ],
     "inside": [
      "Fashion",
@@ -393,9 +393,9 @@
      "رعاية المنطقة"
     ],
     "gets": [
-     "متسوّقات في مزاج الاكتشاف",
-     "إطار يشبه المتجر للمنتج",
-     "لحظات إهداء"
+     "مساحة لعرض منتجاتكم وبيعها",
+     "حوار مباشر مع الزائرات قبل الشراء",
+     "مساحة لتقديم إطلاقكم القادم"
     ],
     "inside": [
      "أزياء",
@@ -472,9 +472,9 @@
      "Sponsor performances and DJ sets"
     ],
     "gets": [
-     "The whole room's attention",
-     "Content filmed on a branded stage",
-     "A programme that brings people back"
+     "A stage for your product story",
+     "A live demonstration for the audience",
+     "Branded moments to discuss capturing"
     ],
     "inside": [
      "Live stage",
@@ -494,9 +494,9 @@
      "رعاية العروض والدي جي"
     ],
     "gets": [
-     "انتباه القاعة كلها",
-     "محتوى يُصوَّر على مسرح بهوية العلامة",
-     "برنامج يعيد الزائرات من جديد"
+     "مسرح لعرض قصة منتجكم",
+     "عرض مباشر للمنتج أمام الجمهور",
+     "لحظات بهويتكم يمكن الاتفاق على توثيقها"
     ],
     "inside": [
      "مسرح حيّ",
@@ -574,9 +574,9 @@
      "Brand boutique and launches"
     ],
     "gets": [
-     "Your product in her hands, on her skin",
-     "A personal result she remembers",
-     "A launch setting built for beauty"
+     "Product trial before a purchase decision",
+     "Conversations about shades, scents and fit",
+     "A setting to demonstrate your difference"
     ],
     "inside": [
      "Makeup testing counters",
@@ -595,9 +595,9 @@
      "متجر العلامة والإطلاقات"
     ],
     "gets": [
-     "المنتج بين يديها وعلى بشرتها",
-     "نتيجة شخصية لا تُنسى",
-     "إطار إطلاق مصمّم للجمال"
+     "تجربة منتجكم قبل قرار الشراء",
+     "حوار حول الدرجات والعطور والاختيار المناسب",
+     "مساحة لإظهار ما يميّز منتجكم"
     ],
     "inside": [
      "طاولات تجربة المكياج",
@@ -668,9 +668,9 @@
      "Sampling after class"
     ],
     "gets": [
-     "Small groups, full attention",
-     "A wellness association",
-     "Repeat visits through a series"
+     "Introduce your product in a relevant routine",
+     "Connect through a shared class experience",
+     "Sampling when your product fits the moment"
     ],
     "inside": [
      "Dance",
@@ -690,9 +690,9 @@
      "تجربة المنتجات بعد الكلاس"
     ],
     "gets": [
-     "مجموعات صغيرة وانتباه كامل",
-     "ارتباط بالعافية",
-     "زيارات متكرّرة عبر السلسلة"
+     "تقديم منتجكم ضمن نشاط يناسبه",
+     "تواصل من خلال تجربة كلاس مشتركة",
+     "تجربة منتجكم في اللحظة المناسبة لاستخدامه"
     ],
     "inside": [
      "رقص",
@@ -783,9 +783,9 @@
      "A thank-you in your name at the door"
     ],
     "gets": [
-     "The last impression of every visit",
-     "A gift that goes home with her",
-     "A reason to remember {brand}"
+     "A final reminder of your brand",
+     "A take-home sample to keep discovering",
+     "An offer that gives her a reason to return"
     ],
     "inside": [
      "Exit arches",
@@ -804,9 +804,9 @@
      "رسالة شكر باسم العلامة عند الباب"
     ],
     "gets": [
-     "الانطباع الأخير في كل زيارة",
-     "هدية تذهب معها إلى المنزل",
-     "سبب لتذكّر {brand}"
+     "تذكير أخير بعلامتكم",
+     "عيّنة تواصل اكتشافها في المنزل",
+     "عرض يمنحها سبباً للعودة"
     ],
     "inside": [
      "أقواس المخرج",
@@ -865,9 +865,9 @@
    0
   ],
   "en": {
-   "kicker": "The whole event",
-   "title": "All of it can carry {brand}.",
-   "text": "One zone, the stage, a themed day, or the whole season. Tell us where you see {brand}, and we'll shape it together.",
+   "kicker": "Start with your business goal",
+   "title": "What would make this worthwhile for {brand}?",
+   "text": "More product trials? A launch people can experience? A place to sell and hear from customers? Tell us your priority, and let’s explore the zone, format and scope that fit your brand.",
    "packages": [
     "Season partner",
     "Zone partner",
@@ -876,9 +876,9 @@
    ]
   },
   "ar": {
-   "kicker": "الفعالية كلها",
-   "title": "كل هذا يمكن أن يحمل اسم {brand}.",
-   "text": "منطقة واحدة، أو المسرح، أو يوم بثيمة، أو الموسم كاملاً. يكفي تحديد المكان المناسب لـ{brand}، ونصمّمه معاً.",
+   "kicker": "البداية من هدفكم التجاري",
+   "title": "ما الذي يجعل هذه الشراكة مجدية لـ{brand}؟",
+   "text": "تجارب أكثر لمنتجكم؟ إطلاق تتفاعل معه الزائرات؟ مساحة للبيع وسماع آراء العميلات؟ شاركونا أولويتكم لنبحث معاً المنطقة والتجربة ونطاق الشراكة الأنسب لعلامتكم.",
    "packages": [
     "شريك الموسم",
     "شريك المنطقة",

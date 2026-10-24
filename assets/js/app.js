@@ -1,10 +1,10 @@
 // PinkOut Partners — page controller.
 // Layers: HTML works alone → this adds behaviour → motion.js adds GSAP → map3d.js adds the 3D map.
 import { get, set, on, safeStore, $, $$ } from './store.js?v=20';
-import { initI18n, t } from './i18n.js?v=20';
+import { initI18n, t } from './i18n.js?v=21';
 import { ZONES } from './data.js?v=20';
-import { AR } from './copy.js?v=20';
-import { initForm, openApplication } from './form.js?v=20';
+import { AR } from './copy.js?v=21';
+import { initForm, openApplication } from './form.js?v=21';
 import { initJourney } from './journey.js?v=20';
 import { initTour } from './tour.js?v=37';
 

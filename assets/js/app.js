@@ -4,7 +4,7 @@ import { get, set, on, safeStore, $, $$ } from './store.js?v=20';
 import { initI18n, t } from './i18n.js?v=22';
 import { initForm, openApplication } from './form.js?v=22';
 import { initJourney } from './journey.js?v=20';
-import { initTour } from './tour.js?v=57';
+import { initTour } from './tour.js?v=59';
 
 const reducedMotionQuery = matchMedia('(prefers-reduced-motion: reduce)');
 const phoneQuery = matchMedia('(max-width: 800px)');

@@ -126,13 +126,13 @@ export function initTour() {
   };
 
   /* ---------- World by world: one scroll, swipe or key press moves exactly one stop ---------- */
-  let animating = false, landedAt = 0, run = 0;
-  let queued = 0; // a flick or swipe that came in while the camera was still moving: it goes as soon as it lands
+  let animating = false, landedAt = -Infinity, run = 0;
+  let queued = 0; // keyboard and touch can queue a step; wheel momentum never queues one
   const stopTop = (i) => stops[i].getBoundingClientRect().top + scrollY;
   const scrollToY = (y) => {
     const start = scrollY, dist = y - start;
     if (Math.abs(dist) < 2) return;
-    if (get('motion') !== 'full') { scrollTo(0, y); return; }
+    if (get('motion') !== 'full') { ++run; animating = false; scrollTo(0, y); landedAt = performance.now(); measure(); return; }
     const dur = Math.min(1000, 620 + Math.abs(dist) * 0.08);
     const t0 = performance.now(), mine = ++run; // a newer move (a click on the plan, say) takes over from this one
     animating = true;
@@ -178,42 +178,35 @@ export function initTour() {
     if (x < r.left || x > r.right || y < r.top || y > r.bottom) return false;
     return dir > 0 ? card.scrollTop + card.clientHeight < card.scrollHeight - 1 : card.scrollTop > 0;
   };
-  /* Wheel and trackpad: one push = one stop, never a stop missed and never a double.
-     - A push starts after a short pause, when the direction turns, or when the scroll speeds up again after it had
-       been fading (a trackpad flicked again before its momentum ran out).
-     - A trackpad's momentum tail after a push is swallowed while it fades.
-     - Scrolling that keeps going at full strength after the camera has landed (a mouse wheel still spinning, fingers
-       still moving) is more scrolling, not a tail: it moves on to the next stop.
-     - A push made while the camera is still moving goes next, once. */
-  const QUIET = 300; // ms without wheel events that ends a push
-  let lastWheel = 0, gestureDir = 0, gestureOnCard = false, peak = 0, prevAbs = 0, fading = false, strong = 0;
+  /* Wheel and trackpad: one continuous wheel stream owns one stop, including its momentum.
+     Delta spikes, reversals and delivery gaps during animation cannot queue another move.
+     Re-arm only after landing AND a quiet interval; pointer movement is never involved. */
+  const QUIET = 300;
+  let lastWheel = -Infinity, wheelUsed = false;
   addEventListener('wheel', (e) => {
-    if (e.ctrlKey || Math.abs(e.deltaY) < 1) return;
-    const now = performance.now(), dir = Math.sign(e.deltaY);
-    const amount = Math.abs(e.deltaY) * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1);
-    let fresh = now - lastWheel >= QUIET || dir !== gestureDir;
-    if (!fresh && fading && amount > prevAbs * 1.8 && amount > 6) fresh = true; // a new flick inside a fading tail
+    if (e.ctrlKey || (!e.deltaY && !e.deltaX)) return;
+    const now = performance.now(), quiet = now - lastWheel >= QUIET;
+    // Include subpixel and horizontal tail events: they still belong to this gesture.
     lastWheel = now;
-    if (fresh) { gestureDir = dir; peak = amount; fading = false; strong = 0; gestureOnCard = false; }
-    else { peak = Math.max(peak, amount); if (amount < peak * 0.5) fading = true; }
-    prevAbs = amount;
-
-    if (fresh) {
-      if (animating) { e.preventDefault(); queued = dir; return; }
-      if (overCard(e.clientX, e.clientY, dir)) { gestureOnCard = true; return; } // the card's own text first
-      if (step(dir)) e.preventDefault();
+    if (animating) {
+      wheelUsed = true;
+      e.preventDefault();
       return;
     }
-    if (gestureOnCard) {
-      if (overCard(e.clientX, e.clientY, dir)) return;
-      gestureOnCard = false;                    // the card's text has run out: the same scroll carries on to the next stop
-      if (!animating && step(dir)) { e.preventDefault(); return; }
+    if (wheelUsed) {
+      if (!quiet || now - landedAt < QUIET) {
+        e.preventDefault();
+        return;
+      }
+      wheelUsed = false;
     }
-    if (!holds(dir)) return;                    // past the tour's ends the page scrolls as usual
-    e.preventDefault();
-    if (!animating && now - landedAt > 120 && amount >= peak * 0.6) { // still scrolling hard after landing: next stop
-      if (++strong >= 2) { strong = 0; peak = amount; step(dir); }
-    } else strong = 0;
+    if (!e.deltaY || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    const dir = Math.sign(e.deltaY);
+    // Use the current card's geometry, never the browser's possibly stale wheel target.
+    // Once its text runs out, the same gesture can hand off to the tour exactly once.
+    if (overCard(e.clientX, e.clientY, dir)) return;
+    wheelUsed = step(dir);
+    if (wheelUsed) e.preventDefault();
   }, { passive: false });
   addEventListener('keydown', (e) => {
     if (e.target.closest('input, textarea, select, button, a, [contenteditable], dialog')) return;

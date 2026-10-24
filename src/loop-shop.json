@@ -1,0 +1,98 @@
+{
+  "id": "order",
+  "default": { "en": "Your brand", "ar": "العلامة" },
+  "ui": {
+    "en": {
+      "eyebrow": "One order, three views",
+      "title": "One order. Three views.",
+      "lead": "When she orders, the same order shows in her app, in your shop dashboard and at PinkOut. Play it from checkout to review.",
+      "where": "Order", "who": "Who's looking", "play": "Play", "pause": "Pause", "next": "Next step",
+      "record": "Order", "concept": "App concept", "changesTitle": "When plans change", "idleTag": "Not involved"
+    },
+    "ar": {
+      "eyebrow": "طلب واحد، ثلاث واجهات",
+      "title": "طلب واحد. ثلاث واجهات.",
+      "lead": "عند الطلب، يظهر الطلب نفسه في تطبيق العميلة وفي لوحة المتجر ولدى PinkOut. من الدفع حتى التقييم.",
+      "where": "نوع الطلب", "who": "الواجهة", "play": "تشغيل", "pause": "إيقاف", "next": "الخطوة التالية",
+      "record": "طلب", "concept": "تصوّر للتطبيق", "changesTitle": "عند تغيّر الخطط", "idleTag": "غير معني"
+    }
+  },
+  "modes": [
+    { "id": "self", "en": "For herself", "ar": "لنفسها" },
+    { "id": "gift", "en": "As a gift", "ar": "هدية" }
+  ],
+  "views": [
+    { "id": "customer", "icon": "person", "c": "var(--c-pink)", "en": "Customer", "ar": "العميلة",
+      "app": { "en": "Her app", "ar": "تطبيق العميلة" },
+      "foot": { "en": "Full price before paying · refunds show here", "ar": "السعر كاملاً قبل الدفع · والاسترداد يظهر هنا" } },
+    { "id": "shop", "icon": "bag", "c": "var(--track-shop)", "en": "Your shop", "ar": "المتجر",
+      "app": { "en": "Shop dashboard", "ar": "لوحة المتجر" },
+      "foot": { "en": "Your orders and earnings only", "ar": "طلبات المتجر وأرباحه فقط" } },
+    { "id": "pinkout", "icon": "spark", "c": "var(--c-butter)", "en": "PinkOut", "ar": "PinkOut",
+      "app": { "en": "Behind the scenes", "ar": "خلف الكواليس" },
+      "foot": { "en": "Checkout, updates and payouts", "ar": "الدفع والتحديثات والدفعات" } }
+  ],
+  "steps": [
+    { "id": "placed", "en": "Placed", "ar": "تم الطلب" },
+    { "id": "confirmed", "en": "Confirmed", "ar": "مؤكد" },
+    { "id": "packed", "en": "Packed", "ar": "التجهيز" },
+    { "id": "shipped", "en": "Shipped", "ar": "تم الشحن" },
+    { "id": "delivered", "en": "Delivered", "ar": "تم التوصيل" },
+    { "id": "review", "en": "Review", "ar": "التقييم" }
+  ],
+  "record": {
+    "id": "PO-5130",
+    "facts": [
+      { "en": "Rose eau de parfum · 50 ml", "ar": "عطر الورد · 50 مل" },
+      { "en": "Noura · 1 item", "ar": "نورة · قطعة واحدة" },
+      { "self": { "en": "Her address · Riyadh", "ar": "عنوانها · الرياض" }, "gift": { "en": "Her friend · Riyadh · with a note", "ar": "صديقتها · الرياض · مع بطاقة" } }
+    ]
+  },
+  "captions": {
+    "customer": {
+      "self": { "en": "She finds {name} in the app, sees the full price, pays in the app and follows the order to her door.", "ar": "تجد العميلة {name} في التطبيق، وترى السعر كاملاً، وتدفع فيه وتتابع الطلب حتى بابها." },
+      "gift": { "en": "She sends it to a friend with a note. The gift arrives, the receipt doesn't.", "ar": "ترسله إلى صديقتها مع بطاقة. تصل الهدية، دون الفاتورة." }
+    },
+    "shop": {
+      "self": { "en": "Orders, stock and earnings in one place, with what you need to send the order.", "ar": "الطلبات والمخزون والأرباح في مكان واحد، مع ما يلزم لإرسال الطلب." },
+      "gift": { "en": "Gift orders arrive marked, with the note to include and no prices to print.", "ar": "تصل طلبات الهدايا موسومة، مع البطاقة المطلوب إرفاقها ودون أسعار." }
+    },
+    "pinkout": {
+      "self": { "en": "PinkOut runs checkout, keeps her updated and records your earnings and payout for every order.", "ar": "تتولى PinkOut الدفع، وتُبقي العميلة على اطلاع، وتسجّل أرباح المتجر ودفعاته لكل طلب." },
+      "gift": { "en": "PinkOut runs checkout, keeps her updated and records your earnings and payout for every order.", "ar": "تتولى PinkOut الدفع، وتُبقي العميلة على اطلاع، وتسجّل أرباح المتجر ودفعاته لكل طلب." }
+    }
+  },
+  "states": {
+    "customer": {
+      "placed": { "t": { "en": "Order placed", "ar": "تم الطلب" }, "x": { "en": "Paid in the app. The order is with {name} now.", "ar": "تم الدفع في التطبيق، والطلب الآن لدى {name}." } },
+      "confirmed": { "t": { "en": "Confirmed", "ar": "تم التأكيد" }, "x": { "en": "{name} has it. The expected delivery date shows on the order.", "ar": "الطلب لدى {name}، وموعد التوصيل المتوقع ظاهر فيه." } },
+      "packed": { "t": { "self": { "en": "Being packed", "ar": "قيد التجهيز" }, "gift": { "en": "Gift-wrapped", "ar": "تغليف الهدية" } }, "x": { "self": { "en": "{name} is getting it ready.", "ar": "الطلب قيد التجهيز لدى {name}." }, "gift": { "en": "Her note goes in the box.", "ar": "تُرفق بطاقتها داخل العلبة." } } },
+      "shipped": { "t": { "en": "On its way", "ar": "في الطريق" }, "x": { "en": "She follows it live in the app.", "ar": "تتابعه مباشرة في التطبيق." }, "a": [{ "en": "Track", "ar": "تتبّع" }] },
+      "delivered": { "t": { "self": { "en": "Delivered", "ar": "تم التوصيل" }, "gift": { "en": "Delivered to her friend", "ar": "وصل إلى صديقتها" } }, "x": { "self": { "en": "At her door.", "ar": "وصل إلى بابها." }, "gift": { "en": "With her note, and no prices inside.", "ar": "مع البطاقة، ودون أي أسعار." } } },
+      "review": { "t": { "en": "Rate {name}", "ar": "تقييم {name}" }, "x": { "en": "Her review goes on {name}'s brand page.", "ar": "يُضاف تقييمها إلى صفحة {name}." }, "a": [{ "en": "★★★★★", "ar": "★★★★★" }] }
+    },
+    "shop": {
+      "placed": { "t": { "en": "New order", "ar": "طلب جديد" }, "x": { "self": { "en": "1 × Rose eau de parfum, to Riyadh.", "ar": "1 × عطر الورد، إلى الرياض." }, "gift": { "en": "1 × Rose eau de parfum. Gift: wrap it and add her note.", "ar": "1 × عطر الورد. هدية: تغليف مع البطاقة." } }, "a": [{ "en": "Accept", "ar": "قبول" }] },
+      "confirmed": { "t": { "en": "Accepted", "ar": "تم القبول" }, "x": { "en": "Stock is updated, and she sees the delivery date.", "ar": "تم تحديث المخزون، وترى العميلة موعد التوصيل." } },
+      "packed": { "t": { "en": "Pack it", "ar": "التجهيز" }, "x": { "self": { "en": "The packing slip is ready.", "ar": "قسيمة التجهيز جاهزة." }, "gift": { "en": "Gift wrap, her note, no prices.", "ar": "تغليف هدية، والبطاقة، ودون أسعار." } } },
+      "shipped": { "t": { "en": "Marked as shipped", "ar": "تم الشحن" }, "x": { "en": "Tracking is shared with her.", "ar": "تمت مشاركة رقم التتبع معها." }, "a": [{ "en": "Shipped ✓", "ar": "تم الشحن ✓" }] },
+      "delivered": { "t": { "en": "Delivered", "ar": "تم التوصيل" }, "x": { "en": "Your earnings are recorded; the payout status shows here.", "ar": "تم تسجيل الأرباح، وتظهر حالة الدفعة هنا." } },
+      "review": { "t": { "en": "New review", "ar": "تقييم جديد" }, "x": { "en": "On your brand page, for the next customer to see.", "ar": "على صفحة العلامة، لتراه العميلة التالية." } }
+    },
+    "pinkout": {
+      "placed": { "t": { "en": "Payment taken", "ar": "تم الدفع" }, "x": { "en": "Checkout happens in the app; the order goes to {name}.", "ar": "الدفع داخل التطبيق، ويُرسل الطلب إلى {name}." } },
+      "confirmed": { "t": { "en": "Order sent", "ar": "تم إرسال الطلب" }, "x": { "en": "She's told it's confirmed.", "ar": "تُبلَّغ العميلة بالتأكيد." } },
+      "packed": { "t": { "en": "Keeping her updated", "ar": "متابعة العميلة" }, "x": { "en": "Every status change reaches her as it happens.", "ar": "تصلها تحديثات الحالة أولاً بأول." } },
+      "shipped": { "t": { "en": "Tracking live", "ar": "التتبع مباشر" }, "x": { "en": "Tracking shows in her app.", "ar": "يظهر التتبع في تطبيقها." } },
+      "delivered": { "t": { "en": "Payout queued", "ar": "الدفعة قيد التحويل" }, "x": { "en": "{name}'s earnings move to payout.", "ar": "تنتقل أرباح {name} إلى الدفع." } },
+      "review": { "t": { "en": "Review published", "ar": "نشر التقييم" }, "x": { "en": "On {name}'s brand page.", "ar": "على صفحة {name}." } }
+    }
+  },
+  "idle": {},
+  "changes": [
+    { "t": { "en": "Cancelled", "ar": "الإلغاء" }, "x": { "en": "Before it ships: she's refunded and nothing is sent.", "ar": "قبل الشحن: يُسترد المبلغ ولا يُرسل شيء." } },
+    { "t": { "en": "Out of stock", "ar": "نفاد المخزون" }, "x": { "en": "She's told at once and refunded.", "ar": "تُبلَّغ العميلة فوراً ويُسترد المبلغ." } },
+    { "t": { "en": "Returned", "ar": "الإرجاع" }, "x": { "en": "The refund shows on the order and in your earnings.", "ar": "يظهر الاسترداد في الطلب وفي أرباح المتجر." } },
+    { "t": { "en": "Running late", "ar": "التأخير" }, "x": { "en": "She sees the new delivery date.", "ar": "ترى العميلة موعد التوصيل الجديد." } }
+  ]
+}

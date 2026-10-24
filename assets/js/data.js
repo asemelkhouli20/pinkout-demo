@@ -80,6 +80,16 @@ export const THEMES = [
   { id: 'japan', en: 'Japanese Girls Day', ar: 'يوم الفتيات الياباني' },
   { id: 'camping', en: 'Girls Camping Day', ar: 'يوم التخييم' },
   { id: 'horror', en: 'Light Horror Day', ar: 'يوم الرعب الخفيف' },
+  { id: 'gaming', en: 'Gaming Night', ar: 'ليلة الألعاب' },
+  { id: 'anime', en: 'Anime Day', ar: 'يوم الأنمي' },
+  { id: 'padel', en: 'Padel & Sports Day', ar: 'يوم البادل والرياضة' },
+  { id: 'football', en: 'Football Night', ar: 'ليلة كرة القدم' },
+  { id: 'space', en: 'Galaxy Night', ar: 'ليلة المجرّة' },
+  { id: 'ocean', en: 'Mermaid Day', ar: 'يوم حوريات البحر' },
+  { id: 'disco', en: 'Disco Night', ar: 'ليلة الديسكو' },
+  { id: 'garden', en: 'Flower Festival', ar: 'مهرجان الزهور' },
+  { id: 'winter', en: 'Winter Wonderland', ar: 'عالم الشتاء' },
+  { id: 'candy', en: 'Candy Land', ar: 'أرض الحلوى' },
 ];
 
 export const TRACKS = ['event', 'beauty', 'shop'];

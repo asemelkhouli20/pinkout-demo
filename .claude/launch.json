@@ -4,8 +4,21 @@
     {
       "name": "pinkout",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "5173"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5173"
+      ],
       "port": 5173
+    },
+    {
+      "name": "pinkout-2",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "exec python3 -m http.server ${PORT:-5174}"
+      ],
+      "port": 5174
     }
   ]
 }

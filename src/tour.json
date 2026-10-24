@@ -992,6 +992,116 @@
     "name": "يوم الرعب الخفيف",
     "line": "رعب مرح: مكياج مؤثرات وتجربة مسكونة صغيرة."
    }
+  },
+  {
+   "id": "gaming",
+   "en": {
+    "name": "Gaming Night",
+    "line": "E-sports stations, friendly tournaments and retro arcade games."
+   },
+   "ar": {
+    "name": "ليلة الألعاب",
+    "line": "محطات رياضات إلكترونية وبطولات ودّية وألعاب أركيد كلاسيكية."
+   }
+  },
+  {
+   "id": "anime",
+   "en": {
+    "name": "Anime Day",
+    "line": "Cosplay, manga art, anime songs and photo moments."
+   },
+   "ar": {
+    "name": "يوم الأنمي",
+    "line": "كوسبلاي وفن المانغا وأغاني الأنمي ولحظات تصوير."
+   }
+  },
+  {
+   "id": "padel",
+   "en": {
+    "name": "Padel & Sports Day",
+    "line": "Mini padel matches, sports challenges and active fun."
+   },
+   "ar": {
+    "name": "يوم البادل والرياضة",
+    "line": "مباريات بادل مصغّرة وتحديات رياضية ومرح نشيط."
+   }
+  },
+  {
+   "id": "football",
+   "en": {
+    "name": "Football Night",
+    "line": "A big-screen watch party, penalty challenges and team colours."
+   },
+   "ar": {
+    "name": "ليلة كرة القدم",
+    "line": "مشاهدة جماعية على الشاشة الكبيرة وتحديات ركلات الجزاء وألوان الفرق."
+   }
+  },
+  {
+   "id": "space",
+   "en": {
+    "name": "Galaxy Night",
+    "line": "Planets, stars and a cosmic glow over every world."
+   },
+   "ar": {
+    "name": "ليلة المجرّة",
+    "line": "كواكب ونجوم وتوهّج كوني في كل عالم."
+   }
+  },
+  {
+   "id": "ocean",
+   "en": {
+    "name": "Mermaid Day",
+    "line": "Under the sea: shells, pearls, bubbles and shimmer make-up."
+   },
+   "ar": {
+    "name": "يوم حوريات البحر",
+    "line": "تحت البحر: أصداف ولآلئ وفقاعات ومكياج لامع."
+   }
+  },
+  {
+   "id": "disco",
+   "en": {
+    "name": "Disco Night",
+    "line": "A mirror ball, retro hits, roller skates and glitter."
+   },
+   "ar": {
+    "name": "ليلة الديسكو",
+    "line": "كرة مرايا وأغانٍ كلاسيكية وأحذية تزلّج ولمعان."
+   }
+  },
+  {
+   "id": "garden",
+   "en": {
+    "name": "Flower Festival",
+    "line": "Giant blooms, flower crowns, bouquet bars and butterflies."
+   },
+   "ar": {
+    "name": "مهرجان الزهور",
+    "line": "زهور عملاقة وتيجان ورد وركن باقات وفراشات."
+   }
+  },
+  {
+   "id": "winter",
+   "en": {
+    "name": "Winter Wonderland",
+    "line": "Snow, a giant snow globe, hot chocolate and cosy knits."
+   },
+   "ar": {
+    "name": "عالم الشتاء",
+    "line": "ثلج وكرة ثلج عملاقة وشوكولاتة ساخنة وملابس صوف دافئة."
+   }
+  },
+  {
+   "id": "candy",
+   "en": {
+    "name": "Candy Land",
+    "line": "Giant sweets, a cupcake stage, cotton candy and pastel fun."
+   },
+   "ar": {
+    "name": "أرض الحلوى",
+    "line": "حلويات عملاقة ومسرح كب كيك وغزل البنات ومرح بألوان الباستيل."
+   }
   }
  ]
 }

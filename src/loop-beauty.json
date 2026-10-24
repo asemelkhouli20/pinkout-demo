@@ -1,0 +1,109 @@
+{
+  "id": "booking",
+  "default": { "en": "Your name", "ar": "الخبيرة" },
+  "ui": {
+    "en": {
+      "eyebrow": "One booking, three views",
+      "title": "One booking. Three views.",
+      "lead": "Clients book you, the person, not a salon. The same booking shows in her app, in yours and, at a PinkOut location, on the partner's schedule. Play it from request to review.",
+      "where": "Where", "who": "Who's looking", "play": "Play", "pause": "Pause", "next": "Next step",
+      "record": "Booking", "concept": "App concept", "changesTitle": "When plans change", "idleTag": "Not involved"
+    },
+    "ar": {
+      "eyebrow": "حجز واحد، ثلاث واجهات",
+      "title": "حجز واحد. ثلاث واجهات.",
+      "lead": "تحجز العميلة خبيرة بعينها لا صالوناً. ويظهر الحجز نفسه في تطبيقها، وفي تطبيق الخبيرة، وفي جدول الشريك عند الحجز في أحد مواقع PinkOut. من الطلب حتى التقييم.",
+      "where": "المكان", "who": "الواجهة", "play": "تشغيل", "pause": "إيقاف", "next": "الخطوة التالية",
+      "record": "حجز", "concept": "تصوّر للتطبيق", "changesTitle": "عند تغيّر الخطط", "idleTag": "غير معني"
+    }
+  },
+  "modes": [
+    { "id": "home", "en": "At home", "ar": "في المنزل" },
+    { "id": "pinkout", "en": "At PinkOut", "ar": "في PinkOut" }
+  ],
+  "views": [
+    { "id": "client", "icon": "person", "c": "var(--c-pink)", "en": "Client", "ar": "العميلة",
+      "app": { "en": "Her app", "ar": "تطبيق العميلة" },
+      "foot": { "en": "Full price before paying · refunds show here", "ar": "السعر كاملاً قبل الدفع · والاسترداد يظهر هنا" } },
+    { "id": "artist", "icon": "brush", "c": "var(--track-beauty)", "en": "Artist", "ar": "الخبيرة",
+      "app": { "en": "Your app", "ar": "تطبيق الخبيرة" },
+      "foot": { "en": "Your bookings and earnings only", "ar": "حجوزات الخبيرة وأرباحها فقط" } },
+    { "id": "partner", "icon": "store", "c": "var(--c-butter)", "en": "Partner", "ar": "الشريك",
+      "app": { "en": "Partner dashboard", "ar": "لوحة الشريك" },
+      "foot": { "en": "What concerns the partner's business", "ar": "ما يخص أعمال الشريك فقط" } }
+  ],
+  "steps": [
+    { "id": "pending", "en": "Pending", "ar": "قيد الانتظار" },
+    { "id": "confirmed", "en": "Confirmed", "ar": "مؤكد" },
+    { "id": "upcoming", "en": "Upcoming", "ar": "قادم" },
+    { "id": "arrived", "home": { "en": "Arrived", "ar": "الوصول" }, "pinkout": { "en": "Checked in", "ar": "تسجيل الحضور" } },
+    { "id": "progress", "en": "In progress", "ar": "قيد التنفيذ" },
+    { "id": "done", "en": "Completed", "ar": "مكتمل" }
+  ],
+  "record": {
+    "id": "PO-1024",
+    "facts": [
+      { "en": "Soft glam makeup · 90 min", "ar": "مكياج ناعم · 90 دقيقة" },
+      { "en": "Sara · Saturday 18:30", "ar": "سارة · السبت 18:30" },
+      { "home": { "en": "Her home · Riyadh", "ar": "منزل العميلة · الرياض" }, "pinkout": { "en": "PinkOut location · Station 3", "ar": "موقع PinkOut · المحطة 3" } }
+    ]
+  },
+  "captions": {
+    "client": {
+      "home": { "en": "She chooses a person, not a team: your profile, portfolio, prices and ratings. She enters her address, and your coverage area, travel time and any travel charge are already counted.", "ar": "تختار العميلة خبيرة بعينها لا فريقاً: ملفها وأعمالها وأسعارها وتقييماتها. تُدخل عنوانها، فتُحتسب منطقة الخدمة ووقت التنقل وأي رسوم تنقل." },
+      "pinkout": { "en": "She chooses you, then a PinkOut location. The booking only goes through when you and a station are both free.", "ar": "تختار العميلة الخبيرة ثم أحد مواقع PinkOut، ولا يكتمل الحجز إلا إذا كانت الخبيرة والمحطة متاحتين معاً." }
+    },
+    "artist": {
+      "home": { "en": "Home and PinkOut bookings share one personal calendar, so nothing overlaps. You get the address and travel details the visit needs.", "ar": "حجوزات المنزل وPinkOut في تقويم شخصي واحد، فلا تتداخل المواعيد. وتصل الخبيرة تفاصيل العنوان والتنقل التي تحتاجها الزيارة." },
+      "pinkout": { "en": "Home and PinkOut bookings share one personal calendar, so nothing overlaps. For PinkOut you get the location and your assigned station.", "ar": "حجوزات المنزل وPinkOut في تقويم شخصي واحد، فلا تتداخل المواعيد. وفي حجوزات PinkOut يصل الموقع والمحطة المخصّصة." }
+    },
+    "partner": {
+      "home": { "en": "At-home bookings don't use a PinkOut location. A partner that manages the artist can follow the booking, as agreed with her.", "ar": "حجوزات المنزل لا تستخدم مواقع PinkOut. ويمكن للشريك الذي يدير أعمال الخبيرة متابعة الحجز وفق الاتفاق بينهما." },
+      "pinkout": { "en": "The booking reserves the station, room or equipment for the session plus prep and cleanup, and updates the artist's calendar and the partner's schedule together.", "ar": "يحجز الطلب المحطة أو الغرفة أو المعدات طوال الجلسة مع وقت التحضير والتنظيف، ويحدّث تقويم الخبيرة وجدول الشريك معاً." }
+    }
+  },
+  "states": {
+    "client": {
+      "pending": { "t": { "en": "Request sent", "ar": "تم إرسال الطلب" }, "x": { "en": "Paid in the app. Waiting for {name} to accept.", "ar": "تم الدفع في التطبيق، بانتظار قبول {name}." } },
+      "confirmed": { "t": { "en": "Booked", "ar": "تم الحجز" }, "x": { "en": "Confirmed with {name}, with a reminder set.", "ar": "تم التأكيد مع {name}، مع تذكير بالموعد." }, "a": [{ "en": "Add to calendar", "ar": "إضافة إلى التقويم" }] },
+      "upcoming": { "t": { "en": "Tomorrow, 18:30", "ar": "غداً، 18:30" }, "x": { "en": "She can message {name}, reschedule or cancel from the booking.", "ar": "يمكنها مراسلة {name} أو تغيير الموعد أو الإلغاء من صفحة الحجز." }, "a": [{ "en": "Chat", "ar": "محادثة" }, { "en": "Reschedule", "ar": "تغيير الموعد" }, { "en": "Cancel", "ar": "إلغاء" }] },
+      "arrived": {
+        "t": { "home": { "en": "{name} is at the door", "ar": "{name} عند الباب" }, "pinkout": { "en": "Checked in", "ar": "تم تسجيل الحضور" } },
+        "x": { "home": { "en": "She followed it live: on the way, then arrived.", "ar": "تابعت الحالة مباشرة: في الطريق، ثم الوصول." }, "pinkout": { "en": "She arrives at PinkOut and checks in at the front desk.", "ar": "تصل إلى PinkOut وتسجّل حضورها عند الاستقبال." } }
+      },
+      "progress": { "t": { "en": "In progress", "ar": "الجلسة جارية" }, "x": { "en": "Her look is under way with {name}.", "ar": "إطلالتها قيد التنفيذ مع {name}." } },
+      "done": { "t": { "en": "Rate {name}", "ar": "تقييم {name}" }, "x": { "en": "Completed. Her review goes on {name}'s profile.", "ar": "اكتملت الجلسة، ويُضاف تقييمها إلى ملف {name}." }, "a": [{ "en": "★★★★★", "ar": "★★★★★" }] }
+    },
+    "artist": {
+      "pending": { "t": { "en": "New booking request", "ar": "طلب حجز جديد" }, "x": { "en": "Sara wants soft glam on Saturday at 18:30. Accept to confirm it.", "ar": "تطلب سارة مكياجاً ناعماً يوم السبت 18:30، والقبول يؤكد الحجز." }, "a": [{ "en": "Accept", "ar": "قبول" }, { "en": "Decline", "ar": "رفض" }] },
+      "confirmed": { "t": { "en": "In your calendar", "ar": "في التقويم" }, "x": { "home": { "en": "The time is blocked, travel time included, so no other booking can overlap.", "ar": "الوقت محجوز ومعه وقت التنقل، فلا يتداخل معه أي حجز آخر." }, "pinkout": { "en": "The time is blocked in your calendar, and Station 3 is held for you.", "ar": "الوقت محجوز في التقويم، والمحطة 3 محجوزة للخبيرة." } } },
+      "upcoming": { "t": { "en": "Get ready", "ar": "التحضير" }, "x": { "home": { "en": "Soft glam kit. Address and route are ready; leave by 17:50.", "ar": "أدوات المكياج الناعم جاهزة، والعنوان والمسار متاحان؛ الانطلاق قبل 17:50." }, "pinkout": { "en": "Soft glam kit. PinkOut location, Station 3; be there by 18:15.", "ar": "أدوات المكياج الناعم جاهزة. موقع PinkOut، المحطة 3؛ الوصول قبل 18:15." } } },
+      "arrived": {
+        "t": { "home": { "en": "Arrived", "ar": "تم الوصول" }, "pinkout": { "en": "Client checked in", "ar": "سجّلت العميلة حضورها" } },
+        "x": { "home": { "en": "You tap Arrived, and Sara sees it at once.", "ar": "تضغط الخبيرة «وصلت» فتراها سارة فوراً." }, "pinkout": { "en": "Sara has checked in. Your station is ready.", "ar": "سجّلت سارة حضورها، والمحطة جاهزة." } },
+        "a": { "home": [{ "en": "Arrived ✓", "ar": "وصلت ✓" }], "pinkout": [{ "en": "Start service", "ar": "بدء الخدمة" }] }
+      },
+      "progress": { "t": { "en": "Service started", "ar": "بدأت الخدمة" }, "x": { "en": "Started at 18:34. Status: in progress.", "ar": "البداية 18:34. الحالة: قيد التنفيذ." }, "a": [{ "en": "Complete", "ar": "إنهاء" }] },
+      "done": { "t": { "en": "Completed", "ar": "مكتملة" }, "x": { "home": { "en": "Your earnings (travel charge included), booking history and Sara's review are updated.", "ar": "تُحدَّث أرباح الخبيرة (مع رسوم التنقل) وسجل حجوزاتها وتقييم سارة." }, "pinkout": { "en": "Your earnings, booking history and Sara's review are updated.", "ar": "تُحدَّث أرباح الخبيرة وسجل حجوزاتها وتقييم سارة." } } }
+    },
+    "partner": {
+      "pending": { "t": { "en": "Station held", "ar": "المحطة محجوزة مؤقتاً" }, "x": { "en": "Station 3, 18:15 to 20:15: the session plus prep and cleanup, held until {name} accepts.", "ar": "المحطة 3 من 18:15 إلى 20:15: الجلسة مع التحضير والتنظيف، محجوزة مؤقتاً حتى قبول {name}." } },
+      "confirmed": { "t": { "en": "Station reserved", "ar": "تم حجز المحطة" }, "x": { "en": "{name}'s calendar and the station schedule are both updated.", "ar": "تم تحديث تقويم {name} وجدول المحطات معاً." } },
+      "upcoming": { "t": { "en": "Upcoming arrivals", "ar": "الوصول القادم" }, "x": { "en": "Sara with {name}, 18:30, Station 3.", "ar": "سارة مع {name}، الساعة 18:30، المحطة 3." } },
+      "arrived": { "t": { "en": "Checked in", "ar": "تم تسجيل الحضور" }, "x": { "en": "Sara is at the front desk; Station 3 is ready.", "ar": "سارة عند الاستقبال، والمحطة 3 جاهزة." } },
+      "progress": { "t": { "en": "In service", "ar": "قيد الخدمة" }, "x": { "en": "Station 3 in use until 20:00, then 15 minutes of cleanup.", "ar": "المحطة 3 مشغولة حتى 20:00، ثم 15 دقيقة للتنظيف." } },
+      "done": { "t": { "en": "Station free again", "ar": "المحطة متاحة مجدداً" }, "x": { "en": "The revenue share is recorded and the visit shows in the reports.", "ar": "تم تسجيل حصة الإيرادات، وتظهر الزيارة في التقارير." } }
+    }
+  },
+  "idle": {
+    "partner": {
+      "home": { "t": { "en": "At home: no station", "ar": "في المنزل: دون محطة" }, "x": { "en": "This booking doesn't use a PinkOut location. A partner that manages {name} sees its status: {status}.", "ar": "لا يستخدم هذا الحجز أي موقع PinkOut. ويرى الشريك الذي يدير أعمال {name} حالته: {status}." } }
+    }
+  },
+  "changes": [
+    { "t": { "en": "Cancelled", "ar": "الإلغاء" }, "x": { "en": "The artist's time, and any station, are released.", "ar": "يتحرر وقت الخبيرة وأي محطة محجوزة." } },
+    { "t": { "en": "Rescheduled", "ar": "تغيير الموعد" }, "x": { "en": "Both schedules move together when a station is booked.", "ar": "ينتقل الجدولان معاً عند حجز محطة." } },
+    { "t": { "en": "Declined", "ar": "الرفض" }, "x": { "en": "The temporary hold is released and the client is told.", "ar": "يُلغى الحجز المؤقت وتُبلَّغ العميلة." } },
+    { "t": { "en": "Late or no-show", "ar": "التأخر أو عدم الحضور" }, "x": { "en": "Marked on the booking, with its effect on payments and refunds.", "ar": "يُسجَّل على الحجز مع أثره على المدفوعات والاسترداد." } }
+  ]
+}

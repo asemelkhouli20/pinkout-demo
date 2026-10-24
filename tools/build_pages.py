@@ -119,6 +119,41 @@ def journey_for(track, t):
 '''
 
 
+def loop_for(track):
+    """One booking (beauty) or order (shop), three views: content in src/loop-<track>.json, played by loop.js.
+    Without JS the stage stays a short list of who sees what."""
+    data = json.loads((ROOT / 'src' / f'loop-{track}.json').read_text(encoding='utf-8'))
+    ui = data['ui']['en']
+    mode = data['modes'][0]['id']
+    name = data['default']['en']
+    esc = html.escape
+    payload = json.dumps(data, ensure_ascii=False).replace('</', '<\\/')
+    fallback = ''.join(
+        f'<li><b>{esc(v["en"])}</b><span>{esc(data["captions"][v["id"]][mode]["en"].replace("{name}", name))}</span></li>'
+        for v in data['views'])
+    changes = ''.join(
+        f'<li><b data-loop-text="changes.{i}.t">{esc(c["t"]["en"])}</b><span data-loop-text="changes.{i}.x">{esc(c["x"]["en"])}</span></li>'
+        for i, c in enumerate(data['changes']))
+    return f'''  <!-- ============ ONE {data["id"].upper()}, THREE VIEWS ============ -->
+  <section class="block loop loop--{track}" id="{data["id"]}" aria-labelledby="loop-title" data-loop>
+    <script type="application/json" data-loop-data>{payload}</script>
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow" data-loop-ui="eyebrow">{esc(ui["eyebrow"])}</span>
+        <h2 id="loop-title" data-loop-ui="title">{esc(ui["title"])}</h2>
+        <p class="t-lead" data-loop-ui="lead">{esc(ui["lead"])}</p>
+      </div>
+      <div class="loop__stage" data-loop-stage>
+        <ul class="loop__fallback">{fallback}</ul>
+      </div>
+      <h3 class="loop__changes-title" data-loop-ui="changesTitle">{esc(ui["changesTitle"])}</h3>
+      <ul class="loop__changes" data-reveal-group>{changes}</ul>
+    </div>
+  </section>
+
+'''
+
+
 def closing_for(track, t):
     return f'''  <!-- ============ CLOSING ============ -->
   <section class="block block--rose arch-cta" id="start" aria-labelledby="close-title">
@@ -177,7 +212,7 @@ def tour_modulepreload():
 # its hero (title, brand name). Beauty service and e-commerce partners work through the app: a hero, then the app journey.
 for track, t in TRACKS.items():
     preload = f'<link rel="preload" href="assets/images/{t["hero"]}?v=1" as="image" fetchpriority="high">\n' if t['hero'] else ''
-    story = tour_for() if track == 'event' else journey_for(track, t)  # event: the venue tour; others: the app journey
+    story = tour_for() if track == 'event' else journey_for(track, t) + loop_for(track)  # event: the venue tour; others: the app journey, then one booking/order in three views
     hero = [] if track == 'event' else [part(f'track-{track}-hero')]
     if track == 'event':
         preload += tour_modulepreload()

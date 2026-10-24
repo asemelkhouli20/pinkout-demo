@@ -3,7 +3,7 @@
 // step by step (what it is → what the brand can do → what it gets). tour3d.js films it when WebGL is fine;
 // otherwise the stops read as illustrated cards. Text comes from src/tour.json (embedded), in EN or AR.
 import { get, on, safeStore, $, $$ } from './store.js?v=20';
-import { ZONES } from './data.js?v=20';
+import { ZONES } from './data.js?v=21';
 
 const BRAND_KEY = 'po-brand';
 const brand = () => (safeStore.get('sessionStorage', BRAND_KEY) || '').trim();
@@ -309,7 +309,7 @@ export function initTour() {
   new IntersectionObserver(([en], obs) => {
     if (!en.isIntersecting) return;
     obs.disconnect();
-    const load = () => import('./tour3d.js?v=54');
+    const load = () => import('./tour3d.js?v=55');
     load().catch(() => new Promise((r) => setTimeout(r, 900)).then(load)) // one retry on a flaky network
       .then((m) => { scene = m.mount(stage, { zones: ZONES, data, get, on, onPick: jump, onReady: ready }); scene.setTheme(theme); measure(); })
       .catch((err) => { root.classList.remove('is-live'); root.dataset.error = String(err?.message || err); console.warn('Tour 3D unavailable:', err); }); // falls back to the illustrated stops

@@ -1,5 +1,5 @@
 // PinkOut Partners — language switching. English lives in the HTML; Arabic comes from copy.js.
-import { AR, DYN } from './copy.js?v=22';
+import { AR, DYN } from './copy.js?v=23';
 import { get, set, safeStore, $$ } from './store.js?v=20';
 
 

@@ -4,13 +4,13 @@
 //   colours — a few things change colour: the hall floor, balloons, stage beams and light pools, the LED screen, confetti, sparkle
 //   props   — its own things (a glowing dance floor, tents and a campfire, a torii gate, ghosts and pumpkins…)
 //   effect  — something always moving (cherry petals, fireflies, fog, projector dust, flickering lanterns…)
-// Themes follow the knowledge base's themed-day concepts. Each theme takes over the Rose Hub activation stage (the
+// Themes follow the knowledge base's themed-day concepts (plus sport, gaming, anime and other fun days added for partners). Each theme takes over the Rose Hub activation stage (the
 // "space for changing pop-ups", seen from the overview and the Rose Hub stop): the everyday tree and panels step aside
 // for the theme's centrepiece. More props sit in the passages, at PinkOut Live and around the hall (plan metres).
 // Each theme's props are built the first time it is picked; switching pops them in and out, and the light eases over.
 import * as THREE from './vendor/three.module.min.js?v=1';
 import { toX, toZ, U, W, D, back, LOOK } from './venue.js?v=32';
-import { particles, dotTexture } from './crowd.js?v=36';
+import { particles, dotTexture } from './crowd.js?v=37';
 
 const M = (m) => m / U;
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -473,6 +473,493 @@ const THEMES = {
       };
     },
   },
+
+  gaming: { // gaming and e-sports: an RGB night, gaming stations round a giant controller on the hub stage, arcade cabinets, pixels rising
+    light: { sky: '#7f8cff', ground: '#0d1030', hemi: 0.34, sun: '#a9b8ff', sunI: 1.0, fill: '#00e5ff', fillI: 0.85, exposure: 0.95, bg: '#0a0d2a' },
+    floors: { hub: '#9aa6ff', live: '#1d2350' },
+    mood: { beams: ['#00e5ff', '#ff2bd6', '#7cff4f'], beamGain: 1.5, pools: ['#00e5ff', '#ff2bd6', '#7cff4f'], poolGain: 1.4, screenHue: 0.55,
+      balloons: ['#00e5ff', '#ff2bd6', '#7cff4f'], confetti: ['#00e5ff', '#ff2bd6', '#7cff4f', '#ffe600', '#ffffff'], sparkle: '#9ff3ff', sparkleGain: 1.2 },
+    build(g, ctx) {
+      const RGB = ['#00e5ff', '#ff2bd6', '#7cff4f', '#ffe600'];
+      const dark = std('#1a1d2e', { metalness: 0.4, roughness: 0.4 });
+      const screens = [];
+      for (let k = 0; k < 6; k++) { // six stations round the stage, players facing out to the hall
+        const a = (k / 6) * Math.PI * 2 + 0.5;
+        const st = prop(g, ...onStage(a, 2.3), TOP, a);
+        part(st, GEO.box(1.1, 0.06, 0.55), dark, 0, 0.15, 0.75);
+        [-0.5, 0.5].forEach((d) => part(st, GEO.box(0.05, 0.72, 0.5), dark, d, 0.15, 0.37));
+        screens.push(part(st, GEO.box(0.85, 0.48, 0.04), lit(RGB[k % 4], 1.5), 0, 0.38, 1.12));
+        part(st, GEO.box(0.5, 0.1, 0.5), std(RGB[k % 4], { roughness: 0.5 }), 0, -0.45, 0.48);
+        part(st, GEO.box(0.5, 0.75, 0.1), dark, 0, -0.72, 0.9);
+        part(st, GEO.box(0.12, 0.6, 0.11), std(RGB[k % 4]), 0, -0.72, 0.9);
+      }
+      const pad = prop(g, ...STAGE, 2.5); // the giant controller, turning over the stage
+      const shell = std('#f2f2f7', { roughness: 0.35 });
+      part(pad, GEO.box(1.4, 0.3, 0.8), shell);
+      [-0.72, 0.72].forEach((d) => part(pad, GEO.sph(0.42, 20), shell, d, 0.25, -0.02).scale.set(1, 0.7, 1.25));
+      part(pad, GEO.box(0.42, 0.1, 0.13), dark, -0.45, 0, 0.18); part(pad, GEO.box(0.13, 0.1, 0.42), dark, -0.45, 0, 0.18);
+      [[0.45, -0.14], [0.59, 0], [0.45, 0.14], [0.31, 0]].forEach(([dx, dy], k) => part(pad, GEO.cyl(0.06, 0.06, 0.08, 14), lit(RGB[k], 1.6), dx, dy, 0.18));
+      [-0.2, 0.2].forEach((d) => part(pad, GEO.cyl(0.08, 0.1, 0.12, 14), dark, d, 0.22, 0.2));
+      const ring = part(prop(g, ...STAGE, TOP), GEO.torus(3.2, 0.06, Math.PI * 2, 64), lit('#00e5ff', 2.2), 0, 0, 0.06); ring.rotation.x = Math.PI / 2;
+      // arcade cabinets in the hall
+      SPOTS.forEach(([x, y], k) => {
+        const cab = prop(g, x, y, 0, k * 1.3);
+        part(cab, GEO.box(0.8, 1.8, 0.7), std(['#3a1d6e', '#1d2a6e', '#6e1d4f'][k], { roughness: 0.5 }), 0, 0, 0.9);
+        part(cab, GEO.box(0.6, 0.45, 0.02), lit(RGB[k], 1.4), 0, 0.36, 1.35);
+        part(cab, GEO.box(0.78, 0.2, 0.05), lit(RGB[(k + 1) % 4], 2), 0, 0.34, 1.72);
+        part(cab, GEO.box(0.8, 0.08, 0.3), dark, 0, 0.45, 0.98);
+      });
+      // pixels rising from the stage
+      const n = ctx.coarse ? 24 : 48;
+      const pix = new THREE.InstancedMesh(GEO.box(0.16, 0.16, 0.16), new THREE.MeshBasicMaterial({ color: '#ffffff' }), n);
+      const ps = Array.from({ length: n }, (_, i) => ({ a: rand(0, Math.PI * 2), r: rand(0.5, 6), k: Math.random(), sp: rand(0.12, 0.25) }));
+      ps.forEach((_, i) => pix.setColorAt(i, new THREE.Color(RGB[i % 4])));
+      const hold = prop(g, ...STAGE, TOP); hold.add(pix);
+      const m4 = new THREE.Matrix4();
+      let next = 0;
+      return {
+        step(dt, t, p) {
+          pad.rotation.y = t * 0.4; pad.rotation.x = -0.45 + Math.sin(t * 0.8) * 0.1;
+          pad.position.y = M(2.5 + Math.sin(t * 1.1) * 0.12);
+          ring.material.emissive.setHSL((t * 0.12) % 1, 1, 0.5); ring.material.color.copy(ring.material.emissive);
+          screens.forEach((s, i) => { s.material.emissiveIntensity = 1.2 + Math.sin(t * 6 + i * 2) * 0.4; });
+          ps.forEach((o, i) => {
+            o.k = (o.k + dt * o.sp) % 1;
+            const s = Math.sin(o.k * Math.PI);
+            m4.makeScale(s, s, s).setPosition(M(Math.sin(o.a) * o.r), M(o.k * 5.5), M(Math.cos(o.a) * o.r));
+            pix.setMatrixAt(i, m4);
+          });
+          pix.instanceMatrix.needsUpdate = true;
+          if (p > 0.9 && t > next) { next = t + 0.9; const [x, y] = onStage(rand(0, Math.PI * 2), 2.4); ctx.live.burst(new THREE.Vector3(toX(x), M(1.6), toZ(y)), ['star', 'sparkle'], 2); }
+        },
+      };
+    },
+  },
+
+  anime: { // anime and manga: candy-bright light, a giant magic wand on the hub stage, manga panels round it, sparkles spiralling up
+    light: { sky: '#ffe0fb', ground: '#4a2a6a', hemi: 0.48, sun: '#fff2fb', sunI: 1.9, fill: '#8fd8ff', fillI: 0.7, exposure: 0.92, bg: '#2a1440' },
+    floors: { hub: '#ffd0f0' },
+    mood: { beams: ['#ff7ac8', '#7ad7ff', '#ffe066'], pools: ['#ff7ac8', '#7ad7ff', '#ffffff'], screenHue: 0.86, screenSat: 0.8,
+      balloons: ['#ff7ac8', '#7ad7ff', '#ffe066', '#b18bff'], confetti: ['#ff7ac8', '#7ad7ff', '#ffe066', '#b18bff', '#ffffff'], sparkle: '#fff2a8', sparkleGain: 1.8 },
+    build(g, ctx) {
+      const manga = canvasTexture(256, (c, s) => { // a manga page: panels, speed lines, halftone, a big star
+        c.fillStyle = '#ffffff'; c.fillRect(0, 0, s, s);
+        c.strokeStyle = '#1b1b1f'; c.lineWidth = 2;
+        for (let k = 0; k < 40; k++) { const a = (k / 40) * Math.PI * 2; c.beginPath(); c.moveTo(s / 2 + Math.cos(a) * 40, s * 0.62 + Math.sin(a) * 40); c.lineTo(s / 2 + Math.cos(a) * 200, s * 0.62 + Math.sin(a) * 200); c.stroke(); }
+        c.fillStyle = '#ff7ac8'; for (let i = 0; i < 12; i++) for (let j = 0; j < 5; j++) { c.beginPath(); c.arc(14 + i * 21, 14 + j * 16, 4, 0, Math.PI * 2); c.fill(); }
+        c.fillStyle = '#ffe066'; c.beginPath();
+        for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + (k * Math.PI) / 5, r = k % 2 ? 18 : 40; c.lineTo(s / 2 + Math.cos(a) * r, s * 0.62 + Math.sin(a) * r); }
+        c.fill(); c.stroke();
+        c.lineWidth = 8; c.strokeRect(4, 4, s - 8, s - 8); c.beginPath(); c.moveTo(4, 92); c.lineTo(s - 4, 92); c.moveTo(128, 4); c.lineTo(110, 92); c.stroke();
+      });
+      const page = std('#ffffff', { map: manga, roughness: 0.8 });
+      for (let k = 0; k < 5; k++) {
+        const a = (k / 5) * Math.PI * 2 + 0.6;
+        const b = prop(g, ...onStage(a, 2.9), TOP, a);
+        part(b, GEO.box(1.3, 1.7, 0.05), page, 0, 0, 1.15);
+        [-0.6, 0.6].forEach((d) => part(b, GEO.cyl(0.03, 0.03, 1.1), std('#ff7ac8'), d, -0.08, 0.3));
+      }
+      const wand = prop(g, ...STAGE, TOP);
+      part(wand, GEO.cyl(0.06, 0.08, 3.0, 12), std('#ffffff', { roughness: 0.3 }), 0, 0, 1.5);
+      for (let k = 0; k < 6; k++) part(wand, GEO.torus(0.09, 0.025), std('#ff7ac8'), 0, 0, 0.4 + k * 0.45).rotation.x = Math.PI / 2;
+      part(wand, GEO.cyl(0.5, 0.6, 0.15, 24), std('#b18bff', { roughness: 0.4 }), 0, 0, 0.08);
+      const top = prop(g, ...STAGE, TOP + 3.45);
+      part(top, starGeo(0.95, 0.42, 0.2), lit('#ffe066', 1.2, { metalness: 0.3, roughness: 0.3 }));
+      part(top, heartGeo(0.5, 0.22), lit('#ff3d8b', 1.0), 0, 0.12, 0);
+      const halo = part(top, GEO.torus(1.25, 0.04, Math.PI * 2, 48), lit('#7ad7ff', 2.2));
+      // sparkles spiralling up round the wand
+      const sp = particles(ctx.coarse ? 30 : 60, dotTexture(), { blending: THREE.AdditiveBlending });
+      const ss = Array.from({ length: sp.n }, () => ({ k: Math.random(), a: rand(0, 6.3) }));
+      const pastel = ['#ff7ac8', '#7ad7ff', '#ffe066', '#b18bff', '#ffffff'];
+      for (let i = 0; i < sp.n; i++) { sp.tint(i, pick(pastel)); sp.size.setX(i, rand(0.06, 0.11)); }
+      ctx.scene.add(sp.points);
+      let next = 0;
+      return {
+        points: [sp],
+        step(dt, t, p) {
+          top.rotation.y = t * 0.9; halo.rotation.x = Math.sin(t * 0.7) * 0.6;
+          top.position.y = M(TOP + 3.45 + Math.sin(t * 1.4) * 0.1);
+          ss.forEach((o, i) => {
+            o.k = (o.k + dt * 0.18) % 1;
+            const a = o.a + o.k * 9, r = M(0.4 + o.k * 1.4);
+            sp.pos.setXYZ(i, toX(STAGE[0]) + Math.sin(a) * r, M(TOP + o.k * 4.2), toZ(STAGE[1]) + Math.cos(a) * r);
+            sp.alpha.setX(i, p * Math.sin(o.k * Math.PI) * (0.6 + 0.4 * Math.sin(t * 8 + i)));
+          });
+          sp.flush();
+          if (p > 0.9 && t > next) { next = t + 0.7; ctx.live.burst(new THREE.Vector3(toX(STAGE[0]), M(3.6), toZ(STAGE[1])), ['heart', 'star', 'sparkle'], 2); }
+        },
+      };
+    },
+  },
+
+  padel: { // padel and sports: a bright day, a mini padel court on the hub stage with a rally that never ends, ball baskets
+    light: { sky: '#ffffff', ground: '#2f5d4a', hemi: 0.55, sun: '#fff6e8', sunI: 2.2, fill: '#9fd8ff', fillI: 0.5, exposure: 0.88, bg: '#3d7fb8' },
+    floors: { hub: '#bfe3f0' },
+    mood: { beams: ['#e6ff3c', '#ffffff', '#2f7fd1'], pools: ['#e6ff3c', '#9fd8ff', '#ffffff'], screenHue: 0.58, screenSat: 0.8,
+      balloons: ['#2f7fd1', '#e6ff3c', '#ffffff'], confetti: ['#2f7fd1', '#e6ff3c', '#ffffff', '#ff6f61'], sparkle: '#ffffff', sparkleGain: 0.6 },
+    build(g, ctx) {
+      const court = prop(g, ...STAGE, TOP);
+      const white = std('#ffffff', { roughness: 0.5 });
+      part(court, GEO.box(5.6, 0.02, 3.0), std('#2f7fd1', { roughness: 0.95 }), 0, 0, 0.02);
+      [[0, -1.47, 5.6, 0.06], [0, 1.47, 5.6, 0.06], [-2.77, 0, 0.06, 3.0], [2.77, 0, 0.06, 3.0], [-1.6, 0, 0.05, 3.0], [1.6, 0, 0.05, 3.0], [0, 0, 3.2, 0.05]].forEach(([dx, dy, w, d]) => part(court, GEO.box(w, 0.01, d), white, dx, dy, 0.035));
+      part(court, GEO.box(0.03, 0.85, 3.0), std('#1b1b1f', { transparent: true, opacity: 0.55, depthWrite: false }), 0, 0, 0.45);
+      part(court, GEO.box(0.05, 0.06, 3.05), white, 0, 0, 0.88);
+      [-1.52, 1.52].forEach((d) => part(court, GEO.cyl(0.04, 0.04, 0.95), std('#1b1b1f'), 0, d, 0.47));
+      const glass = std('#cfefff', { transparent: true, opacity: 0.22, roughness: 0.05, depthWrite: false });
+      [-2.8, 2.8].forEach((d) => { part(court, GEO.box(0.04, 1.5, 3.0), glass, d, 0, 0.77); part(court, GEO.box(0.08, 0.08, 3.0), std('#1b1b1f'), d, 0, 1.52); });
+      const ballMat = lit('#e6ff3c', 0.35, { roughness: 0.7 });
+      const ball = part(court, GEO.sph(0.11, 14), ballMat, 0, 0, 0.5);
+      const racket = (side) => {
+        const r = new THREE.Group(); r.position.set(M(side * 2.35), M(1.0), 0); court.add(r);
+        const head = new THREE.Mesh(GEO.cyl(0.24, 0.24, 0.05, 24), std(side < 0 ? '#ff6f61' : '#1b1b1f', { roughness: 0.4 })); head.rotation.z = Math.PI / 2; head.position.y = M(0.25); r.add(head);
+        const grip = new THREE.Mesh(GEO.cyl(0.03, 0.03, 0.3, 8), white); grip.position.y = M(-0.1); r.add(grip);
+        return r;
+      };
+      const rk = [racket(-1), racket(1)];
+      SPOTS.forEach(([x, y]) => { // baskets of balls
+        const b = prop(g, x, y);
+        part(b, GEO.cyl(0.3, 0.25, 0.6, 16, true), std('#1b1b1f', { wireframe: true }), 0, 0, 0.5);
+        part(b, GEO.cyl(0.02, 0.02, 0.5), std('#1b1b1f'), 0, 0, 0.25);
+        for (let k = 0; k < 10; k++) part(b, GEO.sph(0.07, 10), ballMat, rand(-0.18, 0.18), rand(-0.18, 0.18), rand(0.4, 0.8));
+      });
+      let lastHit = 0;
+      return {
+        step(dt, t, p) {
+          const P = 1.3, n = Math.floor(t / P), k = (t / P) % 1, dir = n % 2 ? 1 : -1;
+          const k2 = (k * 2) % 1, h = k < 0.5 ? 0.9 + Math.sin(k2 * Math.PI) * 0.7 - k2 * 0.8 : 0.1 + Math.sin(k2 * Math.PI) * 0.9; // over the net, one bounce
+          ball.position.set(M(dir * (-2.2 + k * 4.4)), M(Math.max(0.1, h + (k < 0.5 ? 0 : k2 * 0.8))), M(Math.sin(n * 2.3) * 0.8 * (k - 0.5)));
+          rk.forEach((r, i) => { const near = (i === 0) === (dir > 0) ? k : 1 - k; r.rotation.y = (i ? -1 : 1) * Math.max(0, 1 - near * 6) * 1.2; });
+          if (p > 0.9 && n !== lastHit) { lastHit = n; ctx.live.burst(new THREE.Vector3(toX(STAGE[0] - dir * 2.3), M(1.4), toZ(STAGE[1])), ['star'], 1); }
+        },
+      };
+    },
+  },
+
+  football: { // football night: floodlights, a pitch on the hub stage, Team Pink and Team Mint flags in the audience, a goal now and then
+    light: { sky: '#c8d8ff', ground: '#0f2a1a', hemi: 0.38, sun: '#f2f6ff', sunI: 2.0, fill: '#7affc8', fillI: 0.5, exposure: 0.95, bg: '#0b1a2a' },
+    floors: { hub: '#8fd49c', live: '#1e5a34' },
+    mood: { beams: ['#ffffff', '#7affc8', '#ff3d8b'], pools: ['#ffffff', '#7affc8', '#ff3d8b'], screenHue: 0.33, screenSat: 0.7,
+      balloons: ['#ff3d8b', '#3fe0a8', '#ffffff'], confetti: ['#ff3d8b', '#3fe0a8', '#ffffff', '#ffe600'], sparkle: '#ffffff', sparkleGain: 0.7 },
+    build(g, ctx) {
+      const white = std('#ffffff', { roughness: 0.5 });
+      const pitch = prop(g, ...STAGE, TOP);
+      part(pitch, GEO.cyl(3.2, 3.2, 0.02, 48), std('#3f9f4f', { roughness: 0.95 }), 0, 0, 0.02);
+      const circle = part(pitch, GEO.torus(0.9, 0.03, Math.PI * 2, 40), white, 0, 0, 0.035); circle.rotation.x = Math.PI / 2;
+      part(pitch, GEO.box(0.05, 0.01, 5.6), white, 0, 0, 0.035);
+      const goals = [-2.5, 2.5].map((d) => {
+        const gl = new THREE.Group(); gl.position.set(M(d), 0, 0); pitch.add(gl);
+        [-0.9, 0.9].forEach((w) => { const post = new THREE.Mesh(GEO.cyl(0.04, 0.04, 1.0, 8), white); post.position.set(0, M(0.5), M(w)); gl.add(post); });
+        const bar = new THREE.Mesh(GEO.box(0.08, 0.08, 1.88), white); bar.position.y = M(1.0); gl.add(bar);
+        const net = new THREE.Mesh(GEO.box(0.6, 1.0, 1.8), std('#ffffff', { wireframe: true })); net.position.set(M(Math.sign(d) * 0.3), M(0.5), 0); gl.add(net);
+        return d;
+      });
+      const ball = football(0.28); ball.position.y = M(0.3); pitch.add(ball);
+      // floodlight towers in the hall, aimed at the pitch
+      SPOTS.forEach(([x, y]) => {
+        const tw = prop(g, x, y);
+        part(tw, GEO.cyl(0.07, 0.1, 4.8, 8), std('#c9ccd6', { metalness: 0.6 }), 0, 0, 2.4);
+        const lamp = part(tw, GEO.box(0.9, 0.6, 0.12), lit('#ffffff', 2.4), 0, 0, 4.9);
+        lamp.lookAt(new THREE.Vector3(toX(STAGE[0]), 0, toZ(STAGE[1])));
+        const from = new THREE.Vector3(toX(x), M(4.9), toZ(y)), to = new THREE.Vector3(toX(STAGE[0]), 0, toZ(STAGE[1]));
+        const dir = to.clone().sub(from), len = dir.length();
+        const geo = new THREE.ConeGeometry(M(1.6), len, 24, 1, true); geo.translate(0, -len / 2, 0);
+        const beam = new THREE.Mesh(geo, beamMaterial('#f2f6ff', 0.12));
+        beam.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), dir.normalize());
+        const h = new THREE.Group(); h.position.copy(from); h.add(beam); g.add(h);
+      });
+      // team flags in the audience
+      const flags = SEATS.filter((s) => (s.c + s.r) % 2 === 0).map((s, i) => {
+        const f = prop(g, s.x + 0.12, s.y, 1.1);
+        part(f, GEO.cyl(0.012, 0.012, 0.6), std('#ddd'), 0, 0, 0.3);
+        const cloth = part(f, new THREE.PlaneGeometry(M(0.36), M(0.24)), std(i % 2 ? '#3fe0a8' : '#ff3d8b', { side: THREE.DoubleSide }), 0.18, 0, 0.5);
+        return f;
+      });
+      let lastGoal = -1, flash = 0;
+      return {
+        step(dt, t, p) {
+          const P = 6, n = Math.floor(t / P), k = (t / P) % 1, side = goals[n % 2];
+          const run = clamp01((k - 0.2) / 0.25), back = clamp01((k - 0.7) / 0.2);
+          ball.position.set(M(side * 1.08 * run * (1 - back)), M(0.3 + Math.sin(run * Math.PI) * 0.5 * (1 - back)), 0);
+          ball.rotation.z = -Math.sign(side) * run * 8; ball.rotation.y = t * 0.3;
+          if (k > 0.45 && n !== lastGoal) { lastGoal = n; flash = 0.35; if (p > 0.9) ctx.live.burst(new THREE.Vector3(toX(STAGE[0] + side), M(1.5), toZ(STAGE[1])), ['star', 'heart', 'sparkle'], 6); }
+          flash = Math.max(0, flash - dt);
+          flags.forEach((f, i) => { f.rotation.x = Math.sin(t * (flash > 0 ? 10 : 3) + i * 0.7) * (flash > 0 ? 0.6 : 0.25); });
+          return { jitter: flash > 0 ? 1.25 : 1 }; // the floodlights flare for a goal
+        },
+      };
+    },
+  },
+
+  space: { // galaxy night: deep violet light, a ringed planet over the hub stage with moons, a rocket, stars twinkling everywhere
+    light: { sky: '#8b8cff', ground: '#0a0820', hemi: 0.32, sun: '#c9c4ff', sunI: 1.0, fill: '#b44cff', fillI: 0.8, exposure: 0.95, bg: '#05041a' },
+    floors: { hub: '#9a90e0', live: '#1c1640' },
+    mood: { beams: ['#b44cff', '#4cc9ff', '#ffffff'], beamGain: 1.3, pools: ['#b44cff', '#4cc9ff', '#ffffff'], screenHue: 0.72, screenSat: 0.8,
+      balloons: ['#b44cff', '#4cc9ff', '#c9ccd6'], confetti: ['#b44cff', '#4cc9ff', '#ffffff', '#ffe066'], sparkle: '#e0d8ff', sparkleGain: 1.6 },
+    build(g, ctx) {
+      const bands = canvasTexture(128, (c, s) => { ['#ff8fd8', '#b44cff', '#7a5cff', '#ffc6ec', '#4cc9ff', '#b44cff', '#ff8fd8', '#ffd6a8'].forEach((col, i) => { c.fillStyle = col; c.fillRect(0, (i * s) / 8, s, s / 8 + 1); }); });
+      const planet = prop(g, ...STAGE, TOP + 2.7);
+      const globe = part(planet, GEO.sph(1.1, 32), std('#ffffff', { map: bands, roughness: 0.6, emissive: '#3a1a6a', emissiveIntensity: 0.4 }));
+      const ring = part(planet, GEO.torus(1.75, 0.16, Math.PI * 2, 64), lit('#ffd6f5', 0.6, { roughness: 0.4 })); ring.rotation.x = Math.PI / 2 - 0.35; ring.scale.set(1, 1, 0.25);
+      const moons = [0.25, 0.18].map((r, k) => part(planet, GEO.sph(r, 16), std(k ? '#c9ccd6' : '#ffe066', { emissive: k ? '#555' : '#ffb000', emissiveIntensity: 0.4 })));
+      part(prop(g, ...STAGE, TOP), GEO.cyl(0.08, 0.3, 1.6, 12), std('#c9ccd6', { metalness: 0.7, roughness: 0.3 }), 0, 0, 0.8);
+      const rocket = prop(g, ...onStage(2.2, 2.4), TOP);
+      part(rocket, GEO.cyl(0.32, 0.36, 2.0, 20), std('#ffffff', { roughness: 0.35 }), 0, 0, 1.3);
+      part(rocket, GEO.cone(0.32, 0.8, 20), std('#ff3d8b', { roughness: 0.4 }), 0, 0, 2.7);
+      part(rocket, GEO.cyl(0.13, 0.13, 0.05, 16), lit('#4cc9ff', 1.6), 0, 0.33, 1.7).rotation.x = Math.PI / 2;
+      for (let k = 0; k < 3; k++) { const a = (k / 3) * Math.PI * 2; part(rocket, GEO.box(0.06, 0.6, 0.45), std('#ff3d8b'), Math.sin(a) * 0.4, Math.cos(a) * 0.4, 0.45).rotation.y = a; }
+      const flame = part(rocket, GEO.cone(0.22, 0.5, 12), lit('#ffb03c', 2.4, { transparent: true, opacity: 0.85 }), 0, 0, 0.2); flame.rotation.x = Math.PI;
+      // stars over every world, twinkling
+      const stars = particles(ctx.coarse ? 70 : 150, dotTexture(), { blending: THREE.AdditiveBlending });
+      const st = Array.from({ length: stars.n }, () => ({ x: (Math.random() - 0.5) * W * 1.1, y: rand(1.5, 2.6), z: (Math.random() - 0.5) * D * 1.1, ph: rand(0, 6), sp: rand(1, 3) }));
+      for (let i = 0; i < stars.n; i++) { stars.tint(i, pick(['#ffffff', '#e0d8ff', '#bfe9ff', '#ffe6f5'])); stars.size.setX(i, rand(0.05, 0.11)); }
+      ctx.scene.add(stars.points);
+      return {
+        points: [stars],
+        step(dt, t, p) {
+          globe.rotation.y = t * 0.3; planet.position.y = M(TOP + 2.7 + Math.sin(t * 0.8) * 0.1);
+          moons.forEach((m, k) => { const a = t * (0.7 - k * 0.25) + k * 3; m.position.set(M(Math.cos(a) * (2.3 + k * 0.5)), M(Math.sin(a) * 0.5), M(Math.sin(a) * (2.3 + k * 0.5))); });
+          flame.scale.set(1, 1 + Math.sin(t * 19) * 0.15, 1);
+          st.forEach((o, i) => { stars.pos.setXYZ(i, o.x, o.y, o.z); stars.alpha.setX(i, p * (0.35 + 0.6 * Math.max(0, Math.sin(t * o.sp + o.ph)))); });
+          stars.flush();
+        },
+      };
+    },
+  },
+
+  ocean: { // mermaid day under the sea: aqua light, a giant open clam with a pearl, coral and swaying seaweed, bubbles rising
+    light: { sky: '#9ff5ff', ground: '#0b3a4a', hemi: 0.45, sun: '#d8fbff', sunI: 1.5, fill: '#3fd0ff', fillI: 0.7, exposure: 0.92, bg: '#05283a' },
+    floors: { hub: '#a8ece6' },
+    mood: { beams: ['#3fd0ff', '#7affd8', '#ffffff'], pools: ['#3fd0ff', '#7affd8', '#ff9fc8'], screenHue: 0.52, screenSat: 0.8,
+      balloons: ['#3fd0ff', '#ff9fc8', '#7affd8', '#b18bff'], confetti: ['#3fd0ff', '#ff9fc8', '#7affd8', '#ffffff'], sparkle: '#c8fbff', sparkleGain: 1.5 },
+    build(g, ctx) {
+      const shellMat = std('#ffd6e8', { roughness: 0.3, metalness: 0.3, side: THREE.DoubleSide });
+      const clam = prop(g, ...STAGE, TOP);
+      const half = () => new THREE.SphereGeometry(M(1.3), 28, 10, 0, Math.PI * 2, 0, Math.PI / 2);
+      const low = part(clam, half(), shellMat, 0, 0, 0.5); low.rotation.x = Math.PI; low.scale.set(1, 0.4, 1);
+      const lid = new THREE.Group(); lid.position.set(0, M(0.52), M(-1.2)); clam.add(lid);
+      const up = new THREE.Mesh(half(), shellMat); up.scale.set(1, 0.4, 1); up.position.z = M(1.2); lid.add(up);
+      const pearl = part(clam, GEO.sph(0.35, 24), lit('#fff8f0', 0.5, { metalness: 0.4, roughness: 0.15 }), 0, 0, 0.75);
+      const sea = [];
+      const coral = ['#ff7f6e', '#ff9fc8', '#ffb36b', '#b18bff'];
+      for (let k = 0; k < 8; k++) {
+        const a = (k / 8) * Math.PI * 2 + 0.2, p = prop(g, ...onStage(a, 2.6), TOP);
+        if (k % 2) { // coral: a few branches
+          for (let b = 0; b < 4; b++) part(p, GEO.cyl(0.04, 0.08, 0.9 + b * 0.15, 8), std(coral[k % 4], { roughness: 0.8 }), 0, 0, 0.45).rotation.set(rand(-0.6, 0.6), 0, rand(-0.6, 0.6));
+          part(p, GEO.sph(0.18, 10), std(coral[(k + 1) % 4]), 0, 0, 0.15);
+        } else for (let b = 0; b < 3; b++) { // seaweed, swaying
+          const w = part(p, GEO.box(0.12, 1.6 + b * 0.4, 0.03), std(['#2fae8f', '#3fd0a0', '#1f8f7a'][b], { side: THREE.DoubleSide }), (b - 1) * 0.15, 0, 0); w.geometry.translate(0, M(0.8 + b * 0.2), 0); sea.push(w);
+        }
+      }
+      [onStage(0.9, 1.9), onStage(4.0, 1.8), SPOTS[1]].forEach(([x, y], k) => part(prop(g, x, y, TOP), starGeo(0.35, 0.15, 0.06), std(['#ff8a3d', '#ff7ac8', '#ffd23f'][k], { roughness: 0.7 }), 0, 0, 0.05).rotation.x = -Math.PI / 2);
+      // bubbles rising all over the venue
+      const bub = particles(ctx.coarse ? 60 : 130, dotTexture(), { blending: THREE.AdditiveBlending });
+      const bs = Array.from({ length: bub.n }, () => ({ x: (Math.random() - 0.5) * W, y: Math.random() * 2, z: (Math.random() - 0.5) * D, s: rand(0.15, 0.35), ph: rand(0, 6) }));
+      for (let i = 0; i < bub.n; i++) { bub.tint(i, pick(['#c8fbff', '#ffffff', '#9ff5ff'])); bub.size.setX(i, rand(0.05, 0.12)); }
+      ctx.scene.add(bub.points);
+      return {
+        points: [bub],
+        step(dt, t, p) {
+          lid.rotation.x = -0.9 - Math.sin(t * 0.8) * 0.15;
+          pearl.material.emissiveIntensity = 0.45 + Math.sin(t * 2) * 0.2;
+          sea.forEach((w, i) => { w.rotation.z = Math.sin(t * 1.2 + i) * 0.25; });
+          bs.forEach((o, i) => {
+            o.y += dt * o.s; if (o.y > 2) { o.y = 0.05; o.x = (Math.random() - 0.5) * W; o.z = (Math.random() - 0.5) * D; }
+            bub.pos.setXYZ(i, o.x + Math.sin(t * 2 + o.ph) * 0.06, o.y, o.z);
+            bub.alpha.setX(i, p * 0.6 * clamp01(o.y / 0.2) * clamp01((2 - o.y) / 0.4));
+          });
+          bub.flush();
+        },
+      };
+    },
+  },
+
+  disco: { // disco night: a giant mirror ball over the hub stage throwing rays and light flecks, glowing pillars, roller skates
+    light: { sky: '#ff9fe0', ground: '#2a0a2a', hemi: 0.32, sun: '#ffd1a8', sunI: 1.0, fill: '#ff4fa8', fillI: 0.9, exposure: 0.95, bg: '#1a0620' },
+    floors: { hub: '#eab0e4', live: '#4a1240' },
+    mood: { beams: ['#ff4fa8', '#ffb03c', '#b44cff'], beamGain: 1.5, pools: ['#ff4fa8', '#ffb03c', '#b44cff'], poolGain: 1.3, screenHue: 0.9,
+      balloons: ['#e6c47e', '#ff4fa8', '#b44cff', '#c9ccd6'], confetti: ['#e6c47e', '#c9ccd6', '#ff4fa8', '#ffffff'], sparkle: '#ffe6a0', sparkleGain: 2 },
+    build(g, ctx) {
+      const mirror = std('#e8e8f0', { metalness: 1, roughness: 0.08, flatShading: true, emissive: '#553355', emissiveIntensity: 0.4 });
+      const ballHold = prop(g, ...STAGE, TOP + 3.9);
+      const ball = part(ballHold, GEO.ico(0.9, 2), mirror);
+      part(ballHold, GEO.cyl(0.015, 0.015, 1.4), std('#c9ccd6'), 0, 0, 1.6);
+      const rays = new THREE.Group(); ballHold.add(rays);
+      const cols = ['#ff4fa8', '#ffb03c', '#b44cff', '#4cc9ff'];
+      for (let k = 0; k < 8; k++) {
+        const len = M(4.2), geo = new THREE.ConeGeometry(M(0.55), len, 16, 1, true); geo.translate(0, -len / 2, 0);
+        const r = new THREE.Mesh(geo, beamMaterial(cols[k % 4], 0.3)); r.rotation.set(0.75, (k / 8) * Math.PI * 2, 0, 'YXZ'); rays.add(r);
+      }
+      const pillars = [];
+      for (let k = 0; k < 8; k++) { const p = prop(g, ...onStage((k / 8) * Math.PI * 2, 3.0), TOP); pillars.push(part(p, GEO.cyl(0.12, 0.12, 1.6, 12), lit(cols[k % 4], 1.4, { transparent: true, opacity: 0.85 }), 0, 0, 0.8)); }
+      const skate = (x, y, yaw, col) => {
+        const s = prop(g, x, y, 0, yaw);
+        part(s, GEO.box(0.5, 0.5, 0.9), std(col, { roughness: 0.4 }), 0, -0.1, 0.55);
+        part(s, GEO.box(0.5, 0.4, 0.45), std(col, { roughness: 0.4 }), 0, 0.3, 0.45);
+        part(s, GEO.box(0.55, 0.08, 1.2), std('#ffffff'), 0, 0.05, 0.25);
+        [[-0.3, -0.4], [0.3, -0.4], [-0.3, 0.45], [0.3, 0.45]].forEach(([dx, dy], k) => part(s, GEO.cyl(0.13, 0.13, 0.12, 16), lit(cols[k], 1), dx, dy, 0.13).rotation.z = Math.PI / 2);
+      };
+      skate(...SPOTS[0], 0.5, '#ff8fd8'); skate(...SPOTS[2], 2.2, '#ffffff');
+      // light flecks from the ball sweeping round the hall
+      const fl = particles(ctx.coarse ? 40 : 80, dotTexture(), { blending: THREE.AdditiveBlending });
+      const fs = Array.from({ length: fl.n }, () => ({ a: rand(0, 6.3), r: M(rand(1.5, 11)), h: rand(0.05, 1.2) }));
+      for (let i = 0; i < fl.n; i++) { fl.tint(i, pick(['#ffffff', '#ffe6a0', '#ffc6ec', '#c6e8ff'])); fl.size.setX(i, rand(0.05, 0.09)); }
+      ctx.scene.add(fl.points);
+      return {
+        points: [fl],
+        step(dt, t, p) {
+          ball.rotation.y = t * 0.5; rays.rotation.y = t * 0.5;
+          pillars.forEach((m, i) => { m.material.emissiveIntensity = (i + Math.floor(t * 4)) % 4 === 0 ? 2.6 : 0.7; });
+          fs.forEach((o, i) => { const a = o.a + t * 0.35; fl.pos.setXYZ(i, toX(STAGE[0]) + Math.sin(a) * o.r, o.h, toZ(STAGE[1]) + Math.cos(a) * o.r); fl.alpha.setX(i, p * (0.5 + 0.4 * Math.sin(t * 5 + i))); });
+          fl.flush();
+        },
+      };
+    },
+  },
+
+  garden: { // flower festival: a golden afternoon, giant blooms growing on the hub stage, tulip planters, pollen drifting
+    light: { sky: '#fff1d6', ground: '#4a7a3a', hemi: 0.52, sun: '#ffd9a8', sunI: 2.1, fill: '#ffb3d1', fillI: 0.55, exposure: 0.9, bg: '#c9707f' },
+    floors: { hub: '#dcf0c4' },
+    mood: { beams: ['#ffb3d1', '#fff3d6', '#c7efdf'], pools: ['#ffb3d1', '#fff3d6', '#c7efdf'], screenHue: 0.25, screenSat: 0.6,
+      balloons: ['#ff8fb8', '#ffe066', '#c9a3ff', '#ffffff'], confetti: ['#ff8fb8', '#ffe066', '#c9a3ff', '#7fd08a', '#ffffff'], sparkle: '#fff2a8', sparkleGain: 1.4 },
+    build(g, ctx) {
+      const stem = std('#4f9a4a', { roughness: 0.8 }), leaf = std('#6fbf5a', { roughness: 0.8 });
+      const petals = ['#ff8fb8', '#ff6f61', '#c9a3ff', '#ffffff', '#ffd23f', '#ffb3d1', '#ff3d8b'];
+      const heads = [];
+      const bloom = (p, h, r, col, n = 8) => {
+        const head = new THREE.Group(); head.position.y = M(h); p.add(head);
+        for (let k = 0; k < n; k++) { const a = (k / n) * Math.PI * 2; const pe = new THREE.Mesh(GEO.sph(r, 14), std(col, { roughness: 0.6 })); pe.scale.set(0.55, 0.18, 1); pe.position.set(Math.sin(a) * M(r * 1.1), 0, Math.cos(a) * M(r * 1.1)); pe.rotation.y = a; pe.castShadow = true; head.add(pe); }
+        const c = new THREE.Mesh(GEO.sph(r * 0.55, 14), std('#ffcf3f', { roughness: 0.9 })); c.scale.y = 0.5; head.add(c);
+        return head;
+      };
+      [[0, 0, 3.2, 0.55], [1.5, 0.6, 2.2, 0.42], [-1.4, 0.9, 2.6, 0.45], [0.6, -1.6, 1.8, 0.38], [-0.9, -1.2, 2.0, 0.4], [2.0, -1.0, 1.5, 0.34], [-2.1, -0.3, 1.6, 0.36]].forEach(([dx, dy, h, r], k) => {
+        const f = prop(g, STAGE[0] + dx, STAGE[1] + dy, TOP);
+        part(f, GEO.cyl(0.05, 0.07, h, 8), stem, 0, 0, h / 2);
+        [0.35, 0.6].forEach((q, j) => { const l = part(f, GEO.sph(0.25, 10), leaf, j ? -0.15 : 0.15, 0, h * q); l.scale.set(1, 0.15, 0.45); l.rotation.z = j ? 0.5 : -0.5; });
+        heads.push({ h: bloom(f, h, r, petals[k % petals.length]), ph: k });
+      });
+      SPOTS.forEach(([x, y], k) => { // tulip planters
+        const pl = prop(g, x, y);
+        part(pl, GEO.cyl(0.55, 0.45, 0.5, 20), std('#f3e6c8', { roughness: 0.6 }), 0, 0, 0.25);
+        for (let j = 0; j < 7; j++) {
+          const a = (j / 7) * Math.PI * 2, dx = Math.cos(a) * 0.3, dy = Math.sin(a) * 0.3;
+          part(pl, GEO.cyl(0.015, 0.015, 0.5, 6), stem, dx, dy, 0.75);
+          part(pl, GEO.sph(0.09, 10), std(petals[(j + k) % petals.length]), dx, dy, 1.02).scale.set(1, 1.4, 1);
+        }
+      });
+      const pol = particles(ctx.coarse ? 30 : 60, dotTexture(), { blending: THREE.AdditiveBlending });
+      const po = Array.from({ length: pol.n }, () => ({ x: toX(rand(9, 22)), y: M(rand(0.5, 4)), z: toZ(rand(15, 28)), ph: rand(0, 6) }));
+      for (let i = 0; i < pol.n; i++) { pol.tint(i, pick(['#fff2a8', '#ffffff', '#ffd6e6'])); pol.size.setX(i, rand(0.03, 0.06)); }
+      ctx.scene.add(pol.points);
+      return {
+        points: [pol],
+        step(dt, t, p) {
+          heads.forEach((o) => { o.h.rotation.z = Math.sin(t * 0.9 + o.ph) * 0.12; o.h.rotation.x = 0.25 + Math.cos(t * 0.7 + o.ph) * 0.1; o.h.rotation.y = t * 0.1 + o.ph; });
+          po.forEach((o, i) => { pol.pos.setXYZ(i, o.x + Math.sin(t * 0.4 + o.ph) * 0.3, o.y + Math.sin(t * 0.6 + o.ph) * 0.08, o.z + Math.cos(t * 0.3 + o.ph) * 0.3); pol.alpha.setX(i, p * (0.4 + 0.4 * Math.sin(t * 2 + o.ph))); });
+          pol.flush();
+        },
+      };
+    },
+  },
+
+  winter: { // winter wonderland: icy light, a giant snow globe on the hub stage, ice crystals in the hall, snow falling everywhere
+    light: { sky: '#e8f6ff', ground: '#3a5a7a', hemi: 0.5, sun: '#eaf4ff', sunI: 1.8, fill: '#9fd0ff', fillI: 0.6, exposure: 0.9, bg: '#0f1e36' },
+    floors: { hub: '#e6f2ff' },
+    mood: { beams: ['#bfe9ff', '#ffffff', '#ffc6ec'], pools: ['#bfe9ff', '#ffffff', '#ffc6ec'], screenHue: 0.56, screenSat: 0.6,
+      balloons: ['#ffffff', '#bfe9ff', '#ffc6ec'], confetti: ['#ffffff', '#bfe9ff', '#ffc6ec', '#c9ccd6'], sparkle: '#e6f6ff', sparkleGain: 1.6 },
+    build(g, ctx) {
+      const snow = std('#ffffff', { roughness: 0.9 });
+      const globe = prop(g, ...STAGE, TOP);
+      part(globe, GEO.cyl(2.3, 2.5, 0.5, 48), std('#e6c47e', { metalness: 0.7, roughness: 0.3 }), 0, 0, 0.25);
+      part(globe, GEO.cyl(2.2, 2.2, 0.06, 48), snow, 0, 0, 0.53);
+      part(globe, GEO.sph(2.3, 40), std('#dff2ff', { transparent: true, opacity: 0.16, roughness: 0.05, metalness: 0.1, depthWrite: false }), 0, 0, 2.3);
+      [[0, 0, 1], [0, 0, 0.75], [0, 0, 0.55]].reduce((h, [dx, dy, r]) => { part(globe, GEO.sph(r * 0.5, 20), snow, -0.6, 0.2, h + r * 0.45); return h + r * 0.85; }, 0.55);
+      part(globe, GEO.cone(0.05, 0.25, 8), std('#ff8a3d'), -0.6, 0.38, 1.82).rotation.x = Math.PI / 2;
+      part(globe, GEO.torus(0.27, 0.06), std('#ff3d8b'), -0.6, 0.2, 1.42).rotation.x = Math.PI / 2;
+      [-0.08, 0.08].forEach((d) => part(globe, GEO.sph(0.035, 8), std('#1b1b1f'), -0.6 + d, 0.42, 1.92));
+      [[0.9, -0.3, 1], [1.4, 0.6, 0.7]].forEach(([dx, dy, s]) => [[0.7, 0.9, 1.0], [0.55, 0.8, 1.5], [0.38, 0.7, 1.95]].forEach(([r, h, y0]) => {
+        part(globe, GEO.cone(r * s, h * s, 9), std('#2f6b55', { flatShading: true }), dx, dy, 0.55 + y0 * s);
+        part(globe, GEO.cone(r * s * 0.6, h * s * 0.35, 9), snow, dx, dy, 0.55 + y0 * s + h * s * 0.3);
+      }));
+      const ice = lit('#bfe9ff', 0.6, { transparent: true, opacity: 0.8, roughness: 0.1, metalness: 0.2 });
+      SPOTS.forEach(([x, y]) => { const c = prop(g, x, y); [[0, 0, 1.6, 0], [0.3, 0.1, 1.1, 0.3], [-0.25, 0.15, 0.9, -0.35], [0.05, -0.3, 1.2, 0.2]].forEach(([dx, dy, h, tilt]) => { const m = part(c, GEO.cyl(0.14, 0.18, h, 6), ice, dx, dy, h / 2); m.rotation.set(tilt * 0.5, 0, tilt); part(c, GEO.cone(0.14, 0.3, 6), ice, dx + Math.sin(tilt) * -h * 0.5, dy, h + 0.1).rotation.set(tilt * 0.5, 0, tilt); }); });
+      // snow falling over the whole venue, and swirling in the globe
+      const fall = particles(ctx.coarse ? 90 : 180, dotTexture());
+      const fs = Array.from({ length: fall.n }, () => ({ x: (Math.random() - 0.5) * W * 1.1, y: Math.random() * 2.2, z: (Math.random() - 0.5) * D * 1.1, s: rand(0.1, 0.22), ph: rand(0, 6) }));
+      for (let i = 0; i < fall.n; i++) { fall.tint(i, '#ffffff'); fall.size.setX(i, rand(0.05, 0.1)); }
+      const glob = particles(ctx.coarse ? 20 : 40, dotTexture());
+      const gs = Array.from({ length: glob.n }, () => ({ a: rand(0, 6.3), r: rand(0.2, 1.8), k: Math.random() }));
+      for (let i = 0; i < glob.n; i++) { glob.tint(i, '#ffffff'); glob.size.setX(i, rand(0.04, 0.07)); }
+      ctx.scene.add(fall.points, glob.points);
+      return {
+        points: [fall, glob],
+        step(dt, t, p) {
+          fs.forEach((o, i) => {
+            o.y -= dt * o.s; if (o.y < 0.05) { o.y = 2.2; o.x = (Math.random() - 0.5) * W * 1.1; o.z = (Math.random() - 0.5) * D * 1.1; }
+            fall.pos.setXYZ(i, o.x + Math.sin(t * 0.8 + o.ph) * 0.15, o.y, o.z + Math.cos(t * 0.6 + o.ph) * 0.12);
+            fall.alpha.setX(i, p * 0.9 * clamp01((o.y - 0.05) / 0.3) * clamp01((2.2 - o.y) / 0.3));
+          });
+          gs.forEach((o, i) => { o.k = (o.k + dt * 0.12) % 1; const a = o.a + t * 0.6; glob.pos.setXYZ(i, toX(STAGE[0]) + Math.sin(a) * M(o.r), M(TOP + 0.6 + (1 - o.k) * 3.2), toZ(STAGE[1]) + Math.cos(a) * M(o.r)); glob.alpha.setX(i, p * 0.9); });
+          fall.flush(); glob.flush();
+        },
+      };
+    },
+  },
+
+  candy: { // candy land: pastel sugar light, a giant cupcake on the hub stage, lollipops round it, candy canes, sprinkles falling
+    light: { sky: '#fff0fa', ground: '#ffb3d9', hemi: 0.52, sun: '#fff6fb', sunI: 2.0, fill: '#a8f0ff', fillI: 0.55, exposure: 0.88, bg: '#3a1838' },
+    floors: { hub: '#ffe0f0' },
+    mood: { beams: ['#ff8fd8', '#a8f0ff', '#fff0aa'], pools: ['#ff8fd8', '#a8f0ff', '#fff0aa'], screenHue: 0.92, screenSat: 0.7,
+      balloons: ['#ff8fd8', '#a8f0ff', '#fff0aa', '#c9ffb3'], confetti: ['#ff8fd8', '#a8f0ff', '#fff0aa', '#c9ffb3', '#ffffff'], sparkle: '#ffe6f5', sparkleGain: 1.6 },
+    build(g, ctx) {
+      const swirl = (a, b) => canvasTexture(256, (c, s) => {
+        c.fillStyle = a; c.fillRect(0, 0, s, s); c.strokeStyle = b; c.lineWidth = 16; c.beginPath();
+        for (let k = 0; k < 300; k++) { const q = k / 300, ang = q * Math.PI * 8, r = q * s * 0.48; c.lineTo(s / 2 + Math.cos(ang) * r, s / 2 + Math.sin(ang) * r); }
+        c.stroke();
+      });
+      const stripes = canvasTexture(128, (c, s) => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, s, s); c.fillStyle = '#ff3d6e'; for (let k = -4; k < 8; k++) { c.beginPath(); c.moveTo(k * 24, 0); c.lineTo(k * 24 + 12, 0); c.lineTo(k * 24 + 12 + s, s); c.lineTo(k * 24 + s, s); c.fill(); } });
+      const cake = prop(g, ...STAGE, TOP);
+      const wrap = canvasTexture(128, (c, s) => { for (let k = 0; k < 16; k++) { c.fillStyle = k % 2 ? '#ff8fd8' : '#ffb3e6'; c.fillRect((k * s) / 16, 0, s / 16 + 1, s); } });
+      part(cake, GEO.cyl(1.25, 0.95, 1.1, 32), std('#ffffff', { map: wrap, roughness: 0.6 }), 0, 0, 0.55);
+      [[1.35, 0.45, 1.3], [1.05, 0.4, 1.7], [0.7, 0.35, 2.05]].forEach(([r, tube, h], k) => part(cake, GEO.torus(r - tube, tube, Math.PI * 2, 32), std(k % 2 ? '#fff6fb' : '#ffd1ec', { roughness: 0.5 }), 0, 0, h).rotation.x = Math.PI / 2);
+      part(cake, GEO.sph(0.5, 20), std('#fff6fb', { roughness: 0.5 }), 0, 0, 2.3);
+      const cherry = part(cake, GEO.sph(0.28, 20), std('#e0182d', { roughness: 0.2 }), 0, 0, 2.9);
+      part(cake, GEO.cyl(0.02, 0.02, 0.4, 6), std('#4f9a4a'), 0.1, 0, 3.25).rotation.z = -0.4;
+      const sprinkleCols = ['#ff3d8b', '#29c7ff', '#ffe066', '#7fd08a', '#b18bff'];
+      for (let k = 0; k < 40; k++) { const a = rand(0, Math.PI * 2), r = rand(0.4, 1.2), h = 1.35 + (1.2 - r) * 0.9; part(cake, GEO.box(0.12, 0.04, 0.04), lit(pick(sprinkleCols), 0.4), Math.cos(a) * r, Math.sin(a) * r, h + 0.2).rotation.set(rand(0, 3), rand(0, 3), 0); }
+      const lollies = [];
+      for (let k = 0; k < 6; k++) {
+        const a = (k / 6) * Math.PI * 2 + 0.25;
+        const l = prop(g, ...onStage(a, 2.75), TOP, a);
+        part(l, GEO.cyl(0.04, 0.04, 2.0, 8), std('#ffffff'), 0, 0, 1.0);
+        const disc = part(l, GEO.cyl(0.55, 0.55, 0.14, 32), std('#ffffff', { map: swirl('#ffffff', sprinkleCols[k % 5]), roughness: 0.3 }), 0, 0, 2.4); disc.rotation.x = Math.PI / 2;
+        lollies.push(disc);
+      }
+      SPOTS.forEach(([x, y], k) => { // candy canes
+        const c = prop(g, x, y, 0, k);
+        const cane = std('#ffffff', { map: stripes, roughness: 0.3 });
+        part(c, GEO.cyl(0.12, 0.12, 2.2, 16), cane, 0, 0, 1.1);
+        part(c, GEO.torus(0.4, 0.12, Math.PI, 20), cane, 0.4, 0, 2.2);
+      });
+      [[0.9, 1.9], [2.4, 1.5], [4.0, 1.7], [5.4, 1.9]].forEach(([a, r], k) => { const d = part(prop(g, ...onStage(a, r), TOP), GEO.sph(0.3, 16), std(sprinkleCols[k], { roughness: 0.3, transparent: true, opacity: 0.9 }), 0, 0, 0.12); d.scale.set(1, 0.8, 1); });
+      // sprinkles falling over the hall
+      const fall = particles(ctx.coarse ? 50 : 110, dotTexture());
+      const fs = Array.from({ length: fall.n }, () => ({ x: toX(rand(6, 43)), y: Math.random() * 1.8, z: toZ(rand(13, 30)), s: rand(0.2, 0.4) }));
+      for (let i = 0; i < fall.n; i++) { fall.tint(i, pick(sprinkleCols)); fall.size.setX(i, rand(0.05, 0.08)); }
+      ctx.scene.add(fall.points);
+      return {
+        points: [fall],
+        step(dt, t, p) {
+          lollies.forEach((d, i) => { d.rotation.y = t * (i % 2 ? 1 : -1) * 0.8; });
+          cherry.position.y = M(2.9 + Math.abs(Math.sin(t * 2.2)) * 0.15);
+          fs.forEach((o, i) => {
+            o.y -= dt * o.s; if (o.y < 0.05) { o.y = 1.8; o.x = toX(rand(6, 43)); o.z = toZ(rand(13, 30)); }
+            fall.pos.setXYZ(i, o.x, o.y, o.z); fall.alpha.setX(i, p * clamp01((o.y - 0.05) / 0.3) * clamp01((1.8 - o.y) / 0.3));
+          });
+          fall.flush();
+        },
+      };
+    },
+  },
 };
 
 /* ---------- How each theme dresses the whole venue ----------
@@ -499,6 +986,38 @@ const mesh = (geo, material, dx = 0, dy = 0, h = 0) => { const x = new THREE.Mes
 const wing = (material, side) => { // a flat triangle, hinged at the body
   const w = new THREE.Mesh(new THREE.CircleGeometry(M(0.22), 3), material);
   w.rotation.x = -Math.PI / 2; const hinge = new THREE.Group(); w.position.x = side * M(0.11); hinge.add(w); return hinge;
+};
+const football = (r) => { // a white ball with dark patches (on the corners of an icosahedron)
+  const b = group(mesh(GEO.sph(r, 20), std('#ffffff', { roughness: 0.5 }))), dark = std('#1b1b1f', { roughness: 0.5 });
+  const ico = new THREE.IcosahedronGeometry(1, 0).getAttribute('position'), seen = new Set();
+  for (let i = 0; i < ico.count; i++) {
+    const v = new THREE.Vector3().fromBufferAttribute(ico, i).normalize(), key = v.toArray().map((x) => x.toFixed(2)).join();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const p = mesh(GEO.sph(r * 0.3, 10), dark); p.position.copy(v.multiplyScalar(M(r * 0.93))); p.lookAt(0, 0, 0); p.scale.set(1, 1, 0.35); b.add(p);
+  }
+  return b;
+};
+const pennant = (col) => { const p = mesh(new THREE.CircleGeometry(M(0.16), 3), std(col, { side: THREE.DoubleSide, roughness: 0.8 }), 0, 0, -0.14); p.rotation.z = -Math.PI / 2; return p; };
+const shell = (col, s) => { // a scallop: ribs fanning up from the hinge, facing +z
+  const m = std(col, { roughness: 0.4, metalness: 0.2 }), o = group(mesh(GEO.sph(s * 0.15, 10), m));
+  for (let k = 0; k < 7; k++) { const a = ((k - 3) / 3) * 1.1, rib = mesh(GEO.sph(s * 0.22, 10), m, Math.sin(a) * s * 0.45, 0, Math.cos(a) * s * 0.45); rib.scale.set(0.6, 2.2, 0.4); rib.rotation.z = -a; o.add(rib); }
+  return o;
+};
+const flower = (col, r, centre = '#ffcf3f', n = 8) => { // a flat bloom facing +z
+  const m = std(col, { roughness: 0.6 }), c = mesh(GEO.sph(r * 0.35, 12), std(centre, { roughness: 0.9 })), o = group(c);
+  c.scale.z = 0.5;
+  for (let k = 0; k < n; k++) { const a = (k / n) * Math.PI * 2, pe = mesh(GEO.sph(r * 0.5, 12), m, Math.sin(a) * r * 0.6, -0.02, Math.cos(a) * r * 0.6); pe.scale.set(0.5, 1, 0.2); pe.rotation.z = -a; o.add(pe); }
+  return o;
+};
+const snowflake = (s, material) => { // six arms with a little V on each, facing +z
+  const o = group();
+  for (let k = 0; k < 3; k++) { const arm = mesh(GEO.box(s * 2, s * 0.12, 0.03), material); arm.rotation.z = (k * Math.PI) / 3; o.add(arm); }
+  for (let k = 0; k < 6; k++) {
+    const a = (k * Math.PI) / 3, x = Math.cos(a) * s * 0.6, y = Math.sin(a) * s * 0.6;
+    [-0.6, 0.6].forEach((d) => { const v = mesh(GEO.box(s * 0.45, s * 0.08, 0.03), material, x + Math.cos(a + d) * s * 0.15, 0, y + Math.sin(a + d) * s * 0.15); v.rotation.z = a + d * 1.6; o.add(v); });
+  }
+  return o;
 };
 const NEON = ['#ff2bd6', '#29e3ff', '#b7ff3c'];
 const DRESS = {
@@ -597,6 +1116,125 @@ const DRESS = {
       c.add(mesh(GEO.cyl(1.6, 1.6, 0.12, 48), lit('#f3f0d8', 0.9))); c.children[c.children.length - 1].rotation.x = Math.PI / 2;
       const black = std('#1b1b1f', { side: THREE.DoubleSide });
       [[-0.6, 0.4, 0.8], [0.7, -0.3, 0.6], [0.1, 0.9, 0.5]].forEach(([d, h, s]) => { const b = group(mesh(GEO.sph(0.09, 8), black)); const l = wing(black, -1), r = wing(black, 1); b.add(l, r); l.rotation.z = 0.3; r.rotation.z = -0.3; b.rotation.x = Math.PI / 2; b.scale.setScalar(s * 2.2); b.position.set(M(d), M(h), M(0.25)); c.add(b); });
+    },
+  },
+  gaming: {
+    tint: '#b8c0ff', outfits: ['#1b1b2f', '#00e5ff', '#ff2bd6', '#2a2f5a', '#7cff4f', '#ffffff'], bags: ['#00e5ff', '#ff2bd6', '#7cff4f'], hat: 'headset',
+    door: (i) => mesh(GEO.box(0.14, 0.14, 0.14), lit(['#00e5ff', '#ff2bd6', '#7cff4f', '#ffe600'][i % 4], 2.2)),
+    float: (i) => { // a pixel heart
+      const o = group(), col = lit(['#ff2bd6', '#00e5ff', '#7cff4f'][i % 3], 1.8);
+      ['.XX.XX.', 'XXXXXXX', 'XXXXXXX', '.XXXXX.', '..XXX..', '...X...'].forEach((row, r) => [...row].forEach((ch, c) => { if (ch === 'X') o.add(mesh(GEO.box(0.11, 0.11, 0.11), col, (c - 3) * 0.12, 0, (2.5 - r) * 0.12)); }));
+      o.userData.spin = 0.7; return o;
+    },
+    crest: (c) => {
+      c.add(mesh(GEO.box(3.4, 1.6, 0.3), std('#f2f2f7', { roughness: 0.35 }), 0, 0, 0));
+      [-1.7, 1.7].forEach((d) => c.add(mesh(GEO.sph(0.85, 20), std('#f2f2f7', { roughness: 0.35 }), d, 0, -0.4)));
+      c.add(mesh(GEO.box(0.9, 0.28, 0.4), std('#1a1d2e'), -1.1, 0, 0.1)); c.add(mesh(GEO.box(0.28, 0.9, 0.4), std('#1a1d2e'), -1.1, 0, 0.1));
+      [[1.1, 0.35], [1.45, 0], [1.1, -0.35], [0.75, 0]].forEach(([d, h], k) => c.add(mesh(GEO.sph(0.17, 12), lit(['#00e5ff', '#ff2bd6', '#7cff4f', '#ffe600'][k], 2), d, 0.2, h)));
+    },
+  },
+  anime: {
+    tint: '#ffd6f5', outfits: ['#ffffff', '#1f3a7a', '#ff7ac8', '#7ad7ff', '#b18bff', '#ffe066'], hair: ['#ff7ac8', '#7ad7ff', '#b18bff', '#7affc8', '#ffe066', '#2b1220'], bags: ['#ff7ac8', '#ffe066'], hat: 'bow',
+    door: (i) => (i % 2 ? mesh(starGeo(0.16, 0.07), lit(['#ffe066', '#7ad7ff'][i % 4 === 1 ? 0 : 1], 1.4)) : mesh(heartGeo(0.24), lit(['#ff7ac8', '#b18bff'][i % 4 ? 1 : 0], 1.2), 0, 0, -0.1)),
+    float: (i) => {
+      if (i % 2) { const s = group(mesh(starGeo(0.35, 0.15, 0.1), lit('#ffe066', 1.4))); s.userData.spin = 1.1; return s; }
+      const white = std('#ffffff', { side: THREE.DoubleSide }), h = group(mesh(heartGeo(0.55, 0.12), lit('#ff7ac8', 1.0)));
+      [-1, 1].forEach((s) => { const w = mesh(GEO.sph(0.22, 10), white, s * 0.38, 0, 0.1); w.scale.set(1, 0.6, 0.15); w.rotation.z = s * 0.5; h.add(w); });
+      h.userData.spin = 0.6; return h;
+    },
+    crest: (c) => {
+      c.add(mesh(heartGeo(2.0, 0.25), lit('#ff7ac8', 1.0), 0, 0, 0));
+      [-1, 1].forEach((s) => [0, 1, 2].forEach((k) => { const w = mesh(GEO.sph(0.75 - k * 0.15, 14), std('#ffffff'), s * (1.4 + k * 0.45), -0.1, 0.4 - k * 0.3); w.scale.set(1, 0.45, 0.15); w.rotation.z = s * (0.3 + k * 0.25); c.add(w); }));
+      c.add(mesh(starGeo(0.5, 0.22, 0.15), lit('#ffe066', 1.6), 0, 0.15, 1.3));
+    },
+  },
+  padel: {
+    tint: '#e6f4ff', outfits: ['#ffffff', '#e6ff3c', '#2f7fd1', '#ff6f61', '#1b1b2f', '#7affc8'], bags: ['#2f7fd1', '#e6ff3c', '#ffffff'], hat: 'visor',
+    door: (i) => (i % 3 === 1 ? mesh(GEO.sph(0.08, 10), lit('#e6ff3c', 0.4)) : pennant(['#2f7fd1', '#e6ff3c', '#ff6f61', '#ffffff'][i % 4])),
+    float: () => { const b = group(mesh(GEO.sph(0.3, 18), lit('#e6ff3c', 0.35, { roughness: 0.7 }))); const seam = mesh(GEO.torus(0.3, 0.02), std('#ffffff')); seam.rotation.y = 0.6; b.add(seam); b.userData.spin = 1.2; return b; },
+    crest: (c) => {
+      const head = mesh(GEO.cyl(1.3, 1.3, 0.2, 40), std('#2f7fd1', { roughness: 0.4 }), -0.4, 0, 0.5); head.rotation.x = Math.PI / 2; c.add(head);
+      for (let k = 0; k < 9; k++) { const h = mesh(GEO.cyl(0.08, 0.08, 0.22, 10), std('#0f3a6a'), -0.4 + ((k % 3) - 1) * 0.5, 0, 0.5 + (Math.floor(k / 3) - 1) * 0.5); h.rotation.x = Math.PI / 2; c.add(h); }
+      const grip = mesh(GEO.cyl(0.15, 0.15, 1.4, 12), std('#1b1b1f'), 0.45, 0, -1.2); grip.rotation.z = -0.5; c.add(grip);
+      c.add(mesh(GEO.sph(0.45, 20), lit('#e6ff3c', 0.4), 1.6, 0.1, 0.9));
+    },
+  },
+  football: {
+    tint: '#d6f0dc', outfits: ['#ff3d8b', '#3fe0a8', '#ffffff', '#1b1b2f', '#ff3d8b', '#3fe0a8'], bags: ['#ff3d8b', '#3fe0a8', '#ffffff'], hat: 'scarf',
+    door: (i) => pennant(['#ff3d8b', '#ffffff', '#3fe0a8'][i % 3]),
+    float: () => { const b = group(football(0.3)); b.userData.spin = 1; return b; },
+    crest: (c) => {
+      c.add(mesh(GEO.box(4.2, 1.5, 0.3), std('#1b1b2f'), 0, 0, 0));
+      c.add(mesh(GEO.box(1.6, 1.0, 0.1), lit('#ff3d8b', 1.4), -1.0, 0.18, 0)); c.add(mesh(GEO.box(1.6, 1.0, 0.1), lit('#3fe0a8', 1.4), 1.0, 0.18, 0));
+      const b = football(0.75); b.position.set(0, M(1.4), M(0.1)); c.add(b);
+    },
+  },
+  space: {
+    tint: '#c4bcff', outfits: ['#c9ccd6', '#2a1f5a', '#b44cff', '#4cc9ff', '#ffffff', '#1b1b2f'], bags: ['#c9ccd6', '#b44cff'], hat: 'antenna',
+    door: (i) => (i % 2 ? mesh(starGeo(0.14, 0.06), lit('#ffffff', 1.6)) : mesh(GEO.sph(0.09, 12), lit(['#b44cff', '#4cc9ff', '#ff8fd8'][i % 3], 1.2))),
+    float: (i) => {
+      const pl = group(mesh(GEO.sph(0.32, 18), lit(['#ff8fd8', '#4cc9ff', '#ffe066', '#b44cff'][i % 4], 0.5)));
+      const ring = mesh(GEO.torus(0.5, 0.04, Math.PI * 2, 32), std('#ffffff')); ring.rotation.x = 1.2; pl.add(ring);
+      pl.userData.spin = 0.5; return pl;
+    },
+    crest: (c) => {
+      c.add(mesh(GEO.sph(1.1, 28), lit('#b44cff', 0.5), 0, 0, 0));
+      const ring = mesh(GEO.torus(1.7, 0.12, Math.PI * 2, 48), lit('#ffd6f5', 0.8)); ring.rotation.x = 0.3; ring.rotation.y = 0.5; c.add(ring);
+      [[-2.2, 0.9], [2.1, -0.5], [1.6, 1.3], [-1.8, -1.1]].forEach(([d, h]) => c.add(mesh(starGeo(0.3, 0.13, 0.1), lit('#ffffff', 1.6), d, 0, h)));
+    },
+  },
+  ocean: {
+    tint: '#c4f0ec', outfits: ['#3fd0ff', '#7affd8', '#ff9fc8', '#b18bff', '#ffffff', '#1f8f9a'], hair: ['#3fd0ff', '#ff9fc8', '#b18bff', '#7affd8', '#2b1220', '#1f4f6b'], bags: ['#fff4f0', '#ff9fc8'], hat: 'shell',
+    door: (i) => (i % 2 ? mesh(GEO.sph(0.06, 10), std('#fff8f0', { metalness: 0.4, roughness: 0.15 })) : shell(['#ff9fc8', '#ffd6e8', '#ffb36b'][i % 3], 0.18)),
+    float: (i) => { // jellyfish
+      const col = ['#ff9fc8', '#b18bff', '#7affd8'][i % 3], j = group(mesh(new THREE.SphereGeometry(M(0.32), 18, 8, 0, Math.PI * 2, 0, Math.PI / 2), lit(col, 0.9, { transparent: true, opacity: 0.8 })));
+      for (let k = 0; k < 6; k++) { const a = (k / 6) * Math.PI * 2; j.add(mesh(GEO.cyl(0.012, 0.006, 0.55, 4), lit(col, 0.8), Math.cos(a) * 0.18, Math.sin(a) * 0.18, -0.28)); }
+      j.userData.spin = 0.3; return j;
+    },
+    crest: (c) => { c.add(shell('#ffd6e8', 1.6)); c.add(mesh(GEO.sph(0.4, 20), lit('#fff8f0', 0.6, { metalness: 0.4, roughness: 0.15 }), 0, 0.4, -0.9)); },
+  },
+  disco: {
+    tint: '#f0c4f0', outfits: ['#e6c47e', '#ff4fa8', '#b44cff', '#c9ccd6', '#ffffff', '#ff9a3c'], bags: ['#e6c47e', '#c9ccd6'], hat: 'shades',
+    door: (i) => (i % 2 ? mesh(GEO.ico(0.11, 1), std('#e8e8f0', { metalness: 1, roughness: 0.1, flatShading: true })) : mesh(starGeo(0.15, 0.06), lit(['#ff4fa8', '#ffb03c', '#b44cff'][i % 3], 1.8))),
+    float: () => { const b = group(mesh(GEO.ico(0.35, 2), std('#e8e8f0', { metalness: 1, roughness: 0.08, flatShading: true, emissive: '#553355', emissiveIntensity: 0.4 }))); b.userData.spin = 0.9; return b; },
+    crest: (c) => {
+      const disc = mesh(GEO.cyl(1.5, 1.5, 0.1, 48), std('#1b1b1f', { roughness: 0.25, metalness: 0.3 })); disc.rotation.x = Math.PI / 2; c.add(disc);
+      const label = mesh(GEO.cyl(0.55, 0.55, 0.12, 32), lit('#ff4fa8', 1.0)); label.rotation.x = Math.PI / 2; c.add(label);
+      [1.0, 1.25].forEach((r) => c.add(mesh(GEO.torus(r, 0.015, Math.PI * 2, 48), std('#e6c47e', { metalness: 0.8 }), 0, 0.07, 0)));
+      [[-2.1, 0.8], [2.1, -0.6], [1.9, 1.1]].forEach(([d, h], k) => c.add(mesh(starGeo(0.35, 0.12, 0.1), lit(['#ffb03c', '#b44cff', '#ffe6a0'][k], 1.8), d, 0, h)));
+    },
+  },
+  garden: {
+    tint: '#eaf6d8', outfits: ['#ffb3d1', '#fff0aa', '#c9a3ff', '#c7efdf', '#ffffff', '#ff8fb8'], bags: ['#f3e6c8', '#ff8fb8'], hat: 'flowers',
+    door: (i) => (i % 3 === 1 ? mesh(GEO.sph(0.1, 10), std('#6fbf5a'), 0, 0, -0.05) : flower(['#ff8fb8', '#ffffff', '#c9a3ff', '#ffd23f'][i % 4], 0.14)),
+    float: (i) => { // butterflies
+      const col = std(['#ff8fb8', '#c9a3ff', '#ffd23f', '#7ad7ff'][i % 4], { side: THREE.DoubleSide, emissive: '#331122', emissiveIntensity: 0.3 });
+      const b = group(mesh(GEO.cyl(0.02, 0.02, 0.25, 6), std('#3a2a22'))); b.children[0].rotation.x = Math.PI / 2;
+      const l = wing(col, -1), r = wing(col, 1); l.scale.setScalar(1.3); r.scale.setScalar(1.3); b.add(l, r);
+      b.userData.wings = [l, r]; b.userData.circle = 1.3; return b;
+    },
+    crest: (c) => { c.add(flower('#ffd23f', 1.0, '#6b4433', 14)); [[-2.2, -0.6, '#ff8fb8'], [2.2, -0.4, '#c9a3ff'], [-1.6, 1.0, '#ffffff'], [1.7, 1.1, '#ff8fb8']].forEach(([d, h, col]) => { const f = flower(col, 0.45); f.position.set(M(d), M(h), M(0.1)); c.add(f); }); },
+  },
+  winter: {
+    tint: '#e0eeff', outfits: ['#ffffff', '#bfe9ff', '#1f3a6a', '#ffc6ec', '#c9b8ff', '#e6c47e'], bags: ['#ffffff', '#bfe9ff'], hat: 'earmuffs',
+    door: (i) => (i % 2 ? mesh(GEO.cone(0.05, 0.3, 6), lit('#dff2ff', 0.5, { transparent: true, opacity: 0.85 }), 0, 0, -0.15) : snowflake(0.18, lit('#ffffff', 1.2))),
+    float: () => { const s = group(snowflake(0.4, lit('#e6f6ff', 1.2))); s.userData.spin = 0.6; return s; },
+    crest: (c) => { c.add(snowflake(1.6, lit('#bfe9ff', 1.4))); c.add(mesh(GEO.sph(0.25, 16), lit('#ffffff', 1.6), 0, 0.1, 0)); },
+  },
+  candy: {
+    tint: '#ffe6f4', outfits: ['#ff8fd8', '#a8f0ff', '#fff0aa', '#c9ffb3', '#ffffff', '#ffb3e6'], hair: ['#ff8fd8', '#a8f0ff', '#2b1a14', '#fff0aa', '#2b1220', '#b18bff'], bags: ['#ff8fd8', '#a8f0ff', '#fff0aa'], hat: 'cherry',
+    door: (i) => { // wrapped sweets
+      const col = std(['#ff8fd8', '#a8f0ff', '#fff0aa', '#c9ffb3'][i % 4], { roughness: 0.3 });
+      return group(mesh(GEO.sph(0.09, 12), col), ...[-1, 1].map((s) => { const e = mesh(GEO.cone(0.07, 0.1, 8), col, s * 0.13, 0, 0); e.rotation.z = s * Math.PI / 2; return e; }));
+    },
+    float: (i) => {
+      if (i % 2) { const c = group(...[[0, 0, 0.35], [0.3, 0.05, 0.28], [-0.3, 0, 0.26], [0.1, 0.15, 0.25]].map(([dx, dy, r]) => mesh(GEO.sph(r, 12), std('#ffc6ec', { roughness: 1 }), dx, dy, 0))); return c; }
+      const l = group(mesh(GEO.cyl(0.03, 0.03, 0.6, 6), std('#ffffff'), 0, 0, -0.45)), d = mesh(GEO.cyl(0.3, 0.3, 0.08, 24), lit(['#ff8fd8', '#a8f0ff'][i % 4 ? 1 : 0], 0.6)); d.rotation.x = Math.PI / 2; l.add(d); l.userData.spin = 0.9; return l;
+    },
+    crest: (c) => {
+      const d = mesh(GEO.cyl(1.4, 1.4, 0.2, 48), std('#ff8fd8', { roughness: 0.3 })); d.rotation.x = Math.PI / 2; c.add(d);
+      [1.1, 0.75, 0.4].forEach((r, k) => c.add(mesh(GEO.torus(r, 0.1, Math.PI * 2, 40), std(k % 2 ? '#ff8fd8' : '#ffffff'), 0, 0.12, 0)));
+      c.add(mesh(GEO.cyl(0.1, 0.1, 1.6, 8), std('#ffffff'), 0, -0.05, -1.9));
     },
   },
 };

@@ -1,5 +1,7 @@
 # PinkOut Partners
 
+> **Beauty page handoff (24 Oct 2026):** Read [the beauty journal implementation guide](docs/beauty-journal.md) and [structured AI context](docs/beauty-journal-context.json) before editing `beauty.html`. They describe all 18 app images and every journey step. The latest user direction includes **home and venue** services. This page currently contains intentional local customizations; the build script will overwrite them from older partials.
+
 Partner website for PinkOut (Riyadh): a home page plus **one page per partner type**, `event.html`, `beauty.html` and `shop.html`. Static HTML/CSS/JS, GSAP + Three.js vendored, English-first with Arabic (RTL).
 
 Who belongs where: **event partners** get the whole event (the venue tour: `tour.js` + `tour3d.js` over the miniature in `venue.js`, content in `src/tour.json`); **beauty service** and **e-commerce** partners work in the PinkOut app, so their pages tell the story on a phone (`assets/js/phone.js`, screens in `src/partials/phone-*.html`).

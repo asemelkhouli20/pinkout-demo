@@ -1,0 +1,654 @@
+{
+  "schema_version": 1,
+  "updated": "2026-10-24",
+  "page": "beauty.html",
+  "documentation": "docs/beauty-journal.md",
+  "status": "Implemented local prototype; not a live booking app",
+  "confirmed_user_decisions": [
+    "Keep a scrolling, illustrated journal/journey instead of a conventional text-heavy landing page.",
+    "Use supplied app images in assets/images/beauty.",
+    "Include both At home and At the venue, as explicitly confirmed by the user.",
+    "During the redesign, keep implementation changes in beauty.html.",
+    "Document image meaning, implemented work and step-by-step maintenance for future AI work."
+  ],
+  "assets": [
+    {
+      "id": "client-book",
+      "path": "assets/images/beauty/ChatGPT Image Oct 9, 2026, 11_14_45 PM-1.png",
+      "perspective": "Client",
+      "title": "Book / service discovery",
+      "description": "A phone with a Book heading, search control, artist applying makeup hero photograph, and service-category tiles. Bottom navigation: Home, Book (selected), Explore, Account.",
+      "visible_controls_or_content": [
+        "Makeup: soft glam, evening glam, bridal",
+        "Skincare: facials, hydration, skin prep",
+        "Hair styling: blow-dry, waves, updos",
+        "Nail care: manicure, pedicure, nail art",
+        "Hair removal: waxing, sugaring, threading",
+        "Henna & tattoos: bridal henna, simple henna, temporary tattoos",
+        "Massage & spa: relaxation, deep tissue, spa rituals",
+        "Photography: portraits, events, beauty shoots",
+        "Beauty consultations: makeup advice, skin routine, hair advice"
+      ],
+      "current_usage": [
+        "Hero foreground",
+        "Chapter 01"
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "f71642963878b0dabff6d7f5a452cdc18a887769e9ebb6cf2009df108a0e9190",
+      "live_functionality": false
+    },
+    {
+      "id": "client-makeup-services",
+      "path": "assets/images/beauty/Evening Glam Makeup Booking Screen-8.png",
+      "perspective": "Client",
+      "title": "Choose a makeup service",
+      "description": "Makeup heading with All, Everyday and Occasions filters. Illustrated rows for Soft Glam, Evening Glam, Bridal Makeup and Makeup Lesson; rows include descriptions, durations and sample prices.",
+      "visible_controls_or_content": [
+        "Choose a service category filter",
+        "Choose a specific makeup service",
+        "Bottom navigation retains the Book context"
+      ],
+      "current_usage": [
+        "Chapter 02"
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "afbcbe0505078e2eb3508170509e42cc2f3082274a85588227c0934fd5989241",
+      "live_functionality": false
+    },
+    {
+      "id": "client-location",
+      "path": "assets/images/beauty/Evening Glam makeup service location screen-9.png",
+      "perspective": "Client",
+      "title": "Choose the service location",
+      "description": "Where would you like it? screen. Two large photo options: At home (artist comes to client) and At the venue (client visits the beauty space). At home is selected. A Home address row and Find artists action appear below.",
+      "visible_controls_or_content": [
+        "Review selected service",
+        "Select At home or At the venue",
+        "Change the saved address",
+        "Find artists"
+      ],
+      "current_usage": [
+        "Chapter 03"
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "de17f33770004e01e895d2c3703f12418175e64a60ee90209cddee699f8c74c6",
+      "live_functionality": false
+    },
+    {
+      "id": "client-filters",
+      "path": "assets/images/beauty/Evening glam artist filters-11.png",
+      "perspective": "Client",
+      "title": "Filter available artists",
+      "description": "Evening Glam Makeup results behind a Filters bottom sheet. Controls include location, price range, minimum rating, availability date and sorting. The sheet ends with a result-count action.",
+      "visible_controls_or_content": [
+        "At home / At the venue location chips",
+        "Price-per-service range",
+        "Minimum rating options",
+        "Availability date",
+        "Sort: recommended, top rated, price low to high",
+        "Reset or show matching artists"
+      ],
+      "current_usage": [
+        "Chapter 04"
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "ae2287ebbe57fd4372038dbf21e5772c009d56f0be4f650d4a43ed5c9320e489",
+      "live_functionality": false
+    },
+    {
+      "id": "client-portfolio",
+      "path": "assets/images/beauty/ChatGPT Image Oct 9, 2026, 11_14_51 PM-4.png",
+      "perspective": "Client",
+      "title": "Artist profile / previous work",
+      "description": "Artist identity, summary rating and booking information, location indicator, Makeup kit link, Services / Previous work / Ratings tabs, and a grid of six makeup looks. Previous work is selected.",
+      "visible_controls_or_content": [
+        "Browse soft glam, evening glam, bridal glow, natural glam, smoky eyes and classic glam examples",
+        "Open makeup kit",
+        "Switch profile tabs",
+        "Choose day and time from the service bar"
+      ],
+      "current_usage": [
+        "Chapter 05"
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "05124edaf6176e926f4f14907dac1ced5116cb1de258e58c33911c55e7764847",
+      "live_functionality": false
+    },
+    {
+      "id": "client-time",
+      "path": "assets/images/beauty/ChatGPT Image Oct 9, 2026, 11_14_48 PM-2.png",
+      "perspective": "Client",
+      "title": "Choose a day and time",
+      "description": "Booking screen with the selected artist and service, a location summary and Change control, selectable dates, time slots, a selected appointment summary, sample price, and Continue.",
+      "visible_controls_or_content": [
+        "Change location",
+        "Choose an available date",
+        "Choose a time slot",
+        "Review selected time and duration",
+        "Continue the booking"
+      ],
+      "current_usage": [
+        "Chapter 06"
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "830cfde5be0a408372bc03f277d5a7f05367b261fa8aa9e4ef5e3daf49b5bdca",
+      "live_functionality": false
+    },
+    {
+      "id": "partner-services",
+      "path": "assets/images/beauty/Beauty artist services dashboard-9.png",
+      "perspective": "Partner",
+      "title": "My services",
+      "description": "Artist avatar and My services heading. Active and Drafts tabs, Add service control, and service cards with duration, sample price, location labels, active toggles and Edit buttons. Manage availability appears below. Bottom navigation: Today, Requests, Calendar, Services (selected), Account.",
+      "visible_controls_or_content": [
+        "Add a service",
+        "View active services or drafts",
+        "Edit Evening Glam, Bridal Makeup or Everyday Makeup examples",
+        "Enable or disable a service",
+        "Open Manage availability"
+      ],
+      "current_usage": [
+        "Hero background",
+        "Chapter 07"
+      ],
+      "width": 1024,
+      "height": 1536,
+      "sha256": "ddfd938836733e30e0937f5f1883caa8eb1f2a8b74875f3f93d55325757ed82f",
+      "live_functionality": false
+    },
+    {
+      "id": "partner-service-editor",
+      "path": "assets/images/beauty/Beauty service editor on iPhone-13.png",
+      "perspective": "Partner",
+      "title": "Edit service",
+      "description": "Service editor for Evening Glam with name, category, description, price, duration, location selections, tools and brands, previous-work photographs, availability setting and active toggle. Both At home and At the venue are checked.",
+      "visible_controls_or_content": [
+        "Edit service name, category and description",
+        "Set price and duration",
+        "Choose one or both service locations",
+        "Add or edit tools and brands",
+        "Add portfolio photos",
+        "Use working hours for availability",
+        "Toggle active status",
+        "Save changes"
+      ],
+      "current_usage": [
+        "Chapter 08"
+      ],
+      "width": 1024,
+      "height": 1536,
+      "sha256": "821a5750387531e7f53244808b58fd40308e6c88a8a535c8b121ea3d7669e161",
+      "live_functionality": false
+    },
+    {
+      "id": "partner-availability",
+      "path": "assets/images/beauty/Availability Editor on iPhone-3.png",
+      "perspective": "Partner",
+      "title": "Working hours and availability",
+      "description": "Weekly working-hour rows with start/end times and enabled/off switches, booking settings, a buffer between appointments, a Home & venue location summary, and date exceptions with an Add date control.",
+      "visible_controls_or_content": [
+        "Set daily working hours",
+        "Turn days off",
+        "Set time between appointments",
+        "Review service location setting",
+        "Block a specific date",
+        "Save availability"
+      ],
+      "current_usage": [
+        "Chapter 09"
+      ],
+      "width": 1024,
+      "height": 1536,
+      "sha256": "1c665062ec7a384834f918ceee0db131d96e5f7668a813bce6a1ed0f60dd093b",
+      "live_functionality": false
+    },
+    {
+      "id": "partner-request",
+      "path": "assets/images/beauty/Booking request details with Requests active-14.png",
+      "perspective": "Partner",
+      "title": "Review a booking request",
+      "description": "New request screen showing client identity, client rating and profile link, selected service, duration and sample price, date, time, home address, and a client note. Requests is selected in bottom navigation.",
+      "visible_controls_or_content": [
+        "View client profile",
+        "Read the requested service, location and notes",
+        "Message client",
+        "Propose another time",
+        "Decline request",
+        "Accept request"
+      ],
+      "current_usage": [
+        "Chapter 10"
+      ],
+      "width": 1024,
+      "height": 1536,
+      "sha256": "83e7d06c256a9ffe618d950439cd88fa518e9eeaa0dfbe19c1c2270bad809a4c",
+      "live_functionality": false
+    },
+    {
+      "id": "partner-calendar",
+      "path": "assets/images/beauty/Beauty bookings timeline for October-1.png",
+      "perspective": "Partner",
+      "title": "Reservations timeline",
+      "description": "Reservations screen with a filter icon, week-date strip under an October 2026 sample calendar, Timeline and Week views, and time-positioned appointment cards. Cards show client, service, status and location details; the timeline also illustrates an availability gap.",
+      "visible_controls_or_content": [
+        "Choose a day",
+        "Switch Timeline / Week",
+        "Review confirmed appointments in chronological order",
+        "Inspect free time between appointments",
+        "Open reservation details"
+      ],
+      "current_usage": [
+        "Chapter 11"
+      ],
+      "width": 1024,
+      "height": 1536,
+      "sha256": "4c2dde86ce1bdb98b8709d2c20a42ff02b2fe96708deb7e9c5bbd2abc5fd88ae",
+      "live_functionality": false
+    },
+    {
+      "id": "partner-reviews",
+      "path": "assets/images/beauty/Beauty artist ratings and reviews-5.png",
+      "perspective": "Partner",
+      "title": "Ratings and reviews",
+      "description": "Artist-side review overview with a sample aggregate rating, review count, star distribution, Received and Given tabs, rating filters and individual review cards. A reply to a client review is visible.",
+      "visible_controls_or_content": [
+        "Switch received and given reviews",
+        "Filter reviews by rating",
+        "Read client feedback",
+        "Review replies to feedback"
+      ],
+      "current_usage": [
+        "Chapter 12"
+      ],
+      "width": 1024,
+      "height": 1536,
+      "sha256": "880df2c698741ca4e3d5f9a08501b6b86dda77e17f34b4a33d134815be2e5eac",
+      "live_functionality": false
+    },
+    {
+      "id": "client-makeup-kit",
+      "path": "assets/images/beauty/Evening glam face makeup kit-4.png",
+      "perspective": "Client",
+      "title": "Artist makeup kit",
+      "description": "Makeup kit screen identifies the artist and service and offers Face, Eyes & lips and Tools tabs. Face is selected. Rows pair product thumbnails with their role, brand and product name. A Back to artist control closes the flow.",
+      "visible_controls_or_content": [
+        "Inspect skin prep, foundation, concealer, blush and finishing-product examples",
+        "Switch kit categories",
+        "Return to artist profile"
+      ],
+      "current_usage": [
+        "Chapter 05 extra: data-extra=\"kit\""
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "3128e3fbfeb7c97ef6b25d616af1ea2672f137c0ee660249e439c6754ed261d2",
+      "live_functionality": false
+    },
+    {
+      "id": "client-profile-reviews",
+      "path": "assets/images/beauty/ChatGPT Image Oct 9, 2026, 11_14_52 PM-5.png",
+      "perspective": "Client",
+      "title": "Artist profile / ratings",
+      "description": "Artist profile with portrait, identity, sample rating and booking summary, Makeup kit shortcut and Services / Previous work / Ratings tabs. Ratings is selected, showing a large aggregate score and client review cards.",
+      "visible_controls_or_content": [
+        "Read prior client reviews",
+        "Switch profile tabs",
+        "Open makeup kit",
+        "Choose day and time"
+      ],
+      "current_usage": [
+        "Chapter 05 extra: data-extra=\"reviews\""
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "0a40d7836f68a381ed968c988b91a287bdcae60128ee7c8538121574cc427d79",
+      "live_functionality": false
+    },
+    {
+      "id": "partner-review-client",
+      "path": "assets/images/beauty/Artist reviews client after appointment-7.png",
+      "perspective": "Partner",
+      "title": "Review a client after an appointment",
+      "description": "Review client screen identifies a completed appointment and shows a star-rating control, written review, public-review note, preview of the artist’s review and Publish review action.",
+      "visible_controls_or_content": [
+        "Rate a completed client appointment",
+        "Write a review",
+        "Preview how the review will appear",
+        "Publish review in the app concept"
+      ],
+      "current_usage": [
+        "Chapter 12 extra: data-extra=\"client-review\""
+      ],
+      "width": 1024,
+      "height": 1536,
+      "sha256": "2722e27b1aad7467dabc3893f392a03e8fe1c1913f71db9bd85c8d72abe43cd6",
+      "live_functionality": false
+    },
+    {
+      "id": "client-filters-alternate",
+      "path": "assets/images/beauty/ChatGPT Image Oct 9, 2026, 11_14_49 PM-3.png",
+      "perspective": "Client",
+      "title": "Alternative artist filter composition",
+      "description": "Choose your artist results with a portrait/card behind an open Filters bottom sheet. It represents the same location, price, minimum rating, availability and sorting flow as the selected filter artwork.",
+      "visible_controls_or_content": [
+        "Filter location, price, rating and availability",
+        "Choose sorting",
+        "Reset filters",
+        "Show matching artists"
+      ],
+      "current_usage": [
+        "Available reference; not rendered by the current page"
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "f7af66db14f8ebd4d51b956e0abc913fc36d95b686588f48ae48d1fd79540e35",
+      "live_functionality": false
+    },
+    {
+      "id": "client-profile-services",
+      "path": "assets/images/beauty/ChatGPT Image Oct 9, 2026, 11_14_54 PM-6.png",
+      "perspective": "Client",
+      "title": "Artist profile / services",
+      "description": "Artist profile with Services selected. Radio-style service choices include Evening Glam, Soft Glam and Bridal Makeup, with durations and sample prices. Evening Glam is selected; continuation and day/time controls are visible.",
+      "visible_controls_or_content": [
+        "Choose a service on the artist profile",
+        "Continue with the selected service",
+        "Choose day and time"
+      ],
+      "current_usage": [
+        "Available reference; not rendered by the current page"
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "8c607f85e37918051ddf31b5775b6a24b257c84221c8a4ed8a700a414f5b4224",
+      "live_functionality": false
+    },
+    {
+      "id": "client-location-alternate",
+      "path": "assets/images/beauty/Evening glam location selection-3.png",
+      "perspective": "Client",
+      "title": "Alternative location screen with named artist",
+      "description": "Alternative Where would you like it? composition. The service summary includes a named artist. Photo options show At home and At the venue, followed by a saved home address and Find artists.",
+      "visible_controls_or_content": [
+        "Choose home or venue for the selected service",
+        "Change the home address",
+        "Find artists"
+      ],
+      "current_usage": [
+        "Available reference; not rendered by the current page"
+      ],
+      "width": 941,
+      "height": 1672,
+      "sha256": "4c16ff78f4c6b85a30033390a4c0d95fc14b765c8badec2362bdb372757c43aa",
+      "live_functionality": false
+    }
+  ],
+  "chapters": [
+    {
+      "number": 1,
+      "screen_index": 0,
+      "anchor": "chapter-1",
+      "perspective": "client",
+      "asset_id": "client-book",
+      "copy": {
+        "en": {
+          "kicker": "Her discovery",
+          "title": "Imagine {brand} in her day.",
+          "text": "She opens Book. Makeup, hair, skincare, nails, henna, spa and more. Her next beauty moment starts here."
+        },
+        "ar": {
+          "kicker": "الاكتشاف",
+          "title": "{brand} جزء من يومها.",
+          "text": "تفتح قسم الحجز: مكياج وشعر وبشرة وأظافر وحنّاء وسبا والمزيد. هنا تبدأ رحلة الجمال."
+        }
+      },
+      "purpose": "Introduce the breadth of the booking app. A client discovers the available service categories before selecting one.",
+      "page_behavior_to_preserve": "Show the Book screen; keep the optional name/salon personalisation disclosure. Next chapter opens service selection."
+    },
+    {
+      "number": 2,
+      "screen_index": 1,
+      "anchor": "chapter-2",
+      "perspective": "client",
+      "asset_id": "client-makeup-services",
+      "copy": {
+        "en": {
+          "kicker": "The service",
+          "title": "First, the look she has in mind.",
+          "text": "Soft glam, evening glam, bridal makeup or a lesson. She finds the service that fits her occasion."
+        },
+        "ar": {
+          "kicker": "الخدمة",
+          "title": "البداية بإطلالة في البال.",
+          "text": "مكياج ناعم أو مسائي أو عروس أو درس تجميل. تختار الخدمة التي تناسب مناسبتها."
+        }
+      },
+      "purpose": "Explain choosing the actual service, not only a beauty category.",
+      "page_behavior_to_preserve": "Show the makeup-service list. Describe service choice without promising the example prices or durations."
+    },
+    {
+      "number": 3,
+      "screen_index": 2,
+      "anchor": "chapter-3",
+      "perspective": "client",
+      "asset_id": "client-location",
+      "copy": {
+        "en": {
+          "kicker": "Her place or yours",
+          "title": "Beauty, wherever she wants it.",
+          "text": "At home, the artist comes to her. At the venue, she visits the beauty space. The choice follows the locations offered for the service."
+        },
+        "ar": {
+          "kicker": "في منزلها أو في المكان",
+          "title": "الجمال، حيث يناسبها.",
+          "text": "في المنزل تصل الخبيرة إليها. وفي المكان تزور مساحة التجميل. تختار من المواقع المتاحة للخدمة."
+        }
+      },
+      "purpose": "Explain the user-approved home AND venue model. Availability depends on the selected service.",
+      "page_behavior_to_preserve": "Show both location photo cards. Never replace this chapter with home-only wording or assume venue means event sponsorship."
+    },
+    {
+      "number": 4,
+      "screen_index": 3,
+      "anchor": "chapter-4",
+      "perspective": "client",
+      "asset_id": "client-filters",
+      "copy": {
+        "en": {
+          "kicker": "The right match",
+          "title": "She finds an artist who fits.",
+          "text": "She can narrow her search by location, price, rating and availability. This is where {brand} becomes part of her shortlist."
+        },
+        "ar": {
+          "kicker": "الاختيار المناسب",
+          "title": "تجد الخبيرة المناسبة.",
+          "text": "تبحث حسب الموقع والسعر والتقييم والتوفر. وهنا يظهر {brand} ضمن خياراتها."
+        }
+      },
+      "purpose": "Explain how a client narrows down artists.",
+      "page_behavior_to_preserve": "Show the filter sheet. Mention location, price, rating and availability, without treating sample counts as live inventory."
+    },
+    {
+      "number": 5,
+      "screen_index": 4,
+      "anchor": "chapter-5",
+      "perspective": "client",
+      "asset_id": "client-portfolio",
+      "copy": {
+        "en": {
+          "kicker": "Your signature",
+          "title": "Your work tells your story.",
+          "text": "She explores the portfolio, services and reviews. Even the makeup kit has a place, so she can get to know the details behind the look."
+        },
+        "ar": {
+          "kicker": "البصمة الخاصة",
+          "title": "الأعمال تحكي القصة.",
+          "text": "تتصفّح الأعمال والخدمات والتقييمات. وحتى حقيبة المكياج لها مساحة للتعرّف إلى تفاصيل الإطلالة."
+        }
+      },
+      "purpose": "Explain how the client evaluates an artist’s work before booking.",
+      "page_behavior_to_preserve": "Show the portfolio tab. Preserve the two extra-screen links for makeup kit and profile reviews."
+    },
+    {
+      "number": 6,
+      "screen_index": 5,
+      "anchor": "chapter-6",
+      "perspective": "client",
+      "asset_id": "client-time",
+      "copy": {
+        "en": {
+          "kicker": "A time for beauty",
+          "title": "A day. A time. A plan.",
+          "text": "She chooses an available appointment and reviews the service, location and time before continuing with her booking."
+        },
+        "ar": {
+          "kicker": "وقت للجمال",
+          "title": "يوم. ووقت. وخطة.",
+          "text": "تختار موعدًا متاحًا وتراجع الخدمة والموقع والوقت قبل متابعة الحجز."
+        }
+      },
+      "purpose": "Explain selecting an available appointment after choosing service, location and artist.",
+      "page_behavior_to_preserve": "Show day/time selection. Do not call this a confirmed booking: the screen says Continue. Next chapter explicitly switches to the partner perspective."
+    },
+    {
+      "number": 7,
+      "screen_index": 6,
+      "anchor": "chapter-7",
+      "perspective": "partner",
+      "asset_id": "partner-services",
+      "copy": {
+        "en": {
+          "kicker": "Now, your side",
+          "title": "Behind every look, your business.",
+          "text": "Switch to the artist’s side. {brand} has a place to manage active services, drafts and availability."
+        },
+        "ar": {
+          "kicker": "والآن من جهة الشريك",
+          "title": "وراء كل إطلالة، مشروع.",
+          "text": "ننتقل إلى جهة الخبيرة. لدى {brand} مساحة لإدارة الخدمات النشطة والمسودات والتوفر."
+        }
+      },
+      "purpose": "Introduce the partner’s management side of the same app.",
+      "page_behavior_to_preserve": "Show My services with active/draft services and availability entry point. Preserve the second hero shortcut to this chapter."
+    },
+    {
+      "number": 8,
+      "screen_index": 7,
+      "anchor": "chapter-8",
+      "perspective": "partner",
+      "asset_id": "partner-service-editor",
+      "copy": {
+        "en": {
+          "kicker": "Make it yours",
+          "title": "You shape the service.",
+          "text": "Set the description, price, duration and locations. Add tools, brands and previous work so the service reflects your craft."
+        },
+        "ar": {
+          "kicker": "تفاصيل الخدمة",
+          "title": "الخدمة بتفاصيلها الخاصة.",
+          "text": "تحديد الوصف والسعر والمدة والمواقع. وإضافة الأدوات والعلامات والأعمال السابقة ليعكس الملف المهارة."
+        }
+      },
+      "purpose": "Explain what the partner configures for a service.",
+      "page_behavior_to_preserve": "Show name, description, price, duration, home/venue locations, tools, photos and active status. Describe screen controls; do not turn the image into fake working inputs."
+    },
+    {
+      "number": 9,
+      "screen_index": 8,
+      "anchor": "chapter-9",
+      "perspective": "partner",
+      "asset_id": "partner-availability",
+      "copy": {
+        "en": {
+          "kicker": "Your working rhythm",
+          "title": "Your schedule has a say.",
+          "text": "Working hours, time between appointments and blocked dates. Shape availability around the way you work, at home and at the venue."
+        },
+        "ar": {
+          "kicker": "تنظيم العمل",
+          "title": "المواعيد وفق جدول العمل.",
+          "text": "ساعات العمل والفواصل بين المواعيد والأيام غير المتاحة. تنظيم التوفر للخدمات المنزلية وفي المكان."
+        }
+      },
+      "purpose": "Explain availability management rather than guaranteed booking availability.",
+      "page_behavior_to_preserve": "Show hours, days off, appointment buffers and blocked dates. Keep both locations in the explanation."
+    },
+    {
+      "number": 10,
+      "screen_index": 9,
+      "anchor": "chapter-10",
+      "perspective": "partner",
+      "asset_id": "partner-request",
+      "copy": {
+        "en": {
+          "kicker": "The request arrives",
+          "title": "The details, before you say yes.",
+          "text": "See the client, service, date, location and notes. Message her, suggest another time, or accept or decline the request."
+        },
+        "ar": {
+          "kicker": "وصول الطلب",
+          "title": "كل التفاصيل قبل القبول.",
+          "text": "عرض العميلة والخدمة والتاريخ والموقع والملاحظات. يمكن مراسلتها أو اقتراح وقت آخر أو قبول الطلب أو رفضه."
+        }
+      },
+      "purpose": "Explain the decision point after a request arrives.",
+      "page_behavior_to_preserve": "Show client, service, time, address and notes. Include message, propose-time, accept and decline possibilities. Do not imply that every request is automatically accepted."
+    },
+    {
+      "number": 11,
+      "screen_index": 10,
+      "anchor": "chapter-11",
+      "perspective": "partner",
+      "asset_id": "partner-calendar",
+      "copy": {
+        "en": {
+          "kicker": "The day takes shape",
+          "title": "A clear view of what’s next.",
+          "text": "Confirmed appointments come together in the reservations timeline. Service, client and timing, all in the context of your day."
+        },
+        "ar": {
+          "kicker": "ترتيب يوم العمل",
+          "title": "صورة واضحة للمواعيد القادمة.",
+          "text": "تجتمع المواعيد المؤكدة في جدول الحجوزات، مع الخدمة والعميلة والوقت ضمن يوم العمل."
+        }
+      },
+      "purpose": "Explain how confirmed appointments fit into a partner’s day.",
+      "page_behavior_to_preserve": "Show the reservations timeline. Treat the displayed month, clients, appointment times and statuses as examples."
+    },
+    {
+      "number": 12,
+      "screen_index": 11,
+      "anchor": "chapter-12",
+      "perspective": "partner",
+      "asset_id": "partner-reviews",
+      "copy": {
+        "en": {
+          "kicker": "Beyond the appointment",
+          "title": "A reputation that grows with you.",
+          "text": "Reviews carry the experience forward. View client feedback, and share your own review after the appointment. The next chapter starts with {brand}."
+        },
+        "ar": {
+          "kicker": "بعد الموعد",
+          "title": "سمعة تنمو مع كل تجربة.",
+          "text": "التقييمات تواصل حكاية التجربة. الاطلاع على آراء العميلات ومشاركة تقييم بعد الموعد. والفصل القادم يبدأ مع {brand}."
+        }
+      },
+      "purpose": "Explain reputation and feedback after the appointment, in both directions.",
+      "page_behavior_to_preserve": "Show the partner review overview; preserve the artist-reviews-client extra screen and the beauty-partner application CTA."
+    }
+  ],
+  "known_limits": [
+    "Screenshots are illustrative and their controls are not interactive on this website.",
+    "Original raster screenshots remain English when the surrounding website is Arabic.",
+    "The shared applicationEndpoint and deck URLs are null; no application is sent in the current preview configuration.",
+    "Shared form.js still hardcodes beauty payload where to app-home; this is an unresolved schema mismatch with the newly confirmed home/venue model.",
+    "The shared form service choices are narrower than the service categories pictured in the Book screenshot.",
+    "tools/build_pages.py overwrites beauty.html from older partials and journey data that do not contain this implementation."
+  ]
+}

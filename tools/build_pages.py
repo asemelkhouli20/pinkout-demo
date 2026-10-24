@@ -4,7 +4,7 @@
 The site stays plain static HTML (no build step on the server). This script only keeps the
 shared parts (head, header, footer, application form, map) identical across pages.
 
-    python3 tools/build_pages.py        # writes index.html, event.html, beauty.html, shop.html
+    python3 tools/build_pages.py        # writes index.html (the event page: the home page), beauty.html, shop.html
 
 Edit the partials in src/partials, then run this script. Never edit the generated pages directly.
 """
@@ -137,13 +137,21 @@ def closing_for(track, t):
 '''
 
 
+# Pages kept by hand: never overwritten by this script. beauty.html carries the hand-built beauty journal
+# (see docs/beauty-journal.md), which the partials do not have.
+HAND_MAINTAINED = {'beauty.html'}
+
+
 def page(path, page_id, title, title_ar, description, og_image, preload, sections):
-    home = '' if page_id == 'home' else 'index.html'
+    if (path or 'index.html') in HAND_MAINTAINED:
+        print('kept', path, '(maintained by hand, not generated)')
+        return
+    home = '' if not path else 'index.html'  # links to sections of the home page (path '' = index.html)
     head = fill(part('head'), dict(title=title, description=description, og_image=og_image, path=path, preload=preload))
     header = fill(part('header'), dict(
-        home=home, logo_href='#top' if page_id == 'home' else 'index.html',
+        home=home, logo_href='#top' if not path else 'index.html',
         **{f'cur_{t}': (' aria-current="page"' if page_id == t else '') for t in TRACKS}))
-    tail = fill(part('tail'), dict(home=home))
+    tail = fill(part('tail'), dict(home=home, logo_href='#top' if not path else 'index.html'))
     body_open = (f'<body class="site" data-for="" data-page="{page_id}" '
                  f'data-title-en="{title}" data-title-ar="{title_ar}">\n'
                  '<a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>\n\n')
@@ -154,15 +162,9 @@ def page(path, page_id, title, title_ar, description, og_image, preload, section
     print('wrote', path or 'index.html', f'({len(html) // 1024} KB)')
 
 
-# ---------- Home ----------
-page('', 'home',
-     'PinkOut Partners: partner with Riyadh’s women-first destination', 'شركاء PinkOut: الشراكة مع وجهة الرياض المصمّمة للنساء أولاً',
-     'Partner with PinkOut, a women-first destination of seven experience zones coming soon to Riyadh. Event partners, beauty service partners and e-commerce partners.',
-     'worlds/hero-1600.webp', part('preload-home'),
-     [part('hero'), part('doors'), part('why'),
-      world('', 'navWorld', 'The world', 'worldTitle', 'Seven zones. One world.', 'worldHint', 'Every zone is open to event partners. Select one to see what you can do there.'),
-      part('audience'), part('status'), part('faq'), part('closing')])
-
+# ---------- Pages ----------
+# The event page is the home page (index.html): the site opens on the venue tour. (The old home page, with the three
+# partner doors and the zone map, was retired on 24 Oct 2026; it is kept in _archive/old-home/.)
 # ---------- One page per partner type ----------
 # Event partners get the whole event: their page opens straight on the venue tour (tools/tour_markup.py), which is
 # its hero (title, brand name). Beauty service and e-commerce partners work through the app: a hero, then the app journey.
@@ -170,6 +172,6 @@ for track, t in TRACKS.items():
     preload = f'<link rel="preload" href="assets/images/{t["hero"]}?v=1" as="image" fetchpriority="high">\n' if t['hero'] else ''
     story = tour_for() if track == 'event' else journey_for(track, t)  # event: the venue tour; others: the app journey
     hero = [] if track == 'event' else [part(f'track-{track}-hero')]
-    page(f'{track}.html', track, t['title'], t['title_ar'], t['description'], t['og_image'], preload,
+    page('' if track == 'event' else f'{track}.html', track, t['title'], t['title_ar'], t['description'], t['og_image'], preload,
          hero + [story, part(f'track-{track}'),
           faq_for(track), other_ways(track), closing_for(track, t)])

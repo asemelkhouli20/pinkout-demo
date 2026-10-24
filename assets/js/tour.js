@@ -117,19 +117,22 @@ export function initTour() {
 
   /* ---------- World by world: one scroll, swipe or key press moves exactly one stop ---------- */
   let animating = false;
+  let queued = 0; // a flick or swipe that came in while the camera was still moving: it goes as soon as it lands
   const stopTop = (i) => stops[i].getBoundingClientRect().top + scrollY;
   const scrollToY = (y) => {
     const start = scrollY, dist = y - start;
     if (Math.abs(dist) < 2) return;
     if (get('motion') !== 'full') { scrollTo(0, y); return; }
-    const dur = Math.min(1300, 750 + Math.abs(dist) * 0.12);
+    const dur = Math.min(1000, 620 + Math.abs(dist) * 0.08);
     const t0 = performance.now();
     animating = true;
     const frame = (now) => {
       const k = Math.min(1, (now - t0) / dur);
       const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
       scrollTo(0, start + dist * e);
-      if (k < 1) requestAnimationFrame(frame); else animating = false;
+      if (k < 1) { requestAnimationFrame(frame); return; }
+      animating = false;
+      if (queued) { const d = queued; queued = 0; step(d); }
     };
     requestAnimationFrame(frame);
   };
@@ -150,13 +153,37 @@ export function initTour() {
     return true;
   };
   const holds = (dir) => animating || (live() && pinned() && !atEdge(dir));
-  let lastWheel = 0;
+  /** a long card scrolls its own content first */
+  const cardScrolls = (target, dir) => {
+    const card = target.closest?.('.stop-card');
+    return !!card && card.scrollHeight > card.clientHeight + 2 && (dir > 0 ? card.scrollTop + card.clientHeight < card.scrollHeight - 1 : card.scrollTop > 0);
+  };
+  /* Wheel and trackpad: one flick = one stop. A flick ramps up, peaks, then a trackpad keeps sending a fading
+     "momentum" stream for a second or more; all of that is one flick. A new flick is recognised by a pause, a change of
+     direction, or (inside the momentum) the strength having faded well below the peak and then surging back up.
+     A flick made while the camera is moving waits its turn. */
+  let lastWheel = 0, lastDir = 0, peak = 0, trough = 0, lastStep = 0;
+  const freshFlick = (e) => {
+    const now = performance.now(), dir = Math.sign(e.deltaY);
+    const mag = Math.abs(e.deltaY) * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1); // lines / pages → pixels
+    let fresh = false;
+    if (now - lastWheel > 160 || dir !== lastDir) { fresh = true; peak = trough = mag; }
+    else if (mag >= peak) { peak = trough = mag; }                                          // still ramping up: same flick
+    else {
+      trough = Math.min(trough, mag);
+      if (trough < peak * 0.45 && mag > trough * 2.2 && mag > 15 && now - lastStep > 350) { fresh = true; peak = trough = mag; } // a new push
+    }
+    lastWheel = now; lastDir = dir;
+    if (fresh) lastStep = now;
+    return fresh;
+  };
   addEventListener('wheel', (e) => {
     if (e.ctrlKey || Math.abs(e.deltaY) < 1) return;
-    const dir = Math.sign(e.deltaY), now = performance.now(), gap = now - lastWheel;
-    lastWheel = now;
-    if (animating) { e.preventDefault(); return; }
-    if (gap < 220 && holds(dir)) { e.preventDefault(); return; } // the tail of the same flick: one gesture = one world
+    const dir = Math.sign(e.deltaY);
+    const fresh = freshFlick(e);
+    if (!animating && cardScrolls(e.target, dir)) return;
+    if (animating) { e.preventDefault(); if (fresh) queued = dir; return; }
+    if (!fresh && holds(dir)) { e.preventDefault(); return; } // the tail of the flick that moved us
     if (step(dir)) e.preventDefault();
   }, { passive: false });
   addEventListener('keydown', (e) => {
@@ -164,23 +191,26 @@ export function initTour() {
     const k = e.key || e.code; // some keyboards report only the code
     const dir = ['ArrowDown', 'PageDown'].includes(k) || ['ArrowDown', 'PageDown'].includes(e.code) || (e.code === 'Space' && !e.shiftKey) ? 1
       : ['ArrowUp', 'PageUp'].includes(k) || ['ArrowUp', 'PageUp'].includes(e.code) || (e.code === 'Space' && e.shiftKey) ? -1 : 0;
-    if (dir && (animating || step(dir))) e.preventDefault();
+    if (dir && animating) { e.preventDefault(); queued = dir; return; }
+    if (dir && step(dir)) e.preventDefault();
   });
-  let touchY = null;
-  addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+  // Touch: one swipe = one stop. Once a swipe has moved us (or while the camera moves), the rest of it is held, so the
+  // page never fights the animation; a swipe made while the camera is moving waits its turn.
+  let touchY = null, touchUsed = false;
+  addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; touchUsed = false; }, { passive: true });
   addEventListener('touchmove', (e) => {
     if (touchY === null) return;
     const dy = touchY - e.touches[0].clientY, dir = Math.sign(dy);
     if (!dir) return;
-    const card = e.target.closest?.('.stop-card');
-    if (card && card.scrollHeight > card.clientHeight + 2 && (dir > 0 ? card.scrollTop + card.clientHeight < card.scrollHeight - 1 : card.scrollTop > 0)) return; // let a long card scroll
-    if (animating) { e.preventDefault(); return; }
+    if (!touchUsed && !animating && cardScrolls(e.target, dir)) return;
+    if (touchUsed) { e.preventDefault(); return; }
+    if (animating) { e.preventDefault(); if (Math.abs(dy) > 36) { queued = dir; touchUsed = true; } return; }
     if (holds(dir) || (live() && arriving(dir))) {
       e.preventDefault();
-      if (Math.abs(dy) > 36) { step(dir); touchY = null; }
+      if (Math.abs(dy) > 36) touchUsed = step(dir);
     }
   }, { passive: false });
-  addEventListener('touchend', () => { touchY = null; }, { passive: true });
+  addEventListener('touchend', () => { touchY = null; touchUsed = false; }, { passive: true });
   plan.forEach((r) => r.addEventListener('click', () => jump(data.zones.findIndex((z) => (z.zone || z.id) === r.dataset.planZone) + 1)));
 
   render();

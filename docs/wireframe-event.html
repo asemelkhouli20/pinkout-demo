@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event page v2 · wireframe</title>
+<style>
+  :root { --ink: #222; --mid: #888; --line: #bbb; --fill: #e9e9e9; --fill2: #d6d6d6; --note: #fff7c2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.45 system-ui, -apple-system, sans-serif; color: var(--ink); background: #f4f4f4; }
+  header.top { position: sticky; top: 0; z-index: 9; display: flex; gap: 12px; align-items: center; padding: 10px 20px; background: #fff; border-bottom: 1px solid var(--line); }
+  header.top b { font-size: 15px; }
+  header.top label { margin-inline-start: auto; font-size: 13px; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 28px; padding: 24px; max-width: 1500px; margin: auto; }
+  @media (max-width: 1100px) { main { grid-template-columns: 1fr; } }
+  h2.frame-title { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--mid); }
+  .frame { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .sec { position: relative; padding: 28px; border-bottom: 1px dashed var(--line); }
+  .sec h3 { margin: 0 0 6px; font-size: 22px; }
+  .sec h4 { margin: 14px 0 6px; font-size: 15px; }
+  .eyebrow { display: inline-block; padding: 2px 10px; border: 1px solid var(--line); border-radius: 99px; font-size: 12px; color: var(--mid); }
+  .box { display: grid; place-items: center; min-height: 80px; background: var(--fill); border: 1px solid var(--line); border-radius: 8px; color: var(--mid); font-size: 12px; text-align: center; padding: 8px; }
+  .btn { display: inline-block; padding: 8px 14px; border: 1.5px solid var(--ink); border-radius: 99px; font-size: 12px; font-weight: 600; margin: 4px 4px 0 0; }
+  .btn.solid { background: var(--ink); color: #fff; }
+  .chip { display: inline-block; padding: 2px 9px; border-radius: 99px; background: var(--fill); font-size: 12px; margin: 2px 2px 0 0; }
+  .row { display: grid; gap: 14px; }
+  .c2 { grid-template-columns: 1fr 1fr; } .c3 { grid-template-columns: repeat(3, 1fr); } .c4 { grid-template-columns: repeat(4, 1fr); }
+  .note { margin-top: 14px; padding: 10px 12px; background: var(--note); border-radius: 6px; font-size: 12.5px; }
+  .note b { display: block; margin-bottom: 2px; }
+  body.no-notes .note { display: none; }
+  .stage { position: relative; height: 430px; background: repeating-linear-gradient(45deg, var(--fill), var(--fill) 10px, #efefef 10px, #efefef 20px); border: 1px solid var(--line); border-radius: 8px; }
+  .stage .lbl { position: absolute; padding: 2px 8px; background: #fff; border: 1px solid var(--line); border-radius: 99px; font-size: 11px; }
+  .stage .lbl.on { background: var(--ink); color: #fff; }
+  .panel { position: absolute; inset-block: 20px; inset-inline-start: 20px; width: 330px; overflow: auto; padding: 16px; background: #fff; border: 1.5px solid var(--ink); border-radius: 12px; }
+  .panel h5 { margin: 4px 0; font-size: 20px; }
+  .panel .sub { margin: 10px 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--mid); letter-spacing: .06em; }
+  .panel ul { margin: 0; padding-inline-start: 18px; }
+  .gets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .gets span { padding: 6px; border: 1px solid var(--line); border-radius: 8px; font-size: 11px; text-align: center; }
+  .gets span::before { content: "◯"; display: block; color: var(--mid); }
+  .minimap { position: absolute; top: 14px; inset-inline-end: 14px; width: 120px; height: 100px; background: #fff; border: 1px solid var(--line); border-radius: 8px; font-size: 10px; display: grid; place-items: center; color: var(--mid); }
+  .rail { position: absolute; bottom: 14px; inset-inline-end: 14px; display: flex; gap: 4px; padding: 6px 10px; background: #fff; border: 1px solid var(--line); border-radius: 99px; font-size: 10px; }
+  .rail i { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font-style: normal; }
+  .rail i.on { background: var(--ink); color: #fff; }
+  .states { display: grid; gap: 18px; }
+  .state-title { font-size: 12px; font-weight: 700; color: var(--mid); margin-bottom: 6px; }
+  .phone { width: 360px; margin: auto; }
+  .phone .stage { height: 340px; border-radius: 0; }
+  .phone .sheet { margin: -40px 12px 0; position: relative; padding: 14px; background: #fff; border: 1.5px solid var(--ink); border-radius: 14px; }
+  table.zones { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  table.zones th, table.zones td { padding: 8px; border-top: 1px solid var(--line); vertical-align: top; text-align: start; }
+  table.zones th { background: var(--fill); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+  .pill-num { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 11px; margin-inline-end: 6px; }
+</style>
+</head>
+<body>
+<header class="top"><b>PinkOut Partners · event.html v2 · wireframe</b><span style="color:#888">Low-fi, greyscale. Copy is real draft copy (English); Arabic follows after approval.</span><label><input type="checkbox" checked onchange="document.body.classList.toggle('no-notes', !this.checked)"> Notes</label></header>
+
+<main>
+<div>
+  <h2 class="frame-title">Desktop · 1440</h2>
+  <div class="frame">
+
+    <!-- 1 HERO -->
+    <section class="sec">
+      <span class="eyebrow">01 · Event partners · sponsors &amp; brands</span>
+      <div class="row c2" style="margin-top:10px;align-items:center">
+        <div>
+          <h3 style="font-size:34px;line-height:1.1">Your brand, part of her world.</h3>
+          <p>The whole event is open to your brand: seven zones, one visitor loop, and a stage at its heart.</p>
+          <div class="box" style="min-height:44px;justify-items:start;padding-inline:14px">[ Your brand name ________ ] → it appears through the whole tour</div>
+          <span class="btn solid">Take the tour ↓</span><span class="btn">Enquire as event partner</span><span class="btn">Event deck</span>
+        </div>
+        <div class="box" style="min-height:240px">Aerial still of the 3D venue (the tour's first frame), so the page opens on the map</div>
+      </div>
+      <div class="note"><b>Why</b>Open on the venue itself and ask for the brand name up front, so the tour below is personal from the first frame. Motion: the still cross-fades into the live 3D stage as you scroll.</div>
+    </section>
+
+    <!-- 2 THE TOUR -->
+    <section class="sec">
+      <span class="eyebrow">02 · The tour (pinned, ~10 screens of scroll)</span>
+      <h3>One continuous flight through the whole event</h3>
+      <p style="color:#666;margin:0 0 14px">The 3D stage stays on screen (sticky). Scrolling moves the camera along the visitor loop. 9 stops: overview → 7 zones → finale. Inside each zone stop, the panel fills in step by step: <b>what it is → what your brand can do → what your brand gets</b>.</p>
+
+      <div class="states">
+        <div>
+          <div class="state-title">State A · Overview (stop 0)</div>
+          <div class="stage">
+            <div class="panel" style="width:300px;bottom:auto">
+              <span class="eyebrow">The venue</span>
+              <h5>Seven zones. One loop. All open to <u>your brand</u>.</h5>
+              <p style="margin:6px 0;font-size:12px">From the art entrance to the stage, every visitor walks the same loop through the event.</p>
+              <div class="gets" style="grid-template-columns:repeat(4,1fr)"><span>50 × 45 m concept plan</span><span>7 zones</span><span>1 loop</span><span>Women-first</span></div>
+            </div>
+            <span class="lbl" style="top:60px;left:430px">Pink Passage</span><span class="lbl" style="top:110px;left:560px">Make Studio</span><span class="lbl" style="top:110px;left:740px">Pink Market</span>
+            <span class="lbl" style="top:210px;left:610px">Rose Hub</span><span class="lbl" style="top:220px;left:830px">PinkOut Live</span><span class="lbl" style="top:330px;left:540px">Move Studio</span><span class="lbl" style="top:330px;left:760px">Beauty Lab</span>
+            <div class="minimap">mini floor plan<br>(you are here)</div>
+            <div class="rail"><i class="on">0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>★</i></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="state-title">State B · A zone stop (example: Rose Hub, stop 2)</div>
+          <div class="stage">
+            <div class="panel">
+              <span class="eyebrow">Zone 2 of 7 · Sip &amp; linger</span>
+              <h5>Rose Hub</h5>
+              <p style="margin:4px 0;font-size:12px">The social heart: PinkOut Café with matcha and coffee, the cherry-blossom tree, and an activation space that changes with every launch.</p>
+              <div><span class="chip">PinkOut Café</span><span class="chip">Activation pop-up</span><span class="chip">Cherry-blossom tree</span><span class="chip">≈ 32 × 15 m</span></div>
+              <div class="sub">What <u>your brand</u> can do</div>
+              <ul style="font-size:12px"><li>Take over the activation space</li><li>Create a signature drink</li><li>Café collaboration: cups, menu, sampling</li></ul>
+              <div class="sub">What your brand gets</div>
+              <div class="gets"><span>Every visitor passes through</span><span>Long, relaxed dwell time</span><span>A space that resets for you</span></div>
+              <span class="btn solid">Enquire about Rose Hub</span>
+            </div>
+            <span class="lbl on" style="top:180px;left:640px">Rose Hub</span>
+            <div class="box" style="position:absolute;top:120px;left:440px;width:480px;height:220px;background:transparent;border-style:dashed">Camera close on the hub: café counter, tree, activation ring; visitors with cups; the zone glows, the rest dims a little</div>
+            <div class="minimap">mini plan:<br>Rose Hub lit</div>
+            <div class="rail"><i>0</i><i>1</i><i class="on">2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>★</i></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="state-title">State C · Finale (stop ★) → free explore</div>
+          <div class="stage">
+            <div class="panel" style="width:300px;bottom:auto">
+              <span class="eyebrow">The whole event</span>
+              <h5>All of it can carry <u>your brand</u>.</h5>
+              <p style="font-size:12px;margin:6px 0">One zone, the stage, a themed day, or the whole season.</p>
+              <span class="btn">Season</span><span class="btn">Zone</span><span class="btn">Stage</span><span class="btn">Themed day</span><br>
+              <span class="btn solid">Enquire as event partner</span>
+            </div>
+            <div class="box" style="position:absolute;top:30px;left:400px;width:540px;height:370px;background:transparent;border-style:dashed">Camera pulls up to the full venue, then the map unlocks: drag to orbit, tap any zone to reopen its panel. Live layer keeps running (visitors, stage lights)</div>
+            <div class="rail"><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i class="on">★</i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note"><b>Motion &amp; behaviour</b>Camera glides between stops and holds while the panel content steps in (what it is → can do → gets). Progress rail and mini floor plan are clickable (jump to a zone). "Skip the tour" link for keyboard users. Reduced motion: camera cuts between stops, nothing walks. No WebGL / low-power phones: same stops as cards with the zone's concept render.</div>
+      <div class="note"><b>Replaces</b>The current 6-chapter walk-through <i>and</i> the separate live map section: they become this one experience.</div>
+    </section>
+
+    <!-- 3 PACKAGES -->
+    <section class="sec">
+      <span class="eyebrow">03 · Ways to partner</span>
+      <h3>Pick the size of your presence.</h3>
+      <div class="row c4">
+        <div class="box" style="min-height:150px">Season partner<br>biggest presence</div><div class="box">Zone partner</div><div class="box">Stage partner</div><div class="box">Themed-day partner</div>
+      </div>
+      <div class="note"><b>Kept, tightened</b>Same four packages (no prices). Each card links back to its spot in the tour ("See it in the tour").</div>
+    </section>
+
+    <!-- 4 THEMES -->
+    <section class="sec">
+      <span class="eyebrow">04 · Themed days</span>
+      <h3>Themed days to sponsor</h3>
+      <div class="row c4"><div class="box">K-POP Night</div><div class="box">Princess Day</div><div class="box">Japanese Girls Day</div><div class="box">+5 more →</div></div>
+      <div class="note"><b>Kept</b>Horizontal row. The "start from your goal" picker is folded into the tour (each zone shows what a brand can do), so it is removed here.</div>
+    </section>
+
+    <!-- 5 HOW / FAQ / OTHER / CLOSE -->
+    <section class="sec">
+      <span class="eyebrow">05–08</span>
+      <div class="row c4"><div class="box">How it works (4 steps)</div><div class="box">FAQ (event)</div><div class="box">Other ways to partner</div><div class="box">Closing: one short form away</div></div>
+    </section>
+  </div>
+</div>
+
+<div>
+  <h2 class="frame-title">Phone · 390</h2>
+  <div class="frame phone">
+    <section class="sec" style="padding:16px">
+      <span class="eyebrow">Hero</span>
+      <h3 style="font-size:24px">Your brand, part of her world.</h3>
+      <div class="box" style="min-height:40px">[ Your brand name ]</div>
+      <span class="btn solid">Take the tour ↓</span>
+    </section>
+    <section style="border-bottom:1px dashed var(--line)">
+      <div class="stage"><span class="lbl on" style="top:150px;left:140px">Rose Hub</span><div class="rail" style="top:10px;bottom:auto;inset-inline-end:auto;left:50%;transform:translateX(-50%)"><i>1</i><i class="on">2</i><i>3</i><i>…</i></div></div>
+      <div class="sheet">
+        <span class="eyebrow">Zone 2 of 7</span>
+        <h3 style="font-size:20px;margin:4px 0">Rose Hub</h3>
+        <p style="font-size:12px;margin:0">The social heart: café, tree, activation space…</p>
+        <div style="font-size:12px;margin-top:6px"><b>Your brand can do</b> · 3 ideas<br><b>Your brand gets</b> · 3 values</div>
+        <span class="btn solid">Enquire about Rose Hub</span>
+      </div>
+      <div class="note" style="margin:12px"><b>Phone</b>3D on the top half, the zone card as a sheet below it; the card scrolls through the stop. Mini floor plan hidden; progress dots at the top.</div>
+    </section>
+    <section class="sec" style="padding:16px"><div class="box">Packages · themes · how · FAQ · other · closing</div></section>
+  </div>
+
+  <h2 class="frame-title" style="margin-top:28px">The miniature (3D model)</h2>
+  <div class="frame"><div class="sec" style="padding:18px">
+    <p style="margin-top:0">Same real floor plan (50 × 45 m), rebuilt as a detailed architect's model:</p>
+    <ul style="padding-inline-start:18px;margin:0">
+      <li>Soft shadows, warm light, wall thickness, floor finishes per zone (tile, wood, carpet)</li>
+      <li><b>Pink Passage:</b> layered arches, mirror panels, floral garlands, light strips</li>
+      <li><b>Rose Hub:</b> café counter + matcha machine, stools, round tables &amp; chairs, fuller cherry-blossom tree, activation platform</li>
+      <li><b>Make Studio:</b> 5 stations: bead bar, phone-case table, laser engraver, embroidery machine, candy cart</li>
+      <li><b>Pink Market:</b> little storefronts with striped awnings, counters, shelves with products, ice-cream cart</li>
+      <li><b>PinkOut Live:</b> stage + LED screen, light truss, speakers, lounge seating (poufs, bean bags, low tables), moving beams</li>
+      <li><b>Move Studio:</b> wood floor, mirror wall + barre, mats, plants, spa corner</li>
+      <li><b>Beauty Lab:</b> foundation counter, fragrance bar, makeup &amp; nail stations with ring mirrors, boutique shelves, mini-spa chairs</li>
+      <li>Visitors as little figures (body + head, varied outfits), walking the loop</li>
+    </ul>
+    <div class="note"><b>Performance</b>Repeated pieces drawn as instances; shadows only on desktop; the 3D runs only while on screen. Phones get the same model with lighter effects.</div>
+  </div></div>
+</div>
+
+<div style="grid-column:1/-1">
+  <h2 class="frame-title">Tour copy · every stop (draft, English)</h2>
+  <div class="frame"><div class="sec" style="padding:0">
+  <table class="zones">
+    <tr><th style="width:150px">Stop</th><th>What it is</th><th>What your brand can do</th><th>What your brand gets</th></tr>
+    <tr><td><span class="pill-num">0</span>Overview</td><td>Seven zones. One loop. All open to your brand. From the art entrance to the stage, every visitor walks the same loop.</td><td>—</td><td>Facts: 50 × 45 m concept plan · 7 zones · 1 loop · women-first audience</td></tr>
+    <tr><td><span class="pill-num">1</span>Pink Passage<br><small>Arrive &amp; discover</small></td><td>The way in and the way out: arches, light, mirrors and floral art. Every visit starts and ends with a photo here.</td><td>Name the entrance · Build a signature art installation · Own the first (and last) photo moment</td><td>The first impression of every visit · Photos shared on social · Décor in your colours</td></tr>
+    <tr><td><span class="pill-num">2</span>Rose Hub<br><small>Sip &amp; linger</small></td><td>The social heart: PinkOut Café with matcha and coffee, the cherry-blossom tree, and an activation space that changes with every launch.</td><td>Take over the activation space · Create a signature drink · Café collaboration: cups, menu, sampling</td><td>Every visitor passes through · Long, relaxed dwell time · A space that resets for your brand</td></tr>
+    <tr><td><span class="pill-num">3</span>Make Studio<br><small>Create it. Personalise it. Take it home.</small></td><td>Five making stations: bracelets &amp; charms, phone cases, laser engraving, embroidery, custom candy. Visitors become makers.</td><td>Branded make-and-take · Sponsor a workshop station · Personalise your product (engrave, embroider)</td><td>Hands-on time with your brand · A keepsake that goes home · Content made by visitors</td></tr>
+    <tr><td><span class="pill-num">4</span>Pink Market<br><small>Find &amp; discover</small></td><td>A small lifestyle neighbourhood: storefronts, counters, sweets, fashion, accessories and seasonal pop-ups.</td><td>Launch pop-up store · Limited-edition drop · Zone sponsor</td><td>Shoppers in discovery mode · A store-like setting for your product · Gifting moments</td></tr>
+    <tr><td><span class="pill-num">5</span>PinkOut Live<br><small>Watch &amp; join in</small></td><td>The stage: performances, DJ sets, talks, podcasts and launches, with lounge seating that changes with the programme.</td><td>Launch on stage · Host talks &amp; podcasts · Sponsor performances &amp; DJ sets</td><td>The whole room's attention · Content filmed on a branded stage · A programme that brings people back</td></tr>
+    <tr><td><span class="pill-num">6</span>Beauty Lab<br><small>Discover &amp; personalise</small></td><td>Beauty meets technology (concept): shade matching, AI fragrance, custom makeup and nails, and a rotating brand boutique.</td><td>Product trials · Personalisation experiences · Brand boutique &amp; launches</td><td>Your product in her hands, on her skin · A personal result she remembers · A launch setting built for beauty</td></tr>
+    <tr><td><span class="pill-num">7</span>Move Studio<br><small>Move &amp; feel good</small></td><td>A calmer, semi-private studio for ballet, yoga, dance and fitness, with mirrors, barres and a spa corner.</td><td>Sponsored class series · Wellness sessions · Sampling after class</td><td>Small groups, full attention · A wellness association · Repeat visits through a series</td></tr>
+    <tr><td><span class="pill-num">★</span>Finale</td><td>All of it can carry your brand: one zone, the stage, a themed day, or the whole season.</td><td colspan="2">Package buttons + Enquire. The map unlocks for free exploring.</td></tr>
+  </table>
+  </div></div>
+  <p style="color:#888;font-size:12px">Loop order follows the floor plan: west door → Pink Passage → Rose Hub → Make Studio → Pink Market → PinkOut Live → Beauty Lab → Move Studio → exit through Pink Passage. Facts come from the knowledge base; no audience numbers or prices are shown.</p>
+</div>
+</main>
+</body>
+</html>

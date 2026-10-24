@@ -1,0 +1,30 @@
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <picture>
+      <source media="(max-width: 800px)" srcset="assets/images/hero-pinkout-fun-mobile-poster.jpg?v=1" width="540" height="960">
+      <img class="hero__poster" src="assets/images/hero-pinkout-fun-poster.jpg?v=1" alt="" width="1280" height="720" fetchpriority="high">
+    </picture>
+    <video class="hero__film" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+      data-src-desktop="assets/video/hero-pinkout-fun.mp4?v=1" data-src-mobile="assets/video/hero-pinkout-fun-mobile.mp4?v=1" hidden></video>
+    <button class="btn btn--secondary btn--icon hero__pause" type="button" aria-label="Pause film" data-film-toggle hidden>
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-icon-pause><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-icon-play hidden><path d="M8 5.5v13l11-6.5z"/></svg>
+    </button>
+    <div class="hero__panel" data-hero-panel>
+      <span class="eyebrow" data-welcome="eyebrow">PinkOut Partners · Coming soon to Riyadh</span>
+      <h1 id="hero-title"><span class="hero__line1" data-welcome="line1">Her own world.</span> <span data-welcome="line2">Room for partners who belong in it.</span></h1>
+      <p class="t-lead" data-welcome="lead">A women-first destination opening in Riyadh, with an app on the way. Partner with the event itself, or join the app with beauty services or your products.</p>
+      <div class="hero__actions">
+        <button class="btn" type="button" data-apply data-source="hero" data-welcome="cta">Become a partner</button>
+        <button class="btn btn--secondary" type="button" data-apply data-source="hero-deck" data-deck data-welcome="deck">Request a partner deck</button>
+        <a class="btn btn--quiet" href="#world" data-i18n="exploreWorld">Explore the world</a>
+      </div>
+      <ul class="glance" aria-label="At a glance" data-i18n-attr="aria-label:glanceLabel">
+        <li><b>7</b><span data-i18n="glanceZones">experience zones</span></li>
+        <li><b data-i18n="riyadh">Riyadh</b><span data-i18n="glanceCity">first city</span></li>
+        <li><b data-i18n="womenFirst">Women-first</b><span data-i18n="glanceAudience">audience</span></li>
+        <li><b data-i18n="tba">TBA</b><span data-i18n="glanceOpening">opening date</span></li>
+      </ul>
+    </div>
+  </section>
+

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- Themed-days room: princess line doodles, replacing the earlier dot pattern. -->
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(10 10) rotate(-12 13 13) scale(1.1)"><path d="M3.5 18 4.5 8l4.5 4 3-6.5 3 6.5 4.5-4 1 10zM3.5 21h17"/></g>
+    <g transform="translate(72 20) rotate(8 13 13) scale(1.1)"><path d="M7 4h10l4 5-9 11L3 9zM3 9h18M10 4 8 9l4 11 4-11-2-5"/></g>
+    <g transform="translate(134 8) rotate(0 13 13) scale(1.1)"><path d="M4 20 13 11M16 3l1.2 2.6L20 6l-2.1 2 .5 2.9L16 9.6l-2.4 1.3.5-2.9L12 6l2.8-.4z"/></g>
+    <g transform="translate(192 18) rotate(14 13 13) scale(1.1)"><path d="M12 20.5s-7.5-4.6-7.5-10.4A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.5c0 5.8-7.5 10.4-7.5 10.4z"/></g>
+    <g transform="translate(36 72) rotate(-6 13 13) scale(1.1)"><path d="M4 21V9h3v2.5h2V9h2v2.5h2V9h2v2.5h2V9h3v12zM10 21v-4a2 2 0 0 1 4 0v4M12 9V4l3 1.2L12 6.4"/></g>
+    <g transform="translate(100 80) rotate(10 13 13) scale(1.1)"><path d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/></g>
+    <g transform="translate(160 66) rotate(-8 13 13) scale(1.1)"><path d="M12 11c-2.2-3.2-6.3-4.2-7.6-2.6-1.3 1.7.9 4.6 7.6 2.6zm0 0c2.2-3.2 6.3-4.2 7.6-2.6 1.3 1.7-.9 4.6-7.6 2.6zm0 0-3.2 8m3.2-8 3.2 8"/></g>
+    <g transform="translate(8 134) rotate(6 13 13) scale(1.1)"><path d="M3.5 18 4.5 8l4.5 4 3-6.5 3 6.5 4.5-4 1 10zM3.5 21h17"/></g>
+    <g transform="translate(70 142) rotate(0 13 13) scale(1.1)"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.8z"/></g>
+    <g transform="translate(132 128) rotate(-14 13 13) scale(1.1)"><path d="M7 4h10l4 5-9 11L3 9zM3 9h18M10 4 8 9l4 11 4-11-2-5"/></g>
+    <g transform="translate(194 140) rotate(10 13 13) scale(1.1)"><path d="M12 20.5s-7.5-4.6-7.5-10.4A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.5c0 5.8-7.5 10.4-7.5 10.4z"/></g>
+    <g transform="translate(96 196) rotate(-10 13 13) scale(1.1)"><path d="M4 20 13 11M16 3l1.2 2.6L20 6l-2.1 2 .5 2.9L16 9.6l-2.4 1.3.5-2.9L12 6l2.8-.4z"/></g>
+    <g opacity=".8"><path transform="translate(164 200) scale(.5)" d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/><path transform="translate(34 200) scale(.5)" d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/><path transform="translate(216 90) scale(.5)" d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/><path transform="translate(54 52) scale(.5)" d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/><path transform="translate(122 106) scale(.5)" d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/><path transform="translate(208 220) scale(.5)" d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/><path transform="translate(8 98) scale(.5)" d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/><path transform="translate(144 174) scale(.5)" d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/></g>
+  </g>
+</svg>

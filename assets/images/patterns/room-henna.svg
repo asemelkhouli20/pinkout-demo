@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- Themed-days room: henna line doodles, replacing the earlier dot pattern. -->
+  <g fill="none" stroke="#b4441a" stroke-opacity="0.3" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(10 10) rotate(-12 13 13) scale(1.1)"><path d="M15.5 3c3.4 0 5.5 2.8 5.5 6.3 0 6.2-5.9 11.4-14 11.4 3.9-1.9 5-4 4.4-6-2.9.1-4.9-1.8-4.9-4.1C6.5 6.3 10.7 3 15.5 3z"/><circle cx="15.6" cy="8.6" r="2.4"/></g>
+    <g transform="translate(72 20) rotate(8 13 13) scale(1.1)"><circle cx="12" cy="12" r="2"/><circle cx="12" cy="12" r="5"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.9 2.9M15.5 15.5l2.9 2.9M5.6 18.4l2.9-2.9M15.5 8.5l2.9-2.9"/></g>
+    <g transform="translate(134 8) rotate(0 13 13) scale(1.1)"><path d="M5 19C5 10.5 11 5 19 5c0 8-5.5 14-14 14zM5 19l8-8"/></g>
+    <g transform="translate(192 18) rotate(14 13 13) scale(1.1)"><path d="M15 3a9 9 0 1 0 6 13A7 7 0 0 1 15 3z"/></g>
+    <g transform="translate(36 72) rotate(-6 13 13) scale(1.1)"><path d="M12 2v2M9 4h6M8 7.5 12 4l4 3.5M8 7.5h8l-1 9.5H9zM9 17h6l-1 3h-4zM12 10v4"/></g>
+    <g transform="translate(100 80) rotate(10 13 13) scale(1.1)"><circle cx="12" cy="7" r="1.6"/><circle cx="8" cy="14" r="1.6"/><circle cx="16" cy="14" r="1.6"/></g>
+    <g transform="translate(160 66) rotate(-8 13 13) scale(1.1)"><path d="M15.5 3c3.4 0 5.5 2.8 5.5 6.3 0 6.2-5.9 11.4-14 11.4 3.9-1.9 5-4 4.4-6-2.9.1-4.9-1.8-4.9-4.1C6.5 6.3 10.7 3 15.5 3z"/><circle cx="15.6" cy="8.6" r="2.4"/></g>
+    <g transform="translate(8 134) rotate(6 13 13) scale(1.1)"><path d="M5 19C5 10.5 11 5 19 5c0 8-5.5 14-14 14zM5 19l8-8"/></g>
+    <g transform="translate(70 142) rotate(0 13 13) scale(1.1)"><circle cx="12" cy="12" r="2"/><circle cx="12" cy="12" r="5"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.9 2.9M15.5 15.5l2.9 2.9M5.6 18.4l2.9-2.9M15.5 8.5l2.9-2.9"/></g>
+    <g transform="translate(132 128) rotate(-14 13 13) scale(1.1)"><circle cx="12" cy="7" r="1.6"/><circle cx="8" cy="14" r="1.6"/><circle cx="16" cy="14" r="1.6"/></g>
+    <g transform="translate(194 140) rotate(10 13 13) scale(1.1)"><path d="M15 3a9 9 0 1 0 6 13A7 7 0 0 1 15 3z"/></g>
+    <g transform="translate(96 196) rotate(-10 13 13) scale(1.1)"><path d="M12 2v2M9 4h6M8 7.5 12 4l4 3.5M8 7.5h8l-1 9.5H9zM9 17h6l-1 3h-4zM12 10v4"/></g>
+    <g opacity=".8"><circle cx="170" cy="206" r="1.4"/><circle cx="40" cy="206" r="1.4"/><circle cx="222" cy="96" r="1.4"/><circle cx="60" cy="58" r="1.4"/><circle cx="128" cy="112" r="1.4"/><circle cx="214" cy="226" r="1.4"/><circle cx="14" cy="104" r="1.4"/><circle cx="150" cy="180" r="1.4"/></g>
+  </g>
+</svg>

@@ -1,0 +1,165 @@
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="site-footer__grid">
+    <div><img class="site-footer__logo" src="assets/images/logo-light.svg?v=1" alt="PinkOut" width="113" height="40"><p style="margin-block-start:12px" data-i18n="footerTag">PinkOut Partners · Coming soon to Riyadh</p></div>
+    <ul aria-label="Partners" data-i18n-attr="aria-label:footerPartners">
+      <li><a href="event.html" data-i18n="navEvent">Event partners</a></li>
+      <li><a href="beauty.html" data-i18n="navBeauty">Beauty services</a></li>
+      <li><a href="shop.html" data-i18n="navShop">E-commerce</a></li>
+    </ul>
+    <ul aria-label="More" data-i18n-attr="aria-label:footerMore">
+      <li><a href="{{home}}#world" data-i18n="navWorld">The world</a></li>
+      <li><a href="privacy.html" data-i18n="privacy">Privacy</a></li>
+      <li><a href="credits.html" data-i18n="credits">Credits</a></li>
+      <li><a href="https://pinkoutsa.com" rel="noopener" data-i18n="visiting">Visiting PinkOut? pinkoutsa.com ↗</a></li>
+    </ul>
+  </div>
+  <div class="site-footer__bottom">
+    <span>© 2026 PinkOut</span>
+    <div class="site-footer__controls">
+      <button class="btn btn--secondary btn--sm" type="button" aria-pressed="false" data-motion-toggle data-i18n="motionOn">Motion: on</button>
+      <button class="btn btn--secondary btn--sm" type="button" data-lang-toggle lang="ar">العربية</button>
+    </div>
+  </div>
+</footer>
+
+<!-- Phone sticky bar -->
+<div class="cta-bar" data-cta-bar data-hidden>
+  <a class="btn btn--secondary btn--sm" href="{{home}}#partner" data-i18n="partnerTypes">Partner types</a>
+  <button class="btn btn--sm" type="button" data-apply data-source="sticky" data-sticky-cta data-i18n="ctaPartner">Become a partner</button>
+</div>
+
+<!-- ============ APPLICATION DIALOG ============ -->
+<dialog class="dialog" id="apply" aria-labelledby="apply-title" data-type="">
+  <form method="dialog" novalidate data-apply-form>
+    <div class="dialog__head">
+      <span class="door__icon" data-dlg-icon hidden aria-hidden="true"></span>
+      <div style="flex:1">
+        <h2 id="apply-title" data-dlg-title>Partner application</h2>
+        <p class="dialog__intro" data-dlg-intro hidden></p>
+        <span class="dialog__progress-bar" aria-hidden="true"><i></i></span>
+      </div>
+      <span class="dialog__progress" data-progress aria-live="polite"></span>
+      <button class="btn btn--secondary btn--icon" type="button" aria-label="Close" data-dlg-close data-i18n-attr="aria-label:close">✕</button>
+    </div>
+
+    <div class="dialog__body" data-step="type">
+      <div class="error-summary" role="alert" tabindex="-1" data-errors hidden><h3 data-i18n="fixThese">Please check:</h3><ul></ul></div>
+      <fieldset class="choices">
+        <legend data-i18n="formType">How would you like to partner?</legend>
+        <div class="typecards">
+          <label class="typecard" style="--typecard-c:var(--track-event)"><input type="radio" name="partnerType" value="event" class="visually-hidden"><span class="door__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18"/></svg></span><span><b data-i18n="tcEvent">Event partner</b><span data-i18n="tcEventText">Sponsorship or brand activation across the whole event</span></span></label>
+          <label class="typecard" style="--typecard-c:var(--track-beauty)"><input type="radio" name="partnerType" value="beauty" class="visually-hidden"><span class="door__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v4H9zM8 7h8l1 14H7z"/></svg></span><span><b data-i18n="tcBeauty">Beauty service partner</b><span data-i18n="tcBeautyText">Artists and salons, booked at home through the app</span></span></label>
+          <label class="typecard" style="--typecard-c:var(--track-shop)"><input type="radio" name="partnerType" value="shop" class="visually-hidden"><span class="door__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v11H4z"/></svg></span><span><b data-i18n="tcShop">E-commerce partner</b><span data-i18n="tcShopText">Sell your products in the app</span></span></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Branch: event -->
+    <div class="dialog__body" data-step="about" data-branch="event" hidden>
+      <div class="error-summary" role="alert" tabindex="-1" data-errors hidden><h3 data-i18n="fixThese">Please check:</h3><ul></ul></div>
+      <fieldset class="choices" data-required="interest"><legend><span data-i18n="fInterest">Partnership type</span> <span class="req">*</span></legend><div class="choices__list">
+        <label class="chip-input"><input type="radio" name="interest" value="sponsorship"><span class="chip" data-i18n="chipSponsorship">Sponsorship</span></label>
+        <label class="chip-input"><input type="radio" name="interest" value="activation"><span class="chip" data-i18n="fActivation">Brand activation</span></label>
+        <label class="chip-input"><input type="radio" name="interest" value="unsure"><span class="chip" data-i18n="fUnsure">Not sure yet</span></label>
+      </div></fieldset>
+      <fieldset class="choices"><legend data-i18n="fGoals">What do you want to achieve? (optional)</legend><div class="choices__list">
+        <label class="chip-input"><input type="checkbox" name="goals" value="launch"><span class="chip" data-i18n="goalLaunch">Launch a product</span></label>
+        <label class="chip-input"><input type="checkbox" name="goals" value="trial"><span class="chip" data-i18n="goalTrial">Drive product trial</span></label>
+        <label class="chip-input"><input type="checkbox" name="goals" value="awareness"><span class="chip" data-i18n="goalAwareness">Build awareness</span></label>
+        <label class="chip-input"><input type="checkbox" name="goals" value="content"><span class="chip" data-i18n="goalContent">Create content</span></label>
+        <label class="chip-input"><input type="checkbox" name="goals" value="community"><span class="chip" data-i18n="goalCommunity">Connect with a community</span></label>
+      </div></fieldset>
+      <fieldset class="choices"><legend data-i18n="fZones">Zones (optional)</legend><div class="choices__list" data-zone-options></div></fieldset>
+      <fieldset class="choices"><legend data-i18n="fThemes">Themed days (optional)</legend><div class="choices__list" data-theme-options></div></fieldset>
+      <fieldset class="choices"><legend data-i18n="fTiming">Timing</legend><div class="choices__list">
+        <label class="chip-input"><input type="radio" name="timing" value="opening-season"><span class="chip" data-i18n="fOpening">Opening season</span></label>
+        <label class="chip-input"><input type="radio" name="timing" value="later"><span class="chip" data-i18n="fLater">Later</span></label>
+        <label class="chip-input"><input type="radio" name="timing" value="exploring"><span class="chip" data-i18n="fExploring">Exploring</span></label>
+      </div></fieldset>
+    </div>
+
+    <!-- Branch: beauty -->
+    <div class="dialog__body" data-step="about" data-branch="beauty" hidden>
+      <div class="error-summary" role="alert" tabindex="-1" data-errors hidden><h3 data-i18n="fixThese">Please check:</h3><ul></ul></div>
+      <fieldset class="choices" data-required="applyingAs"><legend><span data-i18n="fApplyingAs">Applying as</span> <span class="req">*</span></legend><div class="choices__list">
+        <label class="chip-input"><input type="radio" name="applyingAs" value="freelancer"><span class="chip" data-i18n="fFreelancer">Freelance artist</span></label>
+        <label class="chip-input"><input type="radio" name="applyingAs" value="salon"><span class="chip" data-i18n="fSalon">Salon / beauty business</span></label>
+      </div></fieldset>
+      <fieldset class="choices" data-required="services"><legend><span data-i18n="fServices">Services</span> <span class="req">*</span></legend><div class="choices__list">
+        <label class="chip-input"><input type="checkbox" name="services" value="makeup"><span class="chip" data-i18n="svcMakeup">Makeup</span></label>
+        <label class="chip-input"><input type="checkbox" name="services" value="hair"><span class="chip" data-i18n="svcHair">Hair styling</span></label>
+        <label class="chip-input"><input type="checkbox" name="services" value="nails"><span class="chip" data-i18n="svcNails">Nails</span></label>
+        <label class="chip-input"><input type="checkbox" name="services" value="lashes-brows"><span class="chip" data-i18n="svcLashes">Lashes &amp; brows</span></label>
+        <label class="chip-input"><input type="checkbox" name="services" value="henna"><span class="chip" data-i18n="svcHenna">Henna</span></label>
+        <label class="chip-input"><input type="checkbox" name="services" value="skincare"><span class="chip" data-i18n="svcSkin">Skincare</span></label>
+      </div></fieldset>
+      <label class="field"><span class="field__label" data-i18n="fExperience">Years of experience</span>
+        <select class="field__control" name="experience"><option value="" data-i18n="fChoose">Choose…</option><option value="0-2">0–2</option><option value="3-5">3–5</option><option value="6-10">6–10</option><option value="10+">10+</option></select></label>
+      <fieldset class="choices" data-required="license"><legend><span data-i18n="fLicense">Valid license or professional certificate?</span> <span class="req">*</span></legend><div class="choices__list">
+        <label class="chip-input"><input type="radio" name="license" value="yes"><span class="chip" data-i18n="fYes">Yes</span></label>
+        <label class="chip-input"><input type="radio" name="license" value="in-progress"><span class="chip" data-i18n="fInProgress">In progress</span></label>
+      </div></fieldset>
+      <label class="field"><span class="field__label"><span data-i18n="fPortfolio">Portfolio or Instagram link</span> <span class="req">*</span></span>
+        <input class="field__control t-ltr" dir="ltr" type="text" name="portfolio" inputmode="url" autocomplete="url" placeholder="@yourname or https://…" data-required-input></label>
+    </div>
+
+    <!-- Branch: shop -->
+    <div class="dialog__body" data-step="about" data-branch="shop" hidden>
+      <div class="error-summary" role="alert" tabindex="-1" data-errors hidden><h3 data-i18n="fixThese">Please check:</h3><ul></ul></div>
+      <fieldset class="choices" data-required="categories"><legend><span data-i18n="fCategories">Categories</span> <span class="req">*</span></legend><div class="choices__list">
+        <label class="chip-input"><input type="checkbox" name="categories" value="beauty"><span class="chip" data-i18n="catBeauty">Beauty</span></label>
+        <label class="chip-input"><input type="checkbox" name="categories" value="fashion"><span class="chip" data-i18n="catFashion">Fashion</span></label>
+        <label class="chip-input"><input type="checkbox" name="categories" value="accessories"><span class="chip" data-i18n="catAccessories">Accessories</span></label>
+        <label class="chip-input"><input type="checkbox" name="categories" value="sweets"><span class="chip" data-i18n="catSweets">Sweets &amp; treats</span></label>
+        <label class="chip-input"><input type="checkbox" name="categories" value="gifts"><span class="chip" data-i18n="catGifts">Gifts</span></label>
+        <label class="chip-input"><input type="checkbox" name="categories" value="lifestyle"><span class="chip" data-i18n="catLifestyle">Lifestyle</span></label>
+      </div></fieldset>
+      <label class="field"><span class="field__label" data-i18n="fStore">Store or Instagram link</span>
+        <input class="field__control t-ltr" dir="ltr" type="text" name="storeLink" inputmode="url" autocomplete="url" placeholder="@yourbrand or https://…"></label>
+      <fieldset class="choices"><legend data-i18n="fProducts">Number of products</legend><div class="choices__list">
+        <label class="chip-input"><input type="radio" name="productCount" value="1-20"><span class="chip">1–20</span></label>
+        <label class="chip-input"><input type="radio" name="productCount" value="21-100"><span class="chip">21–100</span></label>
+        <label class="chip-input"><input type="radio" name="productCount" value="100+"><span class="chip">100+</span></label>
+      </div></fieldset>
+    </div>
+
+    <!-- Details (shared, with per-type labels) -->
+    <div class="dialog__body" data-step="details" hidden>
+      <div class="error-summary" role="alert" tabindex="-1" data-errors hidden><h3 data-i18n="fixThese">Please check:</h3><ul></ul></div>
+      <div class="form-row">
+        <label class="field" data-org-field><span class="field__label"><span data-org-label>Company</span> <span class="req" data-org-req>*</span></span><input class="field__control" type="text" name="org" autocomplete="organization"></label>
+        <label class="field"><span class="field__label"><span data-i18n="fName">Full name</span> <span class="req">*</span></span><input class="field__control" type="text" name="name" autocomplete="name" data-required-input></label>
+      </div>
+      <div class="form-row">
+        <label class="field" data-jobtitle-field><span class="field__label" data-i18n="fJob">Job title</span><input class="field__control" type="text" name="jobTitle" autocomplete="organization-title"></label>
+        <label class="field"><span class="field__label"><span data-i18n="fEmail">Email</span> <span class="req">*</span></span><input class="field__control" dir="ltr" type="email" name="email" autocomplete="email" data-required-input><span class="field__hint" data-email-hint hidden data-i18n="fEmailHint">A work email helps us reply faster.</span></label>
+      </div>
+      <label class="field"><span class="field__label"><span data-i18n="fPhone">Phone</span> <span class="req" data-phone-req hidden>*</span></span><input class="field__control" dir="ltr" type="tel" name="phone" inputmode="tel" autocomplete="tel" placeholder="+966 5x xxx xxxx"></label>
+      <label class="field"><span class="field__label" data-i18n="fMessage">Message (optional)</span><textarea class="field__control" name="message" rows="3"></textarea></label>
+      <label class="check"><input type="checkbox" name="wantsDeck" checked><span class="check__box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg></span><span class="check__text" data-deck-label>Send me the partner deck</span></label>
+      <label class="check"><input type="checkbox" name="consent" data-required-check><span class="check__box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg></span><span class="check__text"><span data-i18n="fConsent">I agree to the</span> <a href="privacy.html" target="_blank" data-i18n="privacyNotice">privacy notice</a> <span class="req">*</span></span></label>
+      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    </div>
+
+    <div class="dialog__body" data-step="review" hidden>
+      <p data-i18n="reviewIntro">Check your answers, then send.</p>
+      <dl class="review" data-review></dl>
+    </div>
+
+    <div class="dialog__body" data-step="done" hidden>
+      <div class="notice" role="status" data-done-text></div>
+    </div>
+
+    <div class="dialog__foot">
+      <button class="btn btn--secondary" type="button" data-back data-i18n="back">Back</button>
+      <button class="btn" type="button" data-next data-i18n="next">Next</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast-region" aria-live="polite" data-toasts></div>
+
+<script src="assets/js/vendor/gsap.min.js?v=1" defer></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js?v=1" defer></script>
+<script type="module" src="assets/js/app.js?v=38"></script>

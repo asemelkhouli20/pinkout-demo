@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>PinkOut Partners Wireframe</title>
+<!--
+  PinkOut Partners — Wireframe v2 (three partner tracks: Event · Beauty service · E-commerce)
+  Low-fi greyscale. Mid-fi interaction: three doors, zone map with track filter, branching application dialog.
+  Toolbar: Desktop / Mobile 375 · EN / AR · Notes.
+-->
+<style>
+  :root { --ink:#1d1d1f; --ink-2:#5c5c62; --line:#c9c9ce; --box:#e4e4e8; --box-2:#d3d3d8; --paper:#fff; --bg:#f2f2f4; --note:#fff7c2; --note-ink:#5b4b00;
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif; }
+  * { box-sizing: border-box; } [hidden] { display: none !important; }
+  .grid > *, .map > *, .split > *, .hscroll > * { min-inline-size: 0; }
+  body { margin: 0; background: var(--bg); color: var(--ink); }
+  h1, h2, h3, p { margin: 0; } button { font: inherit; cursor: pointer; color: inherit; } a { color: inherit; }
+  .wf-toolbar { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 16px; background: #111; color: #fff; font-size: 14px; }
+  .wf-toolbar strong { margin-inline-end: auto; }
+  .wf-toolbar button { background: #2a2a2e; color: #fff; border: 1px solid #444; border-radius: 6px; padding: 6px 12px; }
+  .wf-toolbar button[aria-pressed="true"] { background: #fff; color: #111; }
+  .frame { container-type: inline-size; container-name: frame; background: var(--paper); margin-inline: auto; max-inline-size: 1280px; min-block-size: 100vh; box-shadow: 0 0 0 1px var(--line); overflow-x: clip; }
+  body.is-mobile .frame { max-inline-size: 375px; margin-block: 16px; }
+  body.notes-off .note { display: none; }
+  .wrap { inline-size: min(100% - 48px, 1120px); margin-inline: auto; }
+  section, header, footer { position: relative; border-block-end: 1px dashed var(--line); padding-block: 56px; }
+  .tag { position: absolute; inset-block-start: 8px; inset-inline-start: 8px; font: 600 11px/1 ui-monospace, monospace; background: var(--ink); color: #fff; padding: 4px 6px; border-radius: 4px; z-index: 2; }
+  .tag.new { background: #b00020; }
+  .box { background: var(--box); border: 1px solid var(--box-2); border-radius: 8px; display: grid; place-items: center; color: var(--ink-2); font-size: 13px; text-align: center; padding: 12px; min-block-size: 110px; }
+  .box.media { background: repeating-linear-gradient(45deg, var(--box), var(--box) 10px, #ececef 10px, #ececef 20px); }
+  .h1 { font-size: clamp(30px, 5.4cqi, 58px); line-height: 1.08; font-weight: 700; }
+  .h2 { font-size: clamp(24px, 3.4cqi, 38px); line-height: 1.2; font-weight: 700; margin-block-end: 12px; }
+  .h3 { font-size: 18px; font-weight: 700; margin-block-end: 6px; }
+  .eyebrow { display: inline-block; font: 600 12px/1.4 ui-monospace, monospace; background: var(--box); padding: 2px 8px; border-radius: 99px; margin-block-end: 10px; }
+  .muted { color: var(--ink-2); } .small { font-size: 13px; }
+  .btn { display: inline-block; border: 2px solid var(--ink); border-radius: 999px; padding: 9px 20px; font-weight: 600; background: var(--ink); color: #fff; text-decoration: none; white-space: nowrap; }
+  .btn.ghost { background: transparent; color: var(--ink); } .btn.sm { padding: 5px 13px; font-size: 14px; } .btn.link { border: 0; background: none; color: var(--ink); text-decoration: underline; padding-inline: 4px; }
+  .chip { display: inline-block; border: 1px solid var(--ink-2); border-radius: 999px; padding: 4px 12px; font-size: 13px; background: var(--paper); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .grid { display: grid; gap: 14px; } .g2 { grid-template-columns: repeat(2, 1fr); } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card { border: 1px solid var(--line); border-radius: 12px; padding: 16px; background: var(--paper); }
+  .card.strong { border: 2px solid var(--ink); }
+  .note { margin-block-start: 18px; background: var(--note); color: var(--note-ink); border-inline-start: 4px solid #e2c200; padding: 10px 14px; font-size: 13px; border-radius: 6px; unicode-bidi: plaintext; }
+  .note p + p { margin-block-start: 4px; }
+  .dashed { border: 2px dashed var(--ink-2); border-radius: 12px; padding: 14px; }
+  .check li { list-style: none; } .check { padding: 0; margin: 0; display: grid; gap: 6px; } .check li::before { content: "✓ "; font-weight: 700; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; counter-reset: s; }
+  .steps div { border-block-start: 3px solid var(--ink); padding-block-start: 8px; font-size: 14px; }
+  .steps div::before { counter-increment: s; content: counter(s) ". "; font-weight: 700; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* header */
+  .wf-header { padding-block: 12px; position: sticky; top: 50px; background: var(--paper); z-index: 20; }
+  .wf-header .wrap { display: flex; align-items: center; gap: 16px; }
+  .logo { font-weight: 800; border: 2px solid var(--ink); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+  .nav { display: flex; gap: 14px; margin-inline-start: auto; font-size: 14px; white-space: nowrap; }
+  .nav b { font-weight: 700; }
+  .menu-btn { display: none; border: 1px solid var(--ink); background: none; border-radius: 6px; padding: 6px 10px; }
+  .wf-header .mobile-nav { display: none; }
+
+  /* hero */
+  .hero { padding: 0; display: grid; min-block-size: 80vh; }
+  .hero > .box { grid-area: 1/1; border-radius: 0; min-block-size: 80vh; }
+  .hero .overlay { grid-area: 1/1; align-self: end; padding-block: 40px; }
+  .hero .panel { background: var(--paper); border: 2px solid var(--ink); border-radius: 16px; padding: 24px; max-inline-size: 640px; display: grid; gap: 12px; }
+  .glance { display: flex; flex-wrap: wrap; gap: 18px; padding-block-start: 12px; border-block-start: 1px solid var(--line); font-size: 13px; }
+  .glance b { display: block; font-size: 18px; }
+
+  /* doors */
+  .doors { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 14px; }
+  .door { display: grid; gap: 10px; align-content: start; border: 2px solid var(--ink); border-radius: 16px; padding: 20px; }
+  .door.primary { background: var(--box); }
+  .door .row { margin-block-start: auto; }
+
+  /* map */
+  .map { display: grid; grid-template-columns: 1.5fr 1fr; gap: 18px; }
+  .stage { min-block-size: 400px; border-radius: 16px; position: relative; }
+  .pins { position: absolute; inset: 0; }
+  .pins button { position: absolute; transform: translate(-50%, -50%); border: 1px solid var(--ink); background: var(--paper); border-radius: 999px; padding: 3px 9px; font-size: 12px; }
+  .pins button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+  .pins button[data-off] { opacity: .25; }
+  .zone-panel { border: 2px solid var(--ink); border-radius: 16px; padding: 18px; display: grid; gap: 10px; align-content: start; }
+
+  /* tracks */
+  .track-head { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: end; margin-block-end: 22px; }
+  .track-num { font: 700 48px/1 system-ui; color: var(--box-2); }
+  .hscroll { display: grid; grid-auto-flow: column; grid-auto-columns: 26%; gap: 12px; overflow-x: auto; padding-block-end: 6px; }
+  .sub { margin-block: 28px 12px; font-weight: 700; }
+
+  footer .grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+
+  /* dialog */
+  dialog { border: 2px solid var(--ink); border-radius: 16px; padding: 0; inline-size: min(580px, 94vw); }
+  dialog::backdrop { background: rgba(0,0,0,.45); }
+  .dlg-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 18px; border-block-end: 1px solid var(--line); }
+  .dlg-body { padding: 18px; display: grid; gap: 14px; max-block-size: 60vh; overflow: auto; }
+  .dlg-foot { padding: 14px 18px; border-block-start: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; }
+  .field { display: grid; gap: 5px; } .field > span { font-size: 13px; color: var(--ink-2); } .field i { display: block; block-size: 40px; border: 1px solid var(--ink-2); border-radius: 8px; }
+  .typecards { display: grid; gap: 10px; }
+  .typecard { text-align: start; border: 2px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--paper); }
+  .typecard[aria-pressed="true"] { border-color: var(--ink); background: var(--box); }
+
+  @container frame (max-width: 640px) {
+    .nav { display: none; } .menu-btn { display: inline-block; }
+    .wf-header .mobile-nav.open { display: grid; gap: 8px; padding-block: 10px; }
+    .wf-header .lang { display: none; } .wf-header .btn { margin-inline-start: auto; }
+    .doors, .map, .split, .g2, .g3, .track-head { grid-template-columns: 1fr; }
+    .g4, footer .grid { grid-template-columns: 1fr 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .pins { display: none; }
+    .hscroll { grid-auto-columns: 78%; }
+    .zone-panel { border-radius: 16px 16px 0 0; }
+    .sticky-bar { display: flex !important; }
+  }
+  .sticky-bar { display: none; position: sticky; bottom: 8px; z-index: 30; margin: 8px; gap: 8px; padding: 8px; border: 2px solid var(--ink); border-radius: 999px; background: var(--paper); }
+  .sticky-bar .btn { flex: 1; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="wf-toolbar" role="toolbar" aria-label="Wireframe view">
+    <strong>PinkOut Partners — Wireframe v2 · three partner tracks</strong>
+    <button type="button" data-view="desktop" aria-pressed="true">Desktop</button>
+    <button type="button" data-view="mobile" aria-pressed="false">Mobile 375</button>
+    <button type="button" data-dir aria-pressed="false">AR / RTL</button>
+    <button type="button" data-notes aria-pressed="true">Notes</button>
+  </div>
+
+  <div class="frame">
+
+    <!-- 01 HEADER -->
+    <header class="wf-header">
+      <span class="tag">01 Header</span>
+      <div class="wrap">
+        <span class="logo">[LOGO]</span>
+        <nav class="nav" aria-label="Main">
+          <a href="#event"><b data-ar="شركاء الفعاليات">Event partners</b></a>
+          <a href="#beauty"><b data-ar="خدمات التجميل">Beauty services</b></a>
+          <a href="#shop"><b data-ar="التجارة الإلكترونية">E-commerce</b></a>
+          <a href="#world" data-ar="العالم">The world</a>
+          <a href="#faq" data-ar="أسئلة شائعة">FAQ</a>
+        </nav>
+        <a class="btn ghost sm lang" href="#">AR</a>
+        <button class="btn sm" type="button" data-apply="" data-ar="الانضمام كشريك">Become a partner</button>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav">☰</button>
+      </div>
+      <nav class="mobile-nav wrap" id="mnav" aria-label="Mobile"><a href="#event">Event partners</a><a href="#beauty">Beauty services</a><a href="#shop">E-commerce</a><a href="#world">The world</a><a href="#faq">FAQ</a><a href="#">العربية</a></nav>
+    </header>
+
+    <!-- 02 HERO -->
+    <section class="hero" id="top">
+      <span class="tag">02 Hero</span>
+      <div class="box media">[VIDEO — existing PinkOut film, muted loop · 9:16 mobile cut · poster under the film]</div>
+      <div class="overlay wrap">
+        <div class="panel">
+          <span class="eyebrow" data-ar="شركاء PinkOut · قريباً في الرياض">PinkOut Partners · Coming soon to Riyadh</span>
+          <h1 class="h1" data-ar="عالمها الخاص. ومكان للشركاء الذين ينتمون إليه.">Her own world. Room for partners who belong in it.</h1>
+          <p class="muted" data-ar="وجهة مصمّمة للنساء أولاً، قريباً في الرياض، ومعها تطبيق قادم. الشراكة ممكنة في الفعالية، أو عبر خدمات التجميل، أو ببيع المنتجات.">A women-first destination opening in Riyadh, with an app on the way. Partner with PinkOut at the event, through beauty services, or by selling your products.</p>
+          <div class="row"><button class="btn" type="button" data-apply="" data-ar="الانضمام كشريك">Become a partner</button><button class="btn ghost" type="button" data-apply="" data-ar="طلب العرض التعريفي">Request a partner deck</button><a class="btn link" href="#world">Explore the world</a></div>
+          <div class="glance"><span><b>7</b>experience zones</span><span><b>Riyadh</b>first city</span><span><b>Women-first</b>audience</span><span><b>TBA</b>opening date</span></div>
+        </div>
+        <aside class="note"><b>Job:</b> what PinkOut is + "there's a place for partners like you". "Become a partner" opens the form on the type question.</aside>
+      </div>
+    </section>
+
+    <!-- 03 DOORS -->
+    <section id="partner">
+      <span class="tag new">03 Choose your partnership · NEW</span>
+      <div class="wrap">
+        <span class="eyebrow" data-ar="الشراكة">Partner with PinkOut</span>
+        <h2 class="h2" data-ar="ثلاث طرق للشراكة.">Three ways to partner.</h2>
+        <div class="doors">
+          <div class="door primary">
+            <span class="small muted">01 · For sponsors &amp; brands</span>
+            <h3 class="h3" data-ar="شركاء الفعاليات">Event partners</h3>
+            <p class="small" data-ar="قيمة مضافة داخل الفعالية، من الرعاية إلى تفعيلات العلامات.">Add value inside the event, from sponsorships to brand activations.</p>
+            <div class="row"><span class="chip">Sponsorship</span><span class="chip">Launches</span><span class="chip">Trials</span></div>
+            <div class="row"><a class="btn sm" href="#event">Explore</a><button class="btn ghost sm" type="button" data-apply="event">Enquire</button></div>
+          </div>
+          <div class="door">
+            <span class="small muted">02 · For artists &amp; salons</span>
+            <h3 class="h3" data-ar="شركاء خدمات التجميل">Beauty service partners</h3>
+            <p class="small" data-ar="خبرة التجميل داخل الفعالية وفي المنازل.">Bring your craft to PinkOut, at the event and at home.</p>
+            <div class="row"><span class="chip">At the event</span><span class="chip">At home · app</span></div>
+            <div class="row"><a class="btn sm" href="#beauty">Explore</a><button class="btn ghost sm" type="button" data-apply="beauty">Apply</button></div>
+          </div>
+          <div class="door">
+            <span class="small muted">03 · For brands &amp; sellers</span>
+            <h3 class="h3" data-ar="شركاء التجارة الإلكترونية">E-commerce partners</h3>
+            <p class="small" data-ar="بيع المنتجات في الفعالية وفي تطبيق PinkOut.">Sell your products at the event and in the PinkOut app.</p>
+            <div class="row"><span class="chip">Pink Market</span><span class="chip">In the app</span></div>
+            <div class="row"><a class="btn sm" href="#shop">Explore</a><button class="btn ghost sm" type="button" data-apply="shop">Apply</button></div>
+          </div>
+        </div>
+        <aside class="note"><b>Job:</b> "is there a place for me?" in one glance. Event is first and widest (priority #1). Explore → its track; Apply/Enquire → form with the type pre-selected (skips step 1). <b>Motion:</b> doors pop in once, 90ms stagger. <b>Mobile:</b> stacked, Event first.</aside>
+      </div>
+    </section>
+
+    <!-- 04 WHY -->
+    <section id="why">
+      <span class="tag">04 Why PinkOut</span>
+      <div class="wrap">
+        <h2 class="h2" data-ar="ليست فعالية. عالم يتجدّد باستمرار.">Not an event. A world that keeps changing.</h2>
+        <div class="grid g3"><div class="card"><b>People take part</b><p class="small muted">Visitors make, try, move and join in.</p></div><div class="card"><b>They come back</b><p class="small muted">Themes, guests and pop-ups rotate.</p></div><div class="card"><b>One premium world</b><p class="small muted">Seven zones, one identity.</p></div></div>
+      </div>
+    </section>
+
+    <!-- 05 WORLD MAP -->
+    <section id="world">
+      <span class="tag">05 The world · 3D map ★ (now with track filter)</span>
+      <div class="wrap">
+        <h2 class="h2" data-ar="سبع مناطق. عالم واحد.">Seven zones. One world.</h2>
+        <div class="row" role="group" aria-label="Show zones for" style="margin-block-end:12px" data-track-filter>
+          <span class="small muted">Show where:</span>
+          <button class="chip" type="button" aria-pressed="true" data-track="all">All partners</button>
+          <button class="chip" type="button" aria-pressed="false" data-track="event">Event</button>
+          <button class="chip" type="button" aria-pressed="false" data-track="beauty">Beauty services</button>
+          <button class="chip" type="button" aria-pressed="false" data-track="shop">E-commerce</button>
+        </div>
+        <div class="map">
+          <div><div class="box media stage">[3D — zone diorama; zones not used by the chosen track fade back]<div class="pins" aria-hidden="true"></div></div>
+            <div class="row" style="margin-block-start:10px" data-zones></div>
+            <p class="small muted" style="margin-block-start:6px">Illustrative concept layout, not a final floor plan.</p></div>
+          <div class="zone-panel" aria-live="polite">
+            <div class="box media">[PHOTO — zone render · "Concept"]</div>
+            <h3 class="h3" data-zone-name>Select a zone</h3>
+            <p class="small muted" data-zone-line>Each zone shows which partners fit there.</p>
+            <div><b class="small">Partners here</b><div class="row" data-zone-tracks style="margin-block-start:6px"></div></div>
+            <div class="row"><button class="btn sm" type="button" data-apply="" data-from-zone>Enquire about this zone</button><button class="btn ghost sm" type="button">Copy link</button></div>
+          </div>
+        </div>
+        <aside class="note"><b>New:</b> the "Show where" filter lets each partner type see its zones (Beauty → Beauty Lab, plus Rose Hub for themed looks; E-commerce → Pink Market). The panel lists which partner types fit each zone. Real controls are the HTML zone buttons.</aside>
+      </div>
+    </section>
+
+    <!-- 06 AUDIENCE -->
+    <section id="audience">
+      <span class="tag">06 Audience</span>
+      <div class="wrap">
+        <h2 class="h2">An audience that comes to take part.</h2>
+        <div class="grid g4"><div class="dashed"><b>[00%]</b><p class="small">[Figure — from decks]</p></div><div class="dashed"><b>[00K]</b><p class="small">[Social — from decks]</p></div><div class="dashed"><b>[00K]</b><p class="small">[Waitlist — from decks]</p></div><div class="dashed"><b>[00%]</b><p class="small">[Figure — from decks]</p></div></div>
+        <aside class="note">⏳ Figures come from the three partner decks; empty slots are hidden on the live site.</aside>
+      </div>
+    </section>
+
+    <!-- 07 TRACK 1 EVENT -->
+    <section id="event">
+      <span class="tag new">07 Track 1 · Event partners</span>
+      <div class="wrap">
+        <div class="track-head"><span class="track-num">01</span><div><span class="eyebrow" data-ar="شركاء الفعاليات">Event partners · sponsors &amp; brands</span><h2 class="h2" data-ar="قيمة مضافة داخل الفعالية.">Add value inside the event.</h2></div><div class="row"><button class="btn" type="button" data-apply="event">Enquire as event partner</button><button class="btn ghost sm" type="button" data-apply="event">Event deck</button></div></div>
+        <p class="sub">7a · Sponsorship (indicative, no prices)</p>
+        <div class="grid g4"><div class="card strong"><b>Season partner</b><ul class="check small"><li>All 7 zones</li><li>Launch moment</li><li>Content · Recap</li></ul></div><div class="card"><b>Zone partner</b><ul class="check small"><li>One zone</li><li>Trials in it</li></ul></div><div class="card"><b>Stage partner</b><ul class="check small"><li>PinkOut Live</li><li>Launch / talk slots</li></ul></div><div class="card"><b>Themed-day partner</b><ul class="check small"><li>One theme day</li><li>Venue-wide</li></ul></div></div>
+        <div class="box" style="min-block-size:70px;margin-block-start:12px">[Comparison table · 4 types × where · activation · length · best for]</div>
+        <p class="sub">7b · Start from your goal</p>
+        <div class="row"><span class="chip" aria-pressed="true">Launch</span><span class="chip">Trial</span><span class="chip">Awareness</span><span class="chip">Content</span><span class="chip">Community</span></div>
+        <div class="grid g4" style="margin-block-start:12px"><div class="card small"><b>Launch on stage</b><br>Zone · Best for</div><div class="card small"><b>Product trials</b><br>Zone · Best for</div><div class="card small"><b>Hub takeover</b><br>Zone · Best for</div><div class="card small"><b>+4 more</b></div></div>
+        <p class="sub">7c · Themed days to sponsor</p>
+        <div class="hscroll"><div class="box media">[K-POP Night]</div><div class="box media">[Movie Night]</div><div class="box media">[Coffee &amp; Henna]</div><div class="box media">[+5]</div></div>
+        <p class="sub">How it works</p>
+        <div class="steps"><div>Enquire</div><div>Deck &amp; intro call</div><div>Co-design</div><div>Activate</div></div>
+        <aside class="note"><b>Biggest track (priority #1).</b> Already designed as components C30–C32 (goal picker, packages, comparison). Each card → form with type = Event and the offer/zone/goal pre-filled.</aside>
+      </div>
+    </section>
+
+    <!-- 08 TRACK 2 BEAUTY -->
+    <section id="beauty">
+      <span class="tag new">08 Track 2 · Beauty service partners · NEW</span>
+      <div class="wrap">
+        <div class="track-head"><span class="track-num">02</span><div><span class="eyebrow">Beauty service partners · artists &amp; salons</span><h2 class="h2" data-ar="خبرة التجميل، في الفعالية وفي المنزل.">Your craft, at the event and at home.</h2></div><div class="row"><button class="btn" type="button" data-apply="beauty">Apply as beauty partner</button><button class="btn ghost sm" type="button" data-apply="beauty">Beauty deck</button></div></div>
+        <p class="sub">Where you work</p>
+        <div class="split">
+          <div class="card strong"><div class="box media" style="min-block-size:140px">[PHOTO — Beauty Lab render, cropped: no third-party brand names]</div><b>At the event</b><p class="small muted">Touch-up and glam stations in Beauty Lab, and looks for themed days like Princess Day and Coffee &amp; Henna Night.</p></div>
+          <div class="card"><div class="box" style="min-block-size:140px">[ILLUSTRATION — phone with a booking card · "App concept"]</div><b>At home <span class="chip">When the app launches</span></b><p class="small muted">Clients book you through the PinkOut app for appointments at home.</p></div>
+        </div>
+        <div class="grid g2" style="margin-block-start:14px">
+          <div><p class="sub" style="margin-block-start:0">Services we're looking for</p><div class="row"><span class="chip">Makeup</span><span class="chip">Hair styling</span><span class="chip">Nails</span><span class="chip">Lashes &amp; brows</span><span class="chip">Henna</span><span class="chip">Skincare</span></div>
+            <p class="sub">Who can apply</p><div class="row"><span class="chip">Freelance artists</span><span class="chip">Salons &amp; beauty businesses</span></div></div>
+          <div class="card"><b>Requirements</b><ul class="check small" style="margin-block-start:8px"><li>A valid license or professional certificate</li><li>A portfolio or Instagram showing your work</li></ul></div>
+        </div>
+        <p class="sub">How it works</p>
+        <div class="steps"><div>Apply</div><div>Portfolio review</div><div>Onboarding</div><div>Start: event first, home when the app launches</div></div>
+        <aside class="note"><b>Job:</b> "Can I work here?" for Reem (freelancer) and Hessa (salon), mostly on phones. Honest about home bookings depending on the app. No fees on the site (in the beauty deck). <b>Mobile:</b> where-you-work cards stack; requirements box comes before the steps.</aside>
+      </div>
+    </section>
+
+    <!-- 09 TRACK 3 E-COMMERCE -->
+    <section id="shop">
+      <span class="tag new">09 Track 3 · E-commerce partners · NEW</span>
+      <div class="wrap">
+        <div class="track-head"><span class="track-num">03</span><div><span class="eyebrow">E-commerce partners · brands &amp; sellers</span><h2 class="h2" data-ar="البيع حيث تتسوّق: في الفعالية وفي التطبيق.">Sell where she shops: at the event and in the app.</h2></div><div class="row"><button class="btn" type="button" data-apply="shop">Apply as seller</button><button class="btn ghost sm" type="button" data-apply="shop">E-commerce deck</button></div></div>
+        <p class="sub">Where you sell</p>
+        <div class="split">
+          <div class="card strong"><div class="box media" style="min-block-size:140px">[PHOTO — Pink Market render]</div><b>At the event</b><p class="small muted">Pop-ups and curated shelves in Pink Market.</p></div>
+          <div class="card"><div class="box" style="min-block-size:140px">[ILLUSTRATION — app shop screen · "App concept"]</div><b>In the app <span class="chip">When the app launches</span></b><p class="small muted">Your products in the PinkOut app.</p></div>
+        </div>
+        <div class="grid g2" style="margin-block-start:14px">
+          <div><p class="sub" style="margin-block-start:0">Categories we're looking for</p><div class="row"><span class="chip">Beauty</span><span class="chip">Fashion</span><span class="chip">Accessories</span><span class="chip">Sweets &amp; treats</span><span class="chip">Gifts</span><span class="chip">Lifestyle</span></div></div>
+          <div class="card"><b>Requirement</b><ul class="check small" style="margin-block-start:8px"><li>Products that fit PinkOut's categories</li></ul></div>
+        </div>
+        <p class="sub">How it works</p>
+        <div class="steps"><div>Apply</div><div>Catalogue review</div><div>Onboarding</div><div>Start selling: event first, app when it launches</div></div>
+        <aside class="note"><b>Job:</b> "Can I sell here?" for Lama (small brand), mostly on phones. Same structure as the beauty track, so all tracks feel consistent.</aside>
+      </div>
+    </section>
+
+    <!-- 10 STATUS + 11 FAQ -->
+    <section id="status">
+      <span class="tag">10 Status</span>
+      <div class="wrap grid g3"><div class="card"><b>City</b><br>Riyadh</div><div class="card"><b>Opening</b><br>To be announced</div><div class="card"><b>App</b><br>In development</div></div>
+    </section>
+    <section id="faq">
+      <span class="tag">11 FAQ · grouped by type</span>
+      <div class="wrap">
+        <h2 class="h2">FAQ</h2>
+        <div class="row" style="margin-block-end:10px" data-faq-tabs><button class="chip" type="button" aria-pressed="true">General</button><button class="chip" type="button" aria-pressed="false">Event</button><button class="chip" type="button" aria-pressed="false">Beauty</button><button class="chip" type="button" aria-pressed="false">E-commerce</button></div>
+        <details><summary>What are the fees or commission?</summary><p class="muted">Shared after you apply, in the deck for your partner type.</p></details>
+        <details><summary>When do home bookings and app sales start?</summary><p class="muted">When the PinkOut app launches. Event partnerships start first.</p></details>
+        <details><summary>Do I need a license to apply as a beauty partner?</summary><p class="muted">Yes: a valid license or professional certificate, plus a portfolio or Instagram.</p></details>
+        <details><summary>Are any partners confirmed?</summary><p class="muted">No partnerships have been announced yet.</p></details>
+      </div>
+    </section>
+
+    <!-- 12 CLOSING -->
+    <section id="start" style="background:var(--box)">
+      <span class="tag">12 Closing</span>
+      <div class="wrap" style="text-align:center;display:grid;gap:12px;justify-items:center">
+        <h2 class="h2">Shape the first season with us.</h2>
+        <div class="row" style="justify-content:center"><button class="btn" type="button" data-apply="event">Event partner</button><button class="btn" type="button" data-apply="beauty">Beauty partner</button><button class="btn" type="button" data-apply="shop">E-commerce partner</button></div>
+      </div>
+    </section>
+
+    <!-- 13 FOOTER -->
+    <footer>
+      <span class="tag">13 Footer</span>
+      <div class="wrap grid">
+        <div><span class="logo">[LOGO]</span><p class="small muted" style="margin-block-start:8px">PinkOut Partners · Coming soon to Riyadh</p></div>
+        <div class="small"><b>Partners</b><br>Event · Beauty services · E-commerce</div>
+        <div class="small"><b>Explore</b><br>The world · FAQ</div>
+        <div class="small">Privacy · Credits · Motion · العربية<br><b>Visiting PinkOut? pinkoutsa.com ↗</b></div>
+      </div>
+    </footer>
+
+    <div class="sticky-bar" aria-label="Quick actions"><a class="btn ghost sm" href="#partner">Partner types</a><button class="btn sm" type="button" data-apply="" data-sticky>Become a partner</button></div>
+  </div>
+
+  <!-- APPLICATION DIALOG (mid-fi, branching) -->
+  <dialog id="apply" aria-labelledby="apply-title">
+    <div class="dlg-head"><b id="apply-title">Partner application</b><span class="small muted" data-progress></span><button class="btn ghost sm" type="button" data-close>✕</button></div>
+
+    <div class="dlg-body" data-step="type">
+      <b data-ar="ما نوع الشراكة؟">How would you like to partner?</b>
+      <div class="typecards">
+        <button class="typecard" type="button" data-type="event" aria-pressed="false"><b>Event partner</b><br><span class="small muted">Sponsorship or brand activation inside the event</span></button>
+        <button class="typecard" type="button" data-type="beauty" aria-pressed="false"><b>Beauty service partner</b><br><span class="small muted">Artists and salons, at the event and at home</span></button>
+        <button class="typecard" type="button" data-type="shop" aria-pressed="false"><b>E-commerce partner</b><br><span class="small muted">Sell at the event and in the app</span></button>
+      </div>
+    </div>
+
+    <div class="dlg-body" data-step="about" data-branch="event">
+      <b>About your partnership · Event</b>
+      <div class="field"><span>Partnership type *</span><div class="row"><span class="chip" aria-pressed="true">Sponsorship</span><span class="chip">Brand activation</span><span class="chip">Not sure yet</span></div></div>
+      <div class="field"><span>What do you want to achieve?</span><div class="row"><span class="chip">Launch</span><span class="chip">Trial</span><span class="chip">Awareness</span><span class="chip">Content</span><span class="chip">Community</span></div></div>
+      <div class="field"><span>Zones · Themed days · Timing</span><div class="row"><span class="chip">PinkOut Live</span><span class="chip">+6</span><span class="chip">Opening season</span></div></div>
+    </div>
+    <div class="dlg-body" data-step="about" data-branch="beauty">
+      <b>About your work · Beauty service</b>
+      <div class="field"><span>Applying as *</span><div class="row"><span class="chip" aria-pressed="true">Freelance artist</span><span class="chip">Salon / beauty business</span></div></div>
+      <div class="field"><span>Services *</span><div class="row"><span class="chip" aria-pressed="true">Makeup</span><span class="chip">Hair</span><span class="chip">Nails</span><span class="chip">Lashes &amp; brows</span><span class="chip">Henna</span><span class="chip">Skincare</span></div></div>
+      <div class="field"><span>Where would you work?</span><div class="row"><span class="chip">At the event</span><span class="chip">At home (when the app launches)</span><span class="chip" aria-pressed="true">Both</span></div></div>
+      <div class="field"><span>Years of experience</span><i></i></div>
+      <div class="field"><span>Valid license or professional certificate? *</span><div class="row"><span class="chip" aria-pressed="true">Yes</span><span class="chip">In progress</span></div></div>
+      <label class="field"><span>Portfolio or Instagram link *</span><i></i></label>
+    </div>
+    <div class="dlg-body" data-step="about" data-branch="shop">
+      <b>About your products · E-commerce</b>
+      <div class="field"><span>Categories *</span><div class="row"><span class="chip">Beauty</span><span class="chip">Fashion</span><span class="chip" aria-pressed="true">Accessories</span><span class="chip">Sweets &amp; treats</span><span class="chip">Gifts</span><span class="chip">Lifestyle</span></div></div>
+      <div class="field"><span>Where would you sell?</span><div class="row"><span class="chip">At the event</span><span class="chip">In the app (when it launches)</span><span class="chip" aria-pressed="true">Both</span></div></div>
+      <label class="field"><span>Store or Instagram link</span><i></i></label>
+      <div class="field"><span>Number of products</span><div class="row"><span class="chip">1–20</span><span class="chip" aria-pressed="true">21–100</span><span class="chip">100+</span></div></div>
+    </div>
+
+    <div class="dlg-body" data-step="details">
+      <b>Your details</b>
+      <div class="grid g2"><label class="field"><span data-detail-org>Company *</span><i></i></label><label class="field"><span>Full name *</span><i></i></label></div>
+      <div class="grid g2"><label class="field"><span>Email *</span><i></i></label><label class="field"><span>Phone · +966 · LTR</span><i></i></label></div>
+      <label class="field"><span>Message (optional)</span><i></i></label>
+      <span class="small"><b>☑</b> <span data-deck-label>Send me the partner deck</span></span>
+      <span class="small"><b>☐</b> I agree to the privacy notice *</span>
+    </div>
+
+    <div class="dlg-body" data-step="review"><b>Review</b><div class="card small" data-review></div></div>
+    <div class="dlg-body" data-step="done"><div class="box" style="min-block-size:70px">[✓]</div><b>Applications open soon.</b><p class="small muted">This was a preview; nothing was sent.</p></div>
+
+    <div class="dlg-foot"><button class="btn ghost sm" type="button" data-back>Back</button><button class="btn sm" type="button" data-next>Next</button></div>
+  </dialog>
+
+<script>
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* Toolbar */
+  $$('[data-view]').forEach((b) => b.addEventListener('click', () => {
+    document.body.classList.toggle('is-mobile', b.dataset.view === 'mobile');
+    $$('[data-view]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+  $$('[data-ar]').forEach((el) => (el.dataset.en = el.textContent));
+  $('[data-dir]').addEventListener('click', (e) => {
+    const rtl = document.documentElement.dir !== 'rtl';
+    document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+    document.documentElement.lang = rtl ? 'ar' : 'en';
+    $$('[data-ar]').forEach((el) => (el.textContent = rtl ? el.dataset.ar : el.dataset.en));
+    e.currentTarget.setAttribute('aria-pressed', String(rtl));
+  });
+  $('[data-notes]').addEventListener('click', (e) => {
+    const off = document.body.classList.toggle('notes-off');
+    e.currentTarget.setAttribute('aria-pressed', String(!off));
+  });
+  $('.menu-btn').addEventListener('click', (e) => {
+    const open = $('#mnav').classList.toggle('open');
+    e.currentTarget.setAttribute('aria-expanded', String(open));
+  });
+
+  /* Zone map with track filter */
+  const TRACK_NAMES = { event: 'Event', beauty: 'Beauty services', shop: 'E-commerce' };
+  const ZONES = [
+    { id: 'passage', name: 'Pink Passage', x: 50, y: 88, line: 'The art-filled entrance.', tracks: ['event'] },
+    { id: 'hub', name: 'Rose Hub', x: 50, y: 50, line: 'The social heart and café.', tracks: ['event', 'beauty'] },
+    { id: 'beauty', name: 'Beauty Lab', x: 22, y: 34, line: 'Discover, test and personalise beauty.', tracks: ['event', 'beauty'] },
+    { id: 'make', name: 'Make Studio', x: 78, y: 34, line: 'Create it. Personalise it. Take it home.', tracks: ['event'] },
+    { id: 'market', name: 'Pink Market', x: 20, y: 68, line: 'Curated stores and pop-ups.', tracks: ['event', 'shop'] },
+    { id: 'move', name: 'Move Studio', x: 80, y: 68, line: 'Classes and wellness.', tracks: ['event'] },
+    { id: 'live', name: 'PinkOut Live', x: 50, y: 16, line: 'The stage.', tracks: ['event'] },
+  ];
+  let zone = null, track = 'all';
+  ZONES.forEach((z) => {
+    $('[data-zones]').insertAdjacentHTML('beforeend', `<button class="chip" type="button" aria-pressed="false" data-zone="${z.id}">${z.name}</button>`);
+    $('.pins').insertAdjacentHTML('beforeend', `<button type="button" tabindex="-1" aria-pressed="false" data-zone="${z.id}" style="left:${z.x}%;top:${z.y}%">${z.name}</button>`);
+  });
+  function renderMap() {
+    $$('[data-zone]').forEach((b) => {
+      const z = ZONES.find((x) => x.id === b.dataset.zone);
+      b.setAttribute('aria-pressed', String(!!zone && z.id === zone.id));
+      b.toggleAttribute('data-off', track !== 'all' && !z.tracks.includes(track));
+    });
+    $('[data-zone-name]').textContent = zone ? zone.name : 'Select a zone';
+    $('[data-zone-line]').textContent = zone ? zone.line : 'Each zone shows which partners fit there.';
+    $('[data-zone-tracks]').innerHTML = zone ? zone.tracks.map((t) => `<span class="chip">${TRACK_NAMES[t]}</span>`).join('') : '—';
+  }
+  document.addEventListener('click', (e) => {
+    const zb = e.target.closest('[data-zone]'); if (zb) { zone = ZONES.find((z) => z.id === zb.dataset.zone); renderMap(); }
+    const tb = e.target.closest('[data-track]');
+    if (tb) { track = tb.dataset.track; $$('[data-track]').forEach((b) => b.setAttribute('aria-pressed', String(b === tb))); renderMap(); }
+    const fb = e.target.closest('[data-faq-tabs] .chip');
+    if (fb) $$('[data-faq-tabs] .chip').forEach((b) => b.setAttribute('aria-pressed', String(b === fb)));
+  });
+  renderMap();
+
+  /* Branching application dialog */
+  const dlg = $('#apply');
+  let type = '', flow = [], i = 0;
+  const LABELS = { event: 'Event partner', beauty: 'Beauty service partner', shop: 'E-commerce partner' };
+  const ORG = { event: 'Company *', beauty: 'Business name (if salon)', shop: 'Brand name *' };
+  function render() {
+    const step = flow[i];
+    $$('[data-step]', dlg).forEach((s) => s.hidden = !(s.dataset.step === step && (!s.dataset.branch || s.dataset.branch === type)));
+    const counted = flow.filter((s) => !['review', 'done'].includes(s));
+    $('[data-progress]').textContent = counted.includes(step) ? `${counted.indexOf(step) + 1} of ${counted.length}` : step === 'review' ? 'Review' : 'Preview';
+    $('[data-back]').hidden = i === 0 || step === 'done';
+    $('[data-next]').textContent = { review: 'Send', done: 'Close' }[step] || 'Next';
+    if (type) {
+      $('[data-detail-org]').textContent = ORG[type];
+      $('[data-deck-label]').textContent = `Send me the ${LABELS[type].toLowerCase()} deck`;
+      $('#apply-title').textContent = `Application · ${LABELS[type]}`;
+    }
+    if (step === 'review') $('[data-review]').innerHTML = `<b>Type:</b> ${LABELS[type]}<br><b>About:</b> [type-specific answers]<br><b>Details:</b> [as entered]<br><b>Deck:</b> yes`;
+  }
+  function open(preset) {
+    type = preset || '';
+    $$('.typecard').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.type === type)));
+    $('#apply-title').textContent = 'Partner application';
+    flow = preset ? ['about', 'details', 'review', 'done'] : ['type', 'about', 'details', 'review', 'done'];
+    i = 0; render(); dlg.showModal();
+  }
+  $$('[data-apply]').forEach((b) => b.addEventListener('click', () => open(b.dataset.apply)));
+  $$('.typecard').forEach((c) => c.addEventListener('click', () => {
+    type = c.dataset.type;
+    $$('.typecard').forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
+  }));
+  $('[data-next]').addEventListener('click', () => {
+    if (flow[i] === 'type' && !type) { $('.typecard').focus(); return; }
+    if (flow[i] === 'done') return dlg.close();
+    i++; render();
+  });
+  $('[data-back]').addEventListener('click', () => { i--; render(); });
+  $('[data-close]').addEventListener('click', () => dlg.close());
+
+  /* Sticky bar label follows the visible track (mobile) */
+  const stickyBtn = $('[data-sticky]');
+  const STICKY = { event: 'Enquire as event partner', beauty: 'Apply as beauty partner', shop: 'Apply as seller' };
+  const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+    if (!en.isIntersecting) return;
+    const id = en.target.id;
+    stickyBtn.dataset.apply = STICKY[id] ? id : '';
+    stickyBtn.textContent = STICKY[id] || 'Become a partner';
+  }), { rootMargin: '-45% 0px -45% 0px' });
+  ['top', 'partner', 'event', 'beauty', 'shop', 'faq'].forEach((id) => io.observe(document.getElementById(id)));
+</script>
+</body>
+</html>

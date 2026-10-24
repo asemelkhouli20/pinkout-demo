@@ -1,0 +1,47 @@
+  <!-- ============ THE WORLD (3D MAP) ============ -->
+  <section class="block" id="world" aria-labelledby="world-title" data-track-preset="{{track}}">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="{{world_eyebrow_key}}">{{world_eyebrow}}</span>
+        <h2 id="world-title" data-i18n="{{world_title_key}}">{{world_title}}</h2>
+        <p class="t-lead" data-i18n="{{world_hint_key}}">{{world_hint}}</p>
+      </div>
+      <div class="world-grid">
+        <div class="world-grid__map">
+          <div class="map-stage" data-map-stage data-mode="poster">
+            <img class="map-stage__poster" src="assets/images/worlds/hero-960.webp?v=1" alt="" width="960" height="544" loading="lazy">
+            <div class="map-stage__labels" data-map-labels aria-hidden="true"></div>
+            <span class="map-stage__hint" data-map-hint aria-hidden="true" data-i18n="mapHint">Drag to look around · tap a zone</span>
+          </div>
+          <div class="zone-chips" role="group" aria-label="Zones" data-zone-chips data-i18n-attr="aria-label:zonesLabel">
+            <button class="chip" type="button" data-zone="" aria-pressed="false" data-i18n="seeAll">See all zones</button>
+            <button class="chip chip--zone" type="button" data-zone="passage" aria-pressed="false" style="--zone-c:var(--zone-passage)">Pink Passage</button>
+            <button class="chip chip--zone" type="button" data-zone="hub" aria-pressed="false" style="--zone-c:var(--zone-hub)">Rose Hub</button>
+            <button class="chip chip--zone" type="button" data-zone="beauty" aria-pressed="false" style="--zone-c:var(--zone-beauty)">Beauty Lab</button>
+            <button class="chip chip--zone" type="button" data-zone="make" aria-pressed="false" style="--zone-c:var(--zone-make)">Make Studio</button>
+            <button class="chip chip--zone" type="button" data-zone="market" aria-pressed="false" style="--zone-c:var(--zone-market)">Pink Market</button>
+            <button class="chip chip--zone" type="button" data-zone="move" aria-pressed="false" style="--zone-c:var(--zone-move)">Move Studio</button>
+            <button class="chip chip--zone" type="button" data-zone="live" aria-pressed="false" style="--zone-c:var(--zone-live)">PinkOut Live</button>
+          </div>
+          <p class="map-stage__note" data-i18n="mapNote">Based on the concept floor plan (50 × 45 m). Not a final plan.</p>
+        </div>
+        <article class="zone-panel" data-zone-panel data-empty aria-live="polite">
+          <div class="zone-panel__media media-frame" data-zp-media hidden>
+            <img class="render" src="assets/images/worlds/hub-960.webp?v=1" alt="" width="960" height="541" data-zp-img>
+            <span class="concept" data-i18n="concept">Concept</span>
+          </div>
+          <div class="zone-panel__body">
+            <span class="eyebrow eyebrow--white zone-panel__tag" data-zp-tag hidden></span>
+            <h3 tabindex="-1" data-zp-title data-i18n="selectZone">Select a zone</h3>
+            <p data-zp-text data-i18n="selectZoneText">Each zone shows what event partners can do there.</p>
+            <dl class="zone-panel__offers" data-zp-offers hidden></dl>
+            <div class="zone-panel__actions" data-zp-actions hidden>
+              <button class="btn" type="button" data-zp-enquire data-i18n="enquireZone">Enquire about this zone</button>
+              <button class="btn btn--quiet" type="button" data-copy-link data-i18n="copyLink">Copy link</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+

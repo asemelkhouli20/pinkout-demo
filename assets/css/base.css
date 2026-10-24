@@ -1,0 +1,95 @@
+/* PinkOut Partners — base: fonts, reset, typography, focus, layout helpers */
+
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../fonts/plex-arabic-regular.woff2) format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(../fonts/plex-arabic-medium.woff2) format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(../fonts/plex-arabic-semibold.woff2) format("woff2");
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-block-start: calc(var(--header-h) + var(--space-4));
+}
+
+body {
+  margin: 0;
+  background: var(--c-canvas);
+  color: var(--c-text);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-regular);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, p, figure, blockquote, dl, dd, ol, ul { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+img, svg, video, canvas { display: block; max-inline-size: 100%; }
+img, video { block-size: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+::selection { background: var(--c-pink); color: var(--c-text); }
+
+h1, .t-display { font-size: var(--fs-display); line-height: var(--lh-display); font-weight: var(--fw-bold); letter-spacing: var(--track-display); }
+h2, .t-h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); font-weight: var(--fw-bold); letter-spacing: var(--track-display); }
+h3, .t-h3 { font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--fw-bold); }
+.t-lead { font-size: var(--fs-lead); line-height: 1.6; color: var(--c-text-2); }
+.t-small { font-size: var(--fs-small); line-height: 1.5; }
+.t-muted { color: var(--c-text-2); }
+.t-ltr { direction: ltr; unicode-bidi: isolate; }
+
+:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 3px; border-radius: 6px; }
+
+.skip-link {
+  position: absolute; inset-inline-start: var(--space-4); inset-block-start: -100px; z-index: 100;
+  padding: var(--space-3) var(--space-5); border-radius: var(--radius-pill);
+  background: var(--c-text); color: var(--c-surface); font-weight: var(--fw-bold); text-decoration: none;
+}
+.skip-link:focus { inset-block-start: var(--space-4); }
+
+.visually-hidden {
+  position: absolute !important; inline-size: 1px; block-size: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+.container { inline-size: min(100%, var(--container)); margin-inline: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* Footer motion toggle sets this on <html>; JS also stops GSAP and the 3D loop */
+:root[data-motion="off"] *, :root[data-motion="off"] *::before, :root[data-motion="off"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Arabic letters must join: never letter-space Arabic text */
+:lang(ar), :lang(ar) * { letter-spacing: 0 !important; }

@@ -1,0 +1,205 @@
+{
+  "_note": "App journeys for beauty service and e-commerce partners (they work in the PinkOut app, not at the event): chapter i shows phone screen i (src/partials/phone-<track>.html). {brand} is replaced by the name the partner types (or the default). Arabic is DRAFT and neutral (no direct address). The event page uses src/tour.json instead.",
+  "ui": {
+    "en": {
+      "eyebrow": "Your night at PinkOut",
+      "inputLabel": "Your brand name",
+      "inputLabelBeauty": "Your name or salon",
+      "inputHint": "Stays on this device. It just makes the story yours.",
+      "start": "Start the walk-through",
+      "chapter": "Chapter",
+      "of": "of",
+      "skip": "Skip to the details",
+      "scroll": "Scroll to walk through"
+    },
+    "ar": {
+      "eyebrow": "ليلة في PinkOut",
+      "inputLabel": "اسم العلامة",
+      "inputLabelBeauty": "الاسم أو اسم الصالون",
+      "inputHint": "يبقى على هذا الجهاز فقط، ويجعل القصة شخصية.",
+      "start": "بدء الجولة",
+      "chapter": "الفصل",
+      "of": "من",
+      "skip": "الانتقال إلى التفاصيل",
+      "scroll": "التمرير للتجوّل"
+    }
+  },
+  "beauty": {
+    "mode": "app",
+    "default": {
+      "en": "Your name",
+      "ar": "الخبيرة"
+    },
+    "ui": {
+      "en": {
+        "scroll": "Scroll to follow her"
+      },
+      "ar": {
+        "scroll": "التمرير لمتابعة القصة"
+      }
+    },
+    "chapters": [
+      {
+        "en": {
+          "kicker": "Thursday evening",
+          "title": "Imagine {brand} in her pocket.",
+          "text": "Princess Day is this weekend. She wants the full look, without leaving home. Here's how she finds you."
+        },
+        "ar": {
+          "kicker": "مساء الخميس",
+          "title": "{brand} في متناول يدها.",
+          "text": "يوم الأميرات هذا الأسبوع. تريد الإطلالة كاملة دون مغادرة المنزل. هكذا تصل إلى {brand}."
+        }
+      },
+      {
+        "en": {
+          "kicker": "Open",
+          "title": "She opens PinkOut.",
+          "text": "Beauty at home, sorted by what she needs tonight: makeup, hair, nails, lashes, henna and skincare."
+        },
+        "ar": {
+          "kicker": "الفتح",
+          "title": "تفتح تطبيق PinkOut.",
+          "text": "خدمات التجميل في المنزل، مرتّبة حسب ما تحتاجه الليلة: مكياج وشعر وأظافر ورموش وحنّاء وعناية بالبشرة."
+        }
+      },
+      {
+        "en": {
+          "kicker": "Discover",
+          "title": "{brand}, where she is looking.",
+          "text": "Artists near her, free this weekend, with their work right there to compare."
+        },
+        "ar": {
+          "kicker": "الاكتشاف",
+          "title": "{brand} حيث تبحث.",
+          "text": "خبيرات قريبات ومتاحات في عطلة الأسبوع، وأعمالهن أمامها للمقارنة."
+        }
+      },
+      {
+        "en": {
+          "kicker": "Your profile",
+          "title": "She sees your work.",
+          "text": "Your services, your portfolio, your Instagram: everything she needs to choose you."
+        },
+        "ar": {
+          "kicker": "الملف",
+          "title": "ترى الأعمال.",
+          "text": "الخدمات والأعمال وحساب إنستغرام: كل ما تحتاجه لاختيار {brand}."
+        }
+      },
+      {
+        "en": {
+          "kicker": "Booked",
+          "title": "One tap, and it's booked.",
+          "text": "Saturday, 18:30, at her home. The booking comes to you; she gets her evening back."
+        },
+        "ar": {
+          "kicker": "الحجز",
+          "title": "لمسة واحدة، وتمّ الحجز.",
+          "text": "السبت، 18:30، في منزلها. الحجز يصل إلى {brand}، والمساء يعود لها."
+        }
+      },
+      {
+        "en": {
+          "kicker": "After",
+          "title": "The look, credited to {brand}.",
+          "text": "She shares the photo, the look carries your name, and next time she books again."
+        },
+        "ar": {
+          "kicker": "ما بعد الموعد",
+          "title": "الإطلالة منسوبة إلى {brand}.",
+          "text": "تشارك الصورة، والإطلالة تحمل اسم {brand}، وفي المرة القادمة تحجز من جديد."
+        }
+      }
+    ]
+  },
+  "shop": {
+    "mode": "app",
+    "default": {
+      "en": "Your brand",
+      "ar": "العلامة"
+    },
+    "ui": {
+      "en": {
+        "scroll": "Scroll to follow her"
+      },
+      "ar": {
+        "scroll": "التمرير لمتابعة القصة"
+      }
+    },
+    "chapters": [
+      {
+        "en": {
+          "kicker": "Sunday afternoon",
+          "title": "Imagine {brand} in her pocket.",
+          "text": "Her best friend's birthday is on Tuesday. She needs a gift, and she's scrolling PinkOut."
+        },
+        "ar": {
+          "kicker": "عصر الأحد",
+          "title": "{brand} في متناول يدها.",
+          "text": "عيد ميلاد صديقتها المقرّبة يوم الثلاثاء. تبحث عن هدية، وتتصفّح تطبيق PinkOut."
+        }
+      },
+      {
+        "en": {
+          "kicker": "Browse",
+          "title": "She opens the shop.",
+          "text": "Beauty, fashion, accessories, sweets, gifts and lifestyle, picked for her world."
+        },
+        "ar": {
+          "kicker": "التصفّح",
+          "title": "تفتح المتجر.",
+          "text": "جمال وأزياء وإكسسوارات وحلويات وهدايا ونمط حياة، منتقاة لعالمها."
+        }
+      },
+      {
+        "en": {
+          "kicker": "Featured",
+          "title": "{brand}, in the Gift Edit.",
+          "text": "Featured moments, like gift edits and themed-day picks, put your products in front of her."
+        },
+        "ar": {
+          "kicker": "المميّز",
+          "title": "{brand} في تشكيلة الهدايا.",
+          "text": "لحظات مميّزة، مثل تشكيلات الهدايا واختيارات أيام الثيمات، تضع المنتجات أمامها."
+        }
+      },
+      {
+        "en": {
+          "kicker": "Your story",
+          "title": "She meets {brand}.",
+          "text": "Your brand page tells her who made it and why. That's what makes her choose you."
+        },
+        "ar": {
+          "kicker": "الحكاية",
+          "title": "تتعرّف على {brand}.",
+          "text": "صفحة العلامة تحكي من صنع المنتج ولماذا. هذا ما يجعلها تختار {brand}."
+        }
+      },
+      {
+        "en": {
+          "kicker": "In her bag",
+          "title": "Added to bag.",
+          "text": "Your product, her gift, ordered in a minute."
+        },
+        "ar": {
+          "kicker": "الحقيبة",
+          "title": "أُضيف إلى الحقيبة.",
+          "text": "المنتج، والهدية، والطلب في دقيقة."
+        }
+      },
+      {
+        "en": {
+          "kicker": "After",
+          "title": "And she comes back.",
+          "text": "The gift lands, her friend asks where it came from, and {brand} is one tap away for both of them."
+        },
+        "ar": {
+          "kicker": "ما بعد الطلب",
+          "title": "ثم تعود من جديد.",
+          "text": "تصل الهدية، تسأل صديقتها عن مصدرها، و{brand} على بعد لمسة لكلتيهما."
+        }
+      }
+    ]
+  }
+}

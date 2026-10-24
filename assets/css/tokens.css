@@ -1,0 +1,98 @@
+/* PinkOut Partners — design tokens (Direction B · Sorbet Showroom)
+   Source: docs/design-system.md. Components use these variables only, never raw hex. */
+
+:root {
+  /* Colour: core */
+  --c-canvas: #fff5f8;
+  --c-surface: #ffffff;
+  --c-text: #7d163f;
+  --c-text-2: #924060;
+  --c-action: #df004c;
+  --c-action-hover: #b90040;
+  --c-line: rgb(125 22 63 / 0.14);
+  --c-line-strong: rgb(125 22 63 / 0.45);
+  --c-error: #b00020;
+  --c-ok: #0f6b4f;
+  --c-focus: #7d163f;
+
+  /* Colour: blocks / zones (berry text passes AA on every one) */
+  --c-pink: #ffc9de;
+  --c-butter: #fff0aa;
+  --c-lavender: #ddcffb;
+  --c-mint: #c7efdf;
+  --c-peach: #ffd9c2;
+  --c-sky: #d8ecff;
+  --c-rose: #ffb8d2;
+
+  --zone-passage: var(--c-pink);
+  --zone-hub: var(--c-butter);
+  --zone-beauty: var(--c-lavender);
+  --zone-make: var(--c-mint);
+  --zone-market: var(--c-peach);
+  --zone-move: var(--c-sky);
+  --zone-live: var(--c-rose);
+
+  /* Type */
+  --font: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 600;
+  --fs-display: clamp(36px, 5.6vw, 76px);
+  --fs-h2: clamp(30px, 4.2vw, 56px);
+  --fs-h3: clamp(20px, 2.2vw, 28px);
+  --fs-lead: clamp(17px, 1.5vw, 20px);
+  --fs-body: 16px;
+  --fs-small: 14px;
+  --fs-stat: clamp(44px, 6vw, 84px);
+  --lh-display: 1.04;
+  --lh-h2: 1.06;
+  --lh-body: 1.65;
+  --track-display: -0.02em;
+
+  /* Layout */
+  --container: 1280px;
+  --gutter: 16px;
+  --block-gap: 16px;
+  --block-pad: clamp(24px, 5vw, 72px);
+  --radius-block: 32px;
+  --radius-card: 24px;
+  --radius-input: 14px;
+  --radius-pill: 999px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
+  --header-h: 72px;
+  --tap: 44px;
+
+  /* Elevation */
+  --shadow-pop: 0 18px 50px -18px rgb(125 22 63 / 0.35);
+  --shadow-sticker: drop-shadow(0 8px 14px rgb(125 22 63 / 0.25));
+
+  /* Motion */
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-micro: 160ms;
+  --t-ui: 240ms;
+  --t-enter: 700ms;
+
+  /* Direction sign for horizontal motion (flipped in RTL) */
+  --dir: 1;
+}
+
+@media (max-width: 800px) {
+  :root {
+    --gutter: 12px;
+    --block-gap: 12px;
+    --radius-block: 24px;
+    --radius-card: 20px;
+    --header-h: 64px;
+  }
+}
+
+:root[dir="rtl"] {
+  --dir: -1;
+  --fs-body: 17px;
+  --lh-display: 1.25;
+  --lh-h2: 1.3;
+  --lh-body: 1.85;
+  --track-display: 0;
+}

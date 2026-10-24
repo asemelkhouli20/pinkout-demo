@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- Card: partners line doodles, replacing the earlier dot pattern. -->
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(10 10) rotate(-12 13 13) scale(1.1)"><path d="M3.5 10v4h3l8 4.5v-13l-8 4.5zM6.5 14l1.5 5.5h2.5L9.5 15M18 9.5a3.5 3.5 0 0 1 0 5"/></g>
+    <g transform="translate(72 20) rotate(8 13 13) scale(1.1)"><path d="M20 4 11 13M11 13c-2.5-.5-5 1-5 3.5 0 1.5-1 2.5-2.5 3 3.5 1.5 8.5.5 8.5-3.5z"/></g>
+    <g transform="translate(134 8) rotate(0 13 13) scale(1.1)"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6"/></g>
+    <g transform="translate(192 18) rotate(14 13 13) scale(1.1)"><path d="M4 9.5 5.5 4h13L20 9.5M4 9.5h16M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M5.5 12v8.5h13V12M10 20.5v-5h4v5"/></g>
+    <g transform="translate(36 72) rotate(-6 13 13) scale(1.1)"><path d="M4 8h3.2l1.6-2.5h6.4L16.8 8H20a1 1 0 0 1 1 1v9.5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.6"/></g>
+    <g transform="translate(100 80) rotate(10 13 13) scale(1.1)"><path d="M3.5 12.5V4.5a1 1 0 0 1 1-1h8L21 12l-9 9z"/><circle cx="8" cy="8" r="1.5"/></g>
+    <g transform="translate(160 66) rotate(-8 13 13) scale(1.1)"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.8z"/></g>
+    <g transform="translate(8 134) rotate(6 13 13) scale(1.1)"><path d="M4 15v-3a8 8 0 0 1 16 0v3M4 15h3v6H5a1 1 0 0 1-1-1zM20 15h-3v6h2a1 1 0 0 0 1-1z"/></g>
+    <g transform="translate(70 142) rotate(0 13 13) scale(1.1)"><path d="M20 4 11 13M11 13c-2.5-.5-5 1-5 3.5 0 1.5-1 2.5-2.5 3 3.5 1.5 8.5.5 8.5-3.5z"/></g>
+    <g transform="translate(132 128) rotate(-14 13 13) scale(1.1)"><path d="M3.5 10v4h3l8 4.5v-13l-8 4.5zM6.5 14l1.5 5.5h2.5L9.5 15M18 9.5a3.5 3.5 0 0 1 0 5"/></g>
+    <g transform="translate(194 140) rotate(10 13 13) scale(1.1)"><path d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/></g>
+    <g transform="translate(96 196) rotate(-10 13 13) scale(1.1)"><path d="M4 9.5 5.5 4h13L20 9.5M4 9.5h16M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M5.5 12v8.5h13V12M10 20.5v-5h4v5"/></g>
+    <g opacity=".8"><circle cx="170" cy="206" r="1.4"/><circle cx="40" cy="206" r="1.4"/><circle cx="222" cy="96" r="1.4"/><circle cx="60" cy="58" r="1.4"/><circle cx="128" cy="112" r="1.4"/><circle cx="214" cy="226" r="1.4"/><circle cx="14" cy="104" r="1.4"/><circle cx="150" cy="180" r="1.4"/></g>
+  </g>
+</svg>

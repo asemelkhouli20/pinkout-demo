@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>PinkOut Components</title>
+<!-- PinkOut Partners — living component library (C1–C28, T1–T4). Uses the production CSS. -->
+<link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<style>
+  /* Library chrome only (not shipped) */
+  .lib-bar { position: sticky; top: 0; z-index: 60; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 16px; background: #1d1d1f; color: #fff; font: 14px/1.4 system-ui, sans-serif; }
+  .lib-bar strong { margin-inline-end: auto; }
+  .lib-bar a { color: #fff; opacity: .75; text-decoration: none; font-size: 13px; }
+  .lib-bar button { background: #fff; color: #111; border: 0; border-radius: 6px; padding: 6px 12px; font: inherit; }
+  .lib-sec { margin: 0 var(--gutter); padding-block: 48px; border-block-end: 1px dashed var(--c-line-strong); }
+  .lib-sec > header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin-block-end: 20px; font-family: system-ui, sans-serif; }
+  .lib-sec > header code { font: 600 12px/1 ui-monospace, monospace; background: #1d1d1f; color: #fff; padding: 4px 6px; border-radius: 4px; }
+  .lib-sec > header h2 { font: 700 20px/1.2 system-ui, sans-serif; letter-spacing: 0; }
+  .lib-sec > header p { font: 13px/1.4 system-ui, sans-serif; color: #5c5c62; inline-size: 100%; }
+  .lib-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .lib-label { display: block; font: 600 11px/1 ui-monospace, monospace; color: #5c5c62; margin-block: 16px 8px; }
+  .lib-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .lib-sec .block { margin-inline: 0; }
+  .demo-header { position: relative; border-radius: 20px; }
+  .force-hover { --btn-bg: var(--c-action-hover); }
+  .force-focus { outline: 3px solid var(--c-focus); outline-offset: 3px; }
+</style>
+</head>
+<body>
+  <div class="lib-bar">
+    <strong>PinkOut Partners: components &amp; templates (Direction B)</strong>
+    <a href="#c35">Tracks</a><a href="#c1">Controls</a><a href="#c4">Navigation</a><a href="#c7">Blocks</a><a href="#c10">World</a><a href="#c14">Partner tools</a><a href="#c12">Content</a><a href="#c21">Form</a><a href="#t">Templates</a>
+    <button type="button" data-lang>العربية</button>
+  </div>
+
+  <!-- ===================== CONTROLS ===================== -->
+  <section class="lib-sec" id="c1">
+    <header><code>C1</code><h2>Button</h2><p>One cherry primary per view area. Secondary for alternatives, quiet for low-priority actions.</p></header>
+    <span class="lib-label">VARIANTS</span>
+    <div class="lib-row">
+      <button class="btn" type="button" data-ar="بدء شراكة">Start a partnership</button>
+      <button class="btn btn--secondary" type="button" data-ar="استكشاف العالم">Explore the world</button>
+      <button class="btn btn--quiet" type="button" data-ar="نسخ الرابط">Copy link</button>
+      <button class="btn btn--sm" type="button" data-ar="طلب شراكة">Partnership enquiry</button>
+      <button class="btn btn--secondary btn--icon" type="button" aria-label="Pause film"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+    </div>
+    <span class="lib-label">STATES · default · hover · focus-visible · disabled · busy</span>
+    <div class="lib-row">
+      <button class="btn" type="button">Default</button>
+      <button class="btn force-hover" type="button">Hover</button>
+      <button class="btn force-focus" type="button">Focus</button>
+      <button class="btn" type="button" disabled>Disabled</button>
+      <button class="btn" type="button" aria-busy="true">Sending</button>
+      <button class="btn btn--secondary force-focus" type="button">Secondary focus</button>
+    </div>
+  </section>
+
+  <section class="lib-sec" id="c2">
+    <header><code>C2</code><h2>Eyebrow pill</h2><code>C3</code><h2>Chip</h2><p>Eyebrows are sentence-case butter pills (no all-caps). Toggle chips use aria-pressed; zone chips carry their zone colour.</p></header>
+    <div class="lib-row">
+      <span class="eyebrow" data-ar="شركاء PinkOut · قريباً في الرياض">PinkOut Partners · Coming soon to Riyadh</span>
+      <span class="eyebrow eyebrow--white" data-ar="العالم">The world</span>
+    </div>
+    <span class="lib-label">ZONE CHIPS (click to select)</span>
+    <div class="lib-row" data-toggle-single>
+      <button class="chip chip--zone" type="button" aria-pressed="false" style="--zone-c:var(--zone-passage)">Pink Passage</button>
+      <button class="chip chip--zone" type="button" aria-pressed="false" style="--zone-c:var(--zone-hub)">Rose Hub</button>
+      <button class="chip chip--zone" type="button" aria-pressed="false" style="--zone-c:var(--zone-beauty)">Beauty Lab</button>
+      <button class="chip chip--zone" type="button" aria-pressed="false" style="--zone-c:var(--zone-make)">Make Studio</button>
+      <button class="chip chip--zone" type="button" aria-pressed="false" style="--zone-c:var(--zone-market)">Pink Market</button>
+      <button class="chip chip--zone" type="button" aria-pressed="false" style="--zone-c:var(--zone-move)">Move Studio</button>
+      <button class="chip chip--zone" type="button" aria-pressed="true" style="--zone-c:var(--zone-live)">PinkOut Live</button>
+    </div>
+    <span class="lib-label">FILTER / FORM CHIPS (multi)</span>
+    <div class="lib-row" data-toggle-multi>
+      <button class="chip chip--dot" type="button" aria-pressed="true" style="--zone-c:var(--zone-beauty)">Beauty Lab</button>
+      <button class="chip chip--dot" type="button" aria-pressed="false" style="--zone-c:var(--zone-live)">PinkOut Live</button>
+      <span class="chip">Static tag</span>
+    </div>
+  </section>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <section class="lib-sec" id="c4">
+    <header><code>C4</code><h2>Header</h2><code>C5</code><h2>Mobile menu</h2><p>Sticky; compacts after 24px of scroll. The enquiry button is always visible. At ≤ 800px the nav collapses into the menu sheet. Resize the window to see it.</p></header>
+    <header class="site-header demo-header">
+      <a class="site-header__logo" href="#"><img src="assets/images/logo-cherry.svg" alt="PinkOut Partners" width="102" height="36"></a>
+      <nav class="site-nav" aria-label="Sections">
+        <a href="#" aria-current="true" data-ar="العالم">The world</a>
+        <a href="#" data-ar="فرص الشراكة">Opportunities</a>
+        <a href="#" data-ar="الجمهور">Audience</a>
+        <a href="#" class="nav-optional" data-ar="آلية الشراكة">How it works</a>
+        <a href="#" data-ar="أسئلة شائعة">FAQ</a>
+      </nav>
+      <div class="site-header__actions">
+        <button class="btn btn--quiet btn--sm lang-switch" type="button" lang="ar">العربية</button>
+        <button class="btn btn--sm" type="button" data-open-dialog data-ar="طلب شراكة">Partnership enquiry</button>
+        <button class="btn btn--secondary btn--icon menu-btn" type="button" aria-label="Menu" data-open-menu><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </header>
+    <span class="lib-label">COMPACT STATE (after scroll)</span>
+    <header class="site-header demo-header" data-compact>
+      <a class="site-header__logo" href="#"><img src="assets/images/logo-cherry.svg" alt="PinkOut Partners" width="102" height="36"></a>
+      <nav class="site-nav" aria-label="Sections demo"><a href="#">The world</a><a href="#" aria-current="true">Opportunities</a><a href="#">Audience</a><a href="#" class="nav-optional">How it works</a><a href="#">FAQ</a></nav>
+      <div class="site-header__actions"><button class="btn btn--sm" type="button">Partnership enquiry</button></div>
+    </header>
+    <dialog class="menu-sheet" id="menu-sheet" aria-label="Menu">
+      <div class="menu-sheet__top"><img src="assets/images/logo-cherry.svg" alt="PinkOut" width="91" height="32"><button class="btn btn--secondary btn--icon" type="button" aria-label="Close menu" data-close>✕</button></div>
+      <nav aria-label="Menu"><a href="#">The world</a><a href="#">Opportunities</a><a href="#">Audience</a><a href="#">How it works</a><a href="#">FAQ</a></nav>
+      <div class="lib-row"><button class="btn" type="button">Partnership enquiry</button><button class="btn btn--secondary" type="button" lang="ar">العربية</button></div>
+    </dialog>
+    <div class="lib-row" style="margin-block-start:12px"><button class="btn btn--secondary btn--sm" type="button" data-open-menu>Open mobile menu sheet</button></div>
+  </section>
+
+  <!-- ===================== BLOCKS ===================== -->
+  <section class="lib-sec" id="c7">
+    <header><code>C6</code><h2>Section head</h2><code>C7</code><h2>Colour blocks</h2><p>Every section is one rounded block with one pastel. Berry text on all of them (AA ≥ 6.3:1).</p></header>
+    <div class="block block--pink">
+      <div class="section-head">
+        <span class="eyebrow" data-ar="لماذا PinkOut">Why PinkOut</span>
+        <h2 data-ar="ليست فعالية. عالم يتجدّد باستمرار.">Not an event. A world that keeps changing.</h2>
+        <p class="t-lead" data-ar="سبع مناطق بهوية واحدة، وبرنامج يتغيّر كل موسم.">Seven zones, one identity, and a programme that changes every season.</p>
+      </div>
+    </div>
+    <div class="lib-grid" style="margin-block-start:16px">
+      <div class="block block--butter" style="margin:0"><b>butter</b> · Rose Hub</div>
+      <div class="block block--lavender" style="margin:0"><b>lavender</b> · Beauty Lab</div>
+      <div class="block block--mint" style="margin:0"><b>mint</b> · Make Studio</div>
+      <div class="block block--peach" style="margin:0"><b>peach</b> · Pink Market</div>
+      <div class="block block--sky" style="margin:0"><b>sky</b> · Move Studio</div>
+      <div class="block block--rose" style="margin:0"><b>rose</b> · PinkOut Live</div>
+      <div class="block block--pink" style="margin:0"><b>pink</b> · Pink Passage</div>
+      <div class="block" style="margin:0"><b>white</b> · neutral</div>
+    </div>
+  </section>
+
+  <section class="lib-sec" id="c8">
+    <header><code>C8</code><h2>Hero</h2><p>Film in the block, white invitation panel, pause control. Reduced motion or data saver shows the poster.</p></header>
+    <div class="hero">
+      <video class="hero__film" src="assets/video/hero-pinkout-fun.mp4" poster="assets/images/hero-pinkout-fun-poster.jpg" autoplay muted loop playsinline aria-hidden="true"></video>
+      <button class="btn btn--secondary btn--icon hero__pause" type="button" aria-label="Pause film" data-pause><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+      <div class="hero__panel">
+        <span class="eyebrow" data-ar="شركاء PinkOut · قريباً في الرياض">PinkOut Partners · Coming soon to Riyadh</span>
+        <h1><span data-ar="عالمها الخاص." style="color:inherit">Her own world.</span> <span data-ar="ومكان للعلامات التي تنتمي إليه.">Room for brands that belong in it.</span></h1>
+        <p class="t-lead" data-ar="وجهة مصمّمة للنساء أولاً، بسبع مناطق تجارب، قريباً في الرياض، وفيها مساحة للرعاة والعلامات للإطلاق والاستضافة والمشاركة.">A women-first destination of seven experience zones, opening in Riyadh, built for sponsors and brands to launch, host and take part.</p>
+        <div class="hero__actions">
+          <button class="btn" type="button" data-open-dialog data-ar="بدء شراكة">Start a partnership</button>
+          <button class="btn btn--secondary" type="button" data-open-dialog data-ar="طلب العرض التعريفي للشركاء">Request the partner deck</button>
+          <a class="btn btn--quiet" href="#c10" data-ar="استكشاف العالم">Explore the world</a>
+        </div>
+        <ul class="glance" aria-label="At a glance">
+          <li><b>7</b><span data-ar="مناطق تجارب">experience zones</span></li>
+          <li><b data-ar="الرياض">Riyadh</b><span data-ar="المدينة الأولى">first city</span></li>
+          <li><b data-ar="النساء أولاً">Women-first</b><span data-ar="الجمهور">audience</span></li>
+          <li><b data-ar="يُعلن لاحقاً">TBA</b><span data-ar="موعد الافتتاح">opening date</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PERSONAL WELCOME ===================== -->
+  <section class="lib-sec" id="c42">
+    <header><code>C42</code><h2>Personal welcome</h2><p>Each partner type gets its own link: <code>/?for=event</code>, <code>/?for=beauty</code>, <code>/?for=shop</code>. The hero greets them, their door moves first with "Made for you", the sticky button and the form speak to them. Switch below.</p></header>
+    <div class="lib-row" role="group" aria-label="Preview the welcome for" data-welcome-switch style="margin-block-end:16px">
+      <button class="chip" type="button" aria-pressed="true" data-for="">Everyone</button>
+      <button class="chip" type="button" aria-pressed="false" data-for="event">?for=event</button>
+      <button class="chip" type="button" aria-pressed="false" data-for="beauty">?for=beauty</button>
+      <button class="chip" type="button" aria-pressed="false" data-for="shop">?for=shop</button>
+    </div>
+    <div class="hero__panel" style="margin:0;max-inline-size:720px;box-shadow:inset 0 0 0 1px var(--c-line)" data-welcome>
+      <span class="eyebrow" data-w-eyebrow>PinkOut Partners · Coming soon to Riyadh</span>
+      <h1><span data-w-line1 style="color:inherit">Her own world.</span> <span data-w-line2>Room for partners who belong in it.</span></h1>
+      <p class="t-lead" data-w-lead>A women-first destination opening in Riyadh, with an app on the way. Partner with PinkOut at the event, through beauty services, or by selling your products.</p>
+      <div class="hero__actions"><button class="btn" type="button" data-open-dialog data-w-cta>Become a partner</button><button class="btn btn--secondary" type="button" data-open-dialog data-w-deck>Request a partner deck</button></div>
+    </div>
+  </section>
+
+  <!-- ===================== THREE PARTNER TRACKS ===================== -->
+  <section class="lib-sec" id="c35">
+    <header><code>C35</code><h2>Partner-type doors</h2><p>Right after the hero. Three <b>equal</b> doors, each in its own colour with a promise written for that partner. Event stays first in order. On a personal link (<code>?for=beauty</code>) that partner's door moves first and shows "Made for you". Try the C42 switch below.</p></header>
+    <div class="section-head">
+      <span class="eyebrow" data-ar="الشراكة">Partner with PinkOut</span>
+      <h2 data-ar="ثلاث طرق للشراكة.">Three ways to partner.</h2>
+    </div>
+    <div class="doors">
+      <article class="door" data-door="event"><span class="door__made" data-ar="مصمّم لك">Made for you</span>
+        <span class="door__icon"><svg viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18M9 21v-6a3 3 0 0 1 6 0v6"/></svg></span>
+        <span class="door__for" data-ar="للرعاة والعلامات">For sponsors &amp; brands</span>
+        <h3 data-ar="شركاء الفعاليات">Event partners</h3>
+        <p class="door__promise" data-ar="علامتك جزء من عالمها.">Your brand, part of her world.</p><p data-ar="قيمة مضافة داخل الفعالية، من الرعاية إلى تفعيلات العلامات.">Add value inside the event, from sponsorships to brand activations.</p>
+        <div class="door__chips"><span class="chip">Sponsorship</span><span class="chip">Launches</span><span class="chip">Product trials</span></div>
+        <div class="door__actions"><a class="btn" href="#c14" data-ar="استكشاف">Explore</a><button class="btn btn--secondary" type="button" data-open-dialog data-type="event" data-ar="استفسار">Enquire</button></div>
+      </article>
+      <article class="door door--beauty" data-door="beauty"><span class="door__made" data-ar="مصمّم لك">Made for you</span>
+        <span class="door__icon"><svg viewBox="0 0 24 24"><path d="M9 3h6v4H9zM8 7h8l1 14H7z"/></svg></span>
+        <span class="door__for" data-ar="للفنانات والصالونات">For artists &amp; salons</span>
+        <h3 data-ar="شركاء خدمات التجميل">Beauty service partners</h3>
+        <p class="door__promise" data-ar="موهبتك في قلب عالمها.">Your craft, at the heart of her world.</p><p data-ar="خبرة التجميل داخل الفعالية وفي المنازل.">Bring your craft to PinkOut, at the event and at home.</p>
+        <div class="door__chips"><span class="chip">At the event</span><span class="chip">At home · app</span></div>
+        <div class="door__actions"><a class="btn" href="#c36" data-ar="استكشاف">Explore</a><button class="btn btn--secondary" type="button" data-open-dialog data-type="beauty" data-ar="تقديم">Apply</button></div>
+      </article>
+      <article class="door door--shop" data-door="shop"><span class="door__made" data-ar="مصمّم لك">Made for you</span>
+        <span class="door__icon"><svg viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v11H4zM9 20v-6h6v6"/></svg></span>
+        <span class="door__for" data-ar="للعلامات والبائعين">For brands &amp; sellers</span>
+        <h3 data-ar="شركاء التجارة الإلكترونية">E-commerce partners</h3>
+        <p class="door__promise" data-ar="منتجاتك على رفّها.">Your products, on her shelf.</p><p data-ar="بيع المنتجات في الفعالية وفي تطبيق PinkOut.">Sell your products at the event and in the PinkOut app.</p>
+        <div class="door__chips"><span class="chip">Pink Market</span><span class="chip">In the app</span></div>
+        <div class="door__actions"><a class="btn" href="#c36" data-ar="استكشاف">Explore</a><button class="btn btn--secondary" type="button" data-open-dialog data-type="shop" data-ar="تقديم">Apply</button></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="lib-sec" id="c36">
+    <header><code>C36</code><h2>Track head</h2><code>C37</code><h2>Channel cards</h2><code>C38</code><h2>Requirements</h2><p>Every track uses the same template: head → where you work/sell → what's wanted + who can apply → requirements → how it works. Shown here: the beauty service track.</p></header>
+    <div class="block block--lavender" style="margin:0">
+      <div class="track-head">
+        <span class="track-head__num" aria-hidden="true">02</span>
+        <div class="section-head">
+          <span class="eyebrow eyebrow--white" data-ar="شركاء خدمات التجميل">Beauty service partners · artists &amp; salons</span>
+          <h2 data-ar="خبرة التجميل، في الفعالية وفي المنزل.">Your craft, at the event and at home.</h2>
+        </div>
+        <div class="track-head__actions"><button class="btn" type="button" data-open-dialog data-type="beauty" data-ar="التقديم كشريكة تجميل">Apply as beauty partner</button><button class="btn btn--secondary" type="button" data-open-dialog data-type="beauty" data-ar="عرض شركاء التجميل">Beauty deck</button></div>
+      </div>
+      <div class="channels">
+        <article class="channel">
+          <div class="channel__media media-frame"><img src="assets/images/themes/princess-960.webp" alt="Concept image: artists styling hair and makeup for a themed-day look" loading="lazy"><span class="concept">Concept</span></div>
+          <div class="channel__body"><span class="channel__title" data-ar="في الفعالية">At the event</span><p>Touch-up and glam stations in Beauty Lab, and looks for themed days like Princess Day and Coffee &amp; Henna Night.</p></div>
+        </article>
+        <article class="channel channel--soon">
+          <div class="channel__media"><div class="phone-mock" aria-hidden="true"><i></i><i></i><i></i><b></b></div><span class="concept">App concept</span></div>
+          <div class="channel__body"><span class="channel__title"><span data-ar="في المنزل">At home</span> <span class="badge-soon" data-ar="عند إطلاق التطبيق">When the app launches</span></span><p>Clients book you through the PinkOut app for appointments at home.</p></div>
+        </article>
+      </div>
+      <h3 class="benefits__title" data-ar="ما تحصلين عليه">What you get</h3>
+      <div class="benefits" style="--benefit-c:var(--track-beauty)">
+        <div class="benefit"><span class="benefit__icon"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5-5-2.6-5 2.6 1-5.5-4-3.9 5.5-.8z"/></svg></span><b>A stage for your work</b><p>Glam stations in Beauty Lab and themed-day looks, seen by a women-first audience.</p></div>
+        <div class="benefit"><span class="benefit__icon"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg></span><b>New clients at home</b><p>Home bookings through the PinkOut app, when it launches.</p></div>
+        <div class="benefit"><span class="benefit__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span><b>Your own profile</b><p>Your services, portfolio and Instagram on your PinkOut profile.</p></div>
+        <div class="benefit"><span class="benefit__icon"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><b>Credit for your looks</b><p>Looks you create at PinkOut are credited to you when we share them.</p></div>
+      </div>
+      <div class="signature">
+        <div class="signature__copy">
+          <span class="eyebrow eyebrow--white">Made for artists</span>
+          <h3 class="t-h3">Picture your profile in the PinkOut app.</h3>
+          <p>Your name, your services, your best work: one tap from a booking. This is how we imagine it; the app is in development.</p>
+        </div>
+        <div class="signature__stage">
+          <div class="profile-mock" aria-label="Concept: a beauty artist's profile in the PinkOut app">
+            <span class="mock-label">App concept · your profile</span>
+            <div class="profile-mock__top"><span class="profile-mock__avatar" aria-hidden="true">R</span><div><div class="profile-mock__name">Your name</div><div class="profile-mock__meta">Freelance makeup artist · Riyadh</div></div></div>
+            <div class="door__chips"><span class="chip">Makeup</span><span class="chip">Lashes &amp; brows</span><span class="chip">At home</span></div>
+            <div class="profile-mock__work"><img src="assets/images/themes/princess-480.webp" alt="" width="480" height="320"><img src="assets/images/themes/henna-480.webp" alt="" width="480" height="320"><img src="assets/images/worlds/beauty-480.webp" alt="" width="480" height="270" style="object-position:70% 80%"></div>
+            <button class="btn btn--block" type="button" disabled>Book at home · when the app launches</button>
+          </div>
+        </div>
+      </div>
+      <div class="track-grid">
+        <div>
+          <h3 class="sub" data-ar="الخدمات المطلوبة">Services we're looking for</h3>
+          <div class="door__chips"><span class="chip">Makeup</span><span class="chip">Hair styling</span><span class="chip">Nails</span><span class="chip">Lashes &amp; brows</span><span class="chip">Henna</span><span class="chip">Skincare</span></div>
+          <h3 class="sub" data-ar="من يمكنه التقديم">Who can apply</h3>
+          <div class="door__chips"><span class="chip">Freelance artists</span><span class="chip">Salons &amp; beauty businesses</span></div>
+        </div>
+        <div class="reqs">
+          <h3 data-ar="المتطلبات">Requirements</h3>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-ar="رخصة سارية أو شهادة مهنية">A valid license or professional certificate</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-ar="معرض أعمال أو حساب إنستغرام">A portfolio or Instagram showing your work</span></li>
+          </ul>
+        </div>
+      </div>
+      <ol class="steps steps--4">
+        <li class="step"><b>Apply</b><span>Two minutes, with your portfolio link</span></li>
+        <li class="step"><b>Portfolio review</b><span>We look at your work</span></li>
+        <li class="step"><b>Onboarding</b><span>Terms in the beauty deck</span></li>
+        <li class="step"><b>Start</b><span>Event first; home bookings when the app launches</span></li>
+      </ol>
+    </div>
+
+    <span class="lib-label">E-COMMERCE TRACK · SAME TEMPLATE, PEACH BLOCK</span>
+    <div class="block block--peach" style="margin:0">
+      <div class="track-head">
+        <span class="track-head__num" aria-hidden="true">03</span>
+        <div class="section-head"><span class="eyebrow eyebrow--white">E-commerce partners · brands &amp; sellers</span><h2 data-ar="البيع حيث تتسوّق: في الفعالية وفي التطبيق.">Sell where she shops: at the event and in the app.</h2></div>
+        <div class="track-head__actions"><button class="btn" type="button" data-open-dialog data-type="shop">Apply as seller</button><button class="btn btn--secondary" type="button" data-open-dialog data-type="shop">E-commerce deck</button></div>
+      </div>
+      <div class="channels">
+        <article class="channel"><div class="channel__media media-frame"><img src="assets/images/worlds/market-960.webp" alt="Concept render of Pink Market with curated shelves" loading="lazy"><span class="concept">Concept</span></div><div class="channel__body"><span class="channel__title">At the event</span><p>Pop-ups and curated shelves in Pink Market.</p></div></article>
+        <article class="channel channel--soon"><div class="channel__media"><div class="phone-mock" aria-hidden="true"><i></i><i></i><i></i><b></b></div><span class="concept">App concept</span></div><div class="channel__body"><span class="channel__title">In the app <span class="badge-soon">When the app launches</span></span><p>Your products in the PinkOut app.</p></div></article>
+      </div>
+      <h3 class="benefits__title">What you get</h3>
+      <div class="benefits" style="--benefit-c:var(--track-shop)">
+        <div class="benefit"><span class="benefit__icon"><svg viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v11H4zM9 20v-6h6v6"/></svg></span><b>A shelf at Pink Market</b><p>Pop-ups and curated shelves where visitors come to discover.</p></div>
+        <div class="benefit"><span class="benefit__icon"><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span><b>A shop in the app</b><p>Your products in the PinkOut app, when it launches.</p></div>
+        <div class="benefit"><span class="benefit__icon"><svg viewBox="0 0 24 24"><path d="M4 11h16v10H4zM3 7h18v4H3zM12 7v14"/><path d="M12 7c-1.5-3-5-3-5-1s3 1 5 1zm0 0c1.5-3 5-3 5-1s-3 1-5 1z"/></svg></span><b>Featured moments</b><p>Gift edits and themed-day picks that put your products in her hands.</p></div>
+        <div class="benefit"><span class="benefit__icon"><svg viewBox="0 0 24 24"><path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M9 8h6M9 12h6"/></svg></span><b>Your story, told</b><p>A brand page with your story, so she knows who made it.</p></div>
+      </div>
+      <div class="signature">
+        <div class="signature__copy">
+          <span class="eyebrow eyebrow--white">Made for brands</span>
+          <h3 class="t-h3">Picture your product in the PinkOut app.</h3>
+          <p>Your brand, your product, your story: right where she's already looking. This is how we imagine it; the app is in development.</p>
+        </div>
+        <div class="signature__stage">
+          <div class="product-mock" aria-label="Concept: a partner product in the PinkOut app">
+            <span class="mock-label">App concept · your product</span>
+            <div class="product-mock__img"><img src="assets/images/stickers/perfume.webp" alt="" loading="lazy"></div>
+            <div><div class="product-mock__brand">Your brand</div><div class="product-mock__name">Your product</div></div>
+            <div class="product-mock__tags"><span class="chip">Made in Riyadh</span><span class="chip">Gift edit</span></div>
+            <button class="btn btn--block" type="button" disabled>Add to bag · when the app launches</button>
+          </div>
+        </div>
+      </div>
+      <div class="track-grid">
+        <div><h3 class="sub">Categories we're looking for</h3><div class="door__chips"><span class="chip">Beauty</span><span class="chip">Fashion</span><span class="chip">Accessories</span><span class="chip">Sweets &amp; treats</span><span class="chip">Gifts</span><span class="chip">Lifestyle</span></div></div>
+        <div class="reqs"><h3>Requirement</h3><ul><li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Products that fit PinkOut's categories</span></li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lib-sec" id="c39">
+    <header><code>C39</code><h2>Type cards (form step 1)</h2><p>Shown only when the form opens without a type (header, hero). Each card takes its track colour when selected.</p></header>
+    <div class="typecards" role="radiogroup" aria-label="Partnership type" style="max-inline-size:560px" data-typecards>
+      <button class="typecard" type="button" role="radio" aria-checked="true" style="--typecard-c:var(--track-event)"><span class="door__icon"><svg viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18"/></svg></span><span><b>Event partner</b><span>Sponsorship or brand activation inside the event</span></span></button>
+      <button class="typecard" type="button" role="radio" aria-checked="false" style="--typecard-c:var(--track-beauty)"><span class="door__icon"><svg viewBox="0 0 24 24"><path d="M9 3h6v4H9zM8 7h8l1 14H7z"/></svg></span><span><b>Beauty service partner</b><span>Artists and salons, at the event and at home</span></span></button>
+      <button class="typecard" type="button" role="radio" aria-checked="false" style="--typecard-c:var(--track-shop)"><span class="door__icon"><svg viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v11H4z"/></svg></span><span><b>E-commerce partner</b><span>Sell at the event and in the app</span></span></button>
+    </div>
+  </section>
+
+  <section class="lib-sec" id="c9">
+    <header><code>C9</code><h2>Reason card</h2></header>
+    <div class="lib-grid">
+      <article class="reason"><span class="reason__icon" style="--icon-bg:var(--c-pink)"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span><h3 data-ar="تجربة بالمشاركة">People take part</h3><p data-ar="الزائرات يصنعن ويجرّبن ويتحرّكن ويشاركن، فتُعاش العلامة ولا تُشاهد فقط.">Visitors make, try, move and join in, so brands are experienced, not just seen.</p></article>
+      <article class="reason"><span class="reason__icon" style="--icon-bg:var(--c-mint)"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.6-4.5M4 13a8 8 0 0 0 14.6 4.5"/><path d="M5 3v4h4M19 21v-4h-4"/></svg></span><h3 data-ar="زيارات تتكرّر">They come back</h3><p data-ar="الثيمات والورش والضيوف والمتاجر المؤقتة تتغيّر، ولكل موسم سبب جديد للعودة.">Themes, workshops, guests and pop-ups rotate, giving every season a new reason to return.</p></article>
+      <article class="reason"><span class="reason__icon" style="--icon-bg:var(--c-lavender)"><svg viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18M9 21v-6a3 3 0 0 1 6 0v6"/></svg></span><h3 data-ar="عالم واحد متكامل">One premium world</h3><p data-ar="سبع مناطق بهوية واحدة واضحة: بيئة مصمّمة وآمنة للعلامات.">Seven zones, one recognisable identity: a designed, brand-safe setting for your name.</p></article>
+    </div>
+  </section>
+
+  <!-- ===================== WORLD ===================== -->
+  <section class="lib-sec" id="c10">
+    <header><code>C10</code><h2>Zone panel</h2><code>C11</code><h2>Map stage</h2><p>The 3D canvas mounts inside the map stage in the build; here the stage shows its poster state. Zone chips are the real controls.</p></header>
+    <div class="block block--canvas" style="padding:0">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px;align-items:start">
+        <div>
+          <div class="map-stage" data-mode="poster">
+            <img class="map-stage__poster" src="assets/images/worlds/hero-960.webp" alt="">
+            <span class="concept" data-ar="تصوّر">Poster until 3D loads</span>
+          </div>
+          <div class="zone-chips" data-toggle-single>
+            <button class="chip chip--zone" type="button" aria-pressed="false" style="--zone-c:var(--zone-beauty)">Beauty Lab</button>
+            <button class="chip chip--zone" type="button" aria-pressed="true" style="--zone-c:var(--zone-live)">PinkOut Live</button>
+            <button class="chip chip--zone" type="button" aria-pressed="false" style="--zone-c:var(--zone-hub)">Rose Hub</button>
+          </div>
+          <p class="map-stage__note" data-ar="تصوّر توضيحي للمساحة، وليس مخططاً نهائياً.">Illustrative concept layout, not a final floor plan.</p>
+        </div>
+        <article class="zone-panel" style="--zone-c:var(--zone-live)" aria-live="polite">
+          <div class="zone-panel__media media-frame">
+            <img class="render" src="assets/images/worlds/live-960.webp" alt="Concept render of the PinkOut Live stage with a talk in progress">
+            <img class="sticker" src="assets/images/stickers/headphones.webp" alt="">
+            <span class="concept" data-ar="تصوّر">Concept</span>
+          </div>
+          <div class="zone-panel__body">
+            <span class="eyebrow eyebrow--white zone-panel__tag" data-ar="مشاهدة ومشاركة">Watch &amp; join in</span>
+            <h3 tabindex="-1" data-ar="المسرح الذي يجمع كل شيء.">The stage that brings it together.</h3>
+            <p data-ar="عروض حية، دي جي، حوارات، بودكاست وإطلاقات منتجات، ضمن برنامج يتجدّد.">Live performances, DJ sets, talks, podcasts and product launches, in a programme that keeps changing.</p>
+            <dl class="zone-panel__offers">
+              <dt data-ar="الرعاية">Sponsorship</dt><dd><span class="chip" data-ar="راعي المسرح">Stage sponsor</span></dd>
+              <dt data-ar="تفعيلات العلامات">Brand activations</dt><dd><span class="chip" data-ar="إطلاق على المسرح">Launch on stage</span><span class="chip" data-ar="حوارات وبودكاست">Talks &amp; podcasts</span><span class="chip" data-ar="عروض ودي جي">Performances &amp; DJ sets</span></dd>
+            </dl>
+            <div class="zone-panel__actions">
+              <button class="btn" type="button" data-open-dialog data-ar="الاستفسار عن هذه المنطقة">Enquire about this zone</button>
+              <button class="btn btn--quiet" type="button" data-toast="Link copied" data-ar="نسخ الرابط">Copy link</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+    <span class="lib-label">EMPTY STATE</span>
+    <article class="zone-panel" data-empty style="max-inline-size:420px">
+      <div class="zone-panel__body"><h3>Select a zone</h3><p>Or start with "See all zones". Each zone shows its sponsorship and activation options.</p></div>
+    </article>
+  </section>
+
+  <!-- ===================== CONTENT ===================== -->
+  <section class="lib-sec" id="c12">
+    <header><code>C12</code><h2>Stat</h2><code>C13</code><h2>Journey</h2><p>Pending figures show dashed here and are <b>hidden on the live site</b> until real numbers from the partner deck arrive.</p></header>
+    <div class="lib-grid">
+      <div class="stat"><span class="stat__value">48K</span><span class="stat__label">Example real figure layout</span><span class="stat__source">Source · date (example only)</span></div>
+      <div class="stat" data-pending><span class="stat__value">00%</span><span class="stat__label">Research figure (from partner deck)</span><span class="stat__source">Source · date</span></div>
+      <div class="stat" data-pending><span class="stat__value">00K</span><span class="stat__label">Social following (from deck)</span><span class="stat__source">Source · date</span></div>
+    </div>
+    <ol class="journey" style="margin-block-start:32px">
+      <li><b data-ar="الوصول">Arrive</b><span>Pink Passage</span></li>
+      <li><b data-ar="الاستكشاف">Explore</b><span>Market · Beauty</span></li>
+      <li><b data-ar="الصنع">Create</b><span>Make · Move</span></li>
+      <li><b data-ar="التجمّع">Gather</b><span>Rose Hub · Live</span></li>
+      <li><b data-ar="العودة">Return</b><span>New themes</span></li>
+    </ol>
+  </section>
+
+  <!-- ===================== PARTNER TOOLS ===================== -->
+  <section class="lib-sec" id="c14">
+    <header><code>C30</code><h2>Goal picker</h2><code>C14</code><h2>Offer card (structured)</h2><p>Partners start from what they want to achieve. Pick a goal: matching offers stay lit, the rest dim. Each card is one button that opens the enquiry with the zone and goal pre-filled.</p></header>
+    <div class="block block--business" style="margin:0;--accent:var(--c-action)">
+      <div class="section-head">
+        <span class="eyebrow" data-ar="فرص الشراكة">Opportunities</span>
+        <h2 data-ar="ابدأ من هدفك.">Start from your goal.</h2>
+        <p class="so-what"><b data-ar="لك:">For you:</b> <span data-ar="اختيار الهدف يُظهر المناطق والصيغ الأنسب.">pick a goal to see the zones and formats that fit it.</span></p>
+      </div>
+      <div class="goals">
+        <div class="goals__list" role="group" aria-label="Goals" data-goals>
+          <button class="goal" type="button" aria-pressed="false" data-goal="launch"><svg viewBox="0 0 24 24"><path d="M12 2c3 2.2 5 6 5 10l-2 4H9l-2-4c0-4 2-7.8 5-10z"/><circle cx="12" cy="10" r="2"/><path d="M9 16l-2 4M15 16l2 4"/></svg><span data-ar="إطلاق منتج">Launch a product</span></button>
+          <button class="goal" type="button" aria-pressed="false" data-goal="trial"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7.5 14h9"/></svg><span data-ar="تجربة المنتج">Drive product trial</span></button>
+          <button class="goal" type="button" aria-pressed="false" data-goal="awareness"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span data-ar="الوعي بالعلامة">Build awareness</span></button>
+          <button class="goal" type="button" aria-pressed="false" data-goal="content"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span data-ar="صناعة المحتوى">Create content</span></button>
+          <button class="goal" type="button" aria-pressed="false" data-goal="community"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><path d="M2 20c0-3.3 2.7-5 6-5s6 1.7 6 5"/><path d="M16 5a3 3 0 0 1 0 6M16 15c3.3 0 6 1.7 6 5"/></svg><span data-ar="بناء مجتمع">Connect with a community</span></button>
+        </div>
+        <div class="fit" data-fit>
+          <p class="fit__summary" data-fit-summary aria-live="polite">Showing all <b>7</b> brand activations.</p>
+          <button class="offer" type="button" style="--zone-c:var(--zone-live)" data-goals="launch content awareness" data-open-dialog>
+            <span class="offer__icon"><svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+            <span class="offer__title">Launch on stage</span><span class="offer__line">Reveal a product live, with talks, guests or a performance around it.</span>
+            <dl class="offer__meta"><div><dt>Zone</dt><dd>PinkOut Live</dd></div><div><dt>Best for</dt><dd>Beauty, tech, fashion launches</dd></div></dl>
+            <span class="offer__cta">Enquire about this</span>
+          </button>
+          <button class="offer" type="button" style="--zone-c:var(--zone-beauty)" data-goals="trial launch" data-open-dialog>
+            <span class="offer__icon"><svg viewBox="0 0 24 24"><path d="M9 3h6v4H9zM8 7h8l1 14H7z"/></svg></span>
+            <span class="offer__title">Product trials &amp; personalisation</span><span class="offer__line">Visitors test, match shades and personalise, hands-on.</span>
+            <dl class="offer__meta"><div><dt>Zone</dt><dd>Beauty Lab</dd></div><div><dt>Best for</dt><dd>Beauty, fragrance, skincare</dd></div></dl>
+            <span class="offer__cta">Enquire about this</span>
+          </button>
+          <button class="offer" type="button" style="--zone-c:var(--zone-hub)" data-goals="trial awareness community" data-open-dialog>
+            <span class="offer__icon"><svg viewBox="0 0 24 24"><path d="M5 8h12v6a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3v2M12 3v2"/></svg></span>
+            <span class="offer__title">Hub takeover &amp; signature drink</span><span class="offer__line">Own the social heart: a co-branded drink or the rotating activation space.</span>
+            <dl class="offer__meta"><div><dt>Zone</dt><dd>Rose Hub</dd></div><div><dt>Best for</dt><dd>F&amp;B, lifestyle, telco</dd></div></dl>
+            <span class="offer__cta">Enquire about this</span>
+          </button>
+          <button class="offer" type="button" style="--zone-c:var(--zone-make)" data-goals="trial community content" data-open-dialog>
+            <span class="offer__icon"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5-5-2.6-5 2.6 1-5.5-4-3.9 5.5-.8z"/></svg></span>
+            <span class="offer__title">Branded make-and-take</span><span class="offer__line">A station where visitors personalise your product and take it home.</span>
+            <dl class="offer__meta"><div><dt>Zone</dt><dd>Make Studio</dd></div><div><dt>Best for</dt><dd>Accessories, tech, gifting</dd></div></dl>
+            <span class="offer__cta">Enquire about this</span>
+          </button>
+          <button class="offer" type="button" style="--zone-c:var(--zone-passage)" data-goals="awareness content" data-open-dialog>
+            <span class="offer__icon"><svg viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18"/></svg></span>
+            <span class="offer__title">Entrance installation</span><span class="offer__line">The first and last thing every visitor sees, and photographs.</span>
+            <dl class="offer__meta"><div><dt>Zone</dt><dd>Pink Passage</dd></div><div><dt>Best for</dt><dd>Reach-focused brands</dd></div></dl>
+            <span class="offer__cta">Enquire about this</span>
+          </button>
+          <button class="offer" type="button" style="--zone-c:var(--zone-market)" data-goals="launch trial" data-open-dialog>
+            <span class="offer__icon"><svg viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v11H4zM9 20v-6h6v6"/></svg></span>
+            <span class="offer__title">Launch pop-up · limited drop</span><span class="offer__line">A branded storefront for a launch or an exclusive edition.</span>
+            <dl class="offer__meta"><div><dt>Zone</dt><dd>Pink Market</dd></div><div><dt>Best for</dt><dd>Fashion, sweets, gifting</dd></div></dl>
+            <span class="offer__cta">Enquire about this</span>
+          </button>
+          <button class="offer" type="button" style="--zone-c:var(--zone-move)" data-goals="community awareness" data-open-dialog>
+            <span class="offer__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M6 9l6 1 6-1M12 10v5l-3 6M12 15l3 6"/></svg></span>
+            <span class="offer__title">Sponsored class series</span><span class="offer__line">Yoga, dance or fitness classes in your name, week after week.</span>
+            <dl class="offer__meta"><div><dt>Zone</dt><dd>Move Studio</dd></div><div><dt>Best for</dt><dd>Sportswear, wellness, health</dd></div></dl>
+            <span class="offer__cta">Enquire about this</span>
+          </button>
+        </div>
+      </div>
+      <p class="map-stage__note">Possible formats from the PinkOut concept. Final details are agreed with each partner. No partnerships have been announced.</p>
+    </div>
+  </section>
+
+  <section class="lib-sec" id="c31">
+    <header><code>C31</code><h2>Package card</h2><code>C32</code><h2>Comparison table</h2><p>Indicative sponsorship types: what's included, no prices. Labelled as indicative; final packages live in the partner deck (sent on request).</p></header>
+    <div class="lib-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))">
+      <article class="package package--featured">
+        <div class="package__head"><span class="package__badge">Biggest presence</span><h3 data-ar="شريك الموسم">Season partner</h3><p>Your name across the whole PinkOut world for a season.</p></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Visibility</b><span>Across all seven zones</span></div></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Experience</b><span>A launch moment on PinkOut Live</span></div></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Content</b><span>Moments captured on site</span></div></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Recap</b><span>A season review together</span></div></li>
+        </ul>
+        <button class="btn" type="button" data-open-dialog>Enquire</button>
+      </article>
+      <article class="package">
+        <div class="package__head"><h3 data-ar="شريك المنطقة">Zone partner</h3><p>Shape the experience of one zone that fits your product.</p></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Visibility</b><span>Your name on one zone</span></div></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Experience</b><span>Trials or a branded activity in it</span></div></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Content</b><span>From your zone</span></div></li>
+        </ul>
+        <button class="btn btn--secondary" type="button" data-open-dialog>Enquire</button>
+      </article>
+      <article class="package">
+        <div class="package__head"><h3 data-ar="شريك المسرح">Stage partner</h3><p>Put your name on PinkOut Live, the stage that brings it together.</p></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Visibility</b><span>Stage naming</span></div></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Experience</b><span>Launch, talk or performance slots</span></div></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Content</b><span>Talks and moments from the stage</span></div></li>
+        </ul>
+        <button class="btn btn--secondary" type="button" data-open-dialog>Enquire</button>
+      </article>
+      <article class="package">
+        <div class="package__head"><h3 data-ar="شريك يوم بثيمة">Themed-day partner</h3><p>One themed day, built around your brand.</p></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Visibility</b><span>Venue-wide, on the day</span></div></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Experience</b><span>Activation woven into the theme</span></div></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Content</b><span>A day made for sharing</span></div></li>
+        </ul>
+        <button class="btn btn--secondary" type="button" data-open-dialog>Enquire</button>
+      </article>
+    </div>
+    <p class="indicative" style="margin-block:12px 32px">Indicative. Final packages, inclusions and terms are in the partner deck, sent on request.</p>
+
+    <div class="compare-wrap">
+      <table class="compare">
+        <caption>Compare sponsorship types</caption>
+        <thead><tr><th scope="col">Type</th><th scope="col">Where your name appears</th><th scope="col">On-site activation</th><th scope="col">Typical length</th><th scope="col">Best for</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Season partner</th><td>All 7 zones</td><td class="yes">✓ Venue-wide</td><td>A season</td><td>Category leaders</td></tr>
+          <tr><th scope="row">Zone partner</th><td>One zone</td><td class="yes">✓ In your zone</td><td>A season</td><td>Hands-on products</td></tr>
+          <tr><th scope="row">Stage partner</th><td>PinkOut Live</td><td class="yes">✓ Stage slots</td><td>A season</td><td>Launches, media, tech</td></tr>
+          <tr><th scope="row">Themed-day partner</th><td>Venue, on the day</td><td class="yes">✓ Theme-wide</td><td>One day</td><td>Campaign moments</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <span class="lib-label">C33 · STICKY ENQUIRY BAR (phones only on the live site; shown here as a demo)</span>
+    <div class="cta-bar cta-bar--demo"><button class="btn btn--secondary btn--sm" type="button" data-open-dialog>Partner deck</button><button class="btn btn--sm" type="button" data-open-dialog>Start a partnership</button></div>
+  </section>
+
+  <section class="lib-sec" id="c15">
+    <header><code>C15</code><h2>Theme card</h2><code>C16</code><h2>Steps</h2><code>C17</code><h2>Facts</h2></header>
+    <div class="lib-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,280px))">
+      <article class="theme">
+        <img src="assets/images/themes/kpop-480.webp" alt="Women dancing in a pink-lit studio" width="480" height="600" loading="lazy">
+        <div class="theme__body"><h3 style="font-size:20px">K-POP Night</h3><div class="theme__fit"><span class="chip">Beauty</span><span class="chip">Music</span><span class="chip">Tech</span></div><button class="btn btn--secondary btn--sm" type="button" data-open-dialog>Sponsor this theme</button></div>
+      </article>
+      <article class="theme">
+        <img src="assets/images/themes/henna-480.webp" alt="Women at a coffee and henna gathering" width="480" height="600" loading="lazy">
+        <div class="theme__body"><h3 style="font-size:20px">Coffee &amp; Henna Night</h3><div class="theme__fit"><span class="chip">Coffee</span><span class="chip">Heritage</span></div><button class="btn btn--secondary btn--sm" type="button" data-open-dialog>Sponsor this theme</button></div>
+      </article>
+    </div>
+    <ol class="steps" style="margin-block-start:32px">
+      <li class="step"><b>Enquire</b><span>Short form, 2 steps</span></li>
+      <li class="step"><b>Deck &amp; intro call</b><span>We send the deck</span></li>
+      <li class="step"><b>Co-design</b><span>Shape the format</span></li>
+      <li class="step"><b>Activate</b><span>Go live in PinkOut</span></li>
+      <li class="step"><b>Recap</b><span>Review together</span></li>
+    </ol>
+    <dl class="facts" style="margin-block-start:32px;max-inline-size:560px">
+      <div><dt data-ar="المدينة">City</dt><dd data-ar="الرياض">Riyadh</dd></div>
+      <div><dt data-ar="الافتتاح">Opening</dt><dd data-tba data-ar="يُعلن لاحقاً">To be announced</dd></div>
+      <div><dt data-ar="التطبيق">App</dt><dd data-ar="قيد التطوير">In development · a future partner channel</dd></div>
+    </dl>
+  </section>
+
+  <section class="lib-sec" id="c18">
+    <header><code>C18</code><h2>FAQ</h2><code>C19</code><h2>Closing arch</h2><code>C20</code><h2>Footer</h2></header>
+    <div class="block" style="margin:0">
+      <details class="faq"><summary>Are any partners confirmed?</summary><p>No partnerships have been announced yet.</p></details>
+      <details class="faq" open><summary>How do we get the partner deck?</summary><p>Tick "Send me the partner deck" in the enquiry form.</p></details>
+    </div>
+    <div class="block block--rose arch-cta" style="margin-inline:0">
+      <div class="arch-cta__frame"><img src="assets/images/worlds/passage-480.webp" alt="Concept render of Pink Passage, the arched entrance" loading="lazy"></div>
+      <h2 data-ar="الموسم الأول يتشكّل الآن.">Shape the first season with us.</h2>
+      <button class="btn" type="button" data-open-dialog data-ar="بدء شراكة">Start a partnership</button>
+    </div>
+    <footer class="site-footer" style="margin-inline:0">
+      <div class="site-footer__grid">
+        <div><img class="site-footer__logo" src="assets/images/logo-light.svg" alt="PinkOut" width="113" height="40"><p style="margin-block-start:12px">PinkOut Partners · Coming soon to Riyadh</p></div>
+        <ul><li><a href="#">The world</a></li><li><a href="#">Opportunities</a></li><li><a href="#">FAQ</a></li></ul>
+        <ul><li><a href="#">Privacy</a></li><li><a href="#">Credits</a></li><li><a href="https://pinkoutsa.com" rel="noopener">Visiting PinkOut? pinkoutsa.com ↗</a></li></ul>
+      </div>
+      <div class="site-footer__bottom"><span>© 2026 PinkOut</span><div class="lib-row"><button class="btn btn--secondary btn--sm" type="button" aria-pressed="false" data-motion>Motion: on</button><button class="btn btn--secondary btn--sm" type="button" lang="ar">العربية</button></div></div>
+    </footer>
+  </section>
+
+  <!-- ===================== FORM ===================== -->
+  <section class="lib-sec" id="c21">
+    <header><code>C21–C24</code><h2>Fields, choices, checkbox, error summary</h2><code>C26</code><h2>Notice</h2><code>C27</code><h2>Toast</h2></header>
+    <div style="display:grid;gap:20px;max-inline-size:620px">
+      <div class="error-summary" role="alert"><h3>Please fix 2 things</h3><ul><li><a href="#f-email">Enter a valid work email</a></li><li><a href="#f-consent">Agree to the privacy notice</a></li></ul></div>
+      <fieldset class="choices"><legend>Partnership type <span class="req">*</span></legend><div class="choices__list" data-toggle-single><button class="chip" type="button" aria-pressed="true">Sponsorship</button><button class="chip" type="button" aria-pressed="false">Brand activation</button><button class="chip" type="button" aria-pressed="false">Not sure yet</button></div></fieldset>
+      <div class="form-row">
+        <label class="field"><span class="field__label">Company <span class="req">*</span></span><input class="field__control" type="text" autocomplete="organization" value="Rosé Beauty Co."></label>
+        <label class="field"><span class="field__label">Job title</span><input class="field__control" type="text" autocomplete="organization-title" placeholder="e.g. Brand manager"></label>
+      </div>
+      <label class="field"><span class="field__label">Work email <span class="req">*</span></span><input class="field__control" id="f-email" type="email" autocomplete="email" value="noura@" aria-invalid="true" aria-describedby="e-email"><span class="field__error" id="e-email">Enter a valid work email, like name@company.com</span></label>
+      <label class="field"><span class="field__label">Phone</span><input class="field__control" type="tel" inputmode="tel" autocomplete="tel" placeholder="+966 5x xxx xxxx"><span class="field__hint">Optional</span></label>
+      <label class="field"><span class="field__label">Message</span><textarea class="field__control" placeholder="Anything we should know: timing, product, idea"></textarea></label>
+      <label class="check"><input type="checkbox" checked><span class="check__box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg></span><span class="check__text">Send me the partner deck</span></label>
+      <label class="check"><input type="checkbox" id="f-consent" aria-invalid="true"><span class="check__box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg></span><span class="check__text">I agree to the <a href="#">privacy notice</a> <span class="req">*</span></span></label>
+      <div class="notice" role="status">Enquiries open soon. This was a preview; nothing was sent.</div>
+      <div class="notice notice--ok" role="status">Sent. We'll reply by email with the partner deck.</div>
+      <div class="notice notice--error" role="status">Couldn't send. Your details are kept, so try again.</div>
+      <div class="lib-row"><button class="btn btn--secondary btn--sm" type="button" data-toast="Link copied">Show toast</button></div>
+    </div>
+  </section>
+
+  <!-- ===================== TEMPLATES ===================== -->
+  <section class="lib-sec" id="t">
+    <header><code>C25 · T4</code><h2>Enquiry dialog</h2><code>T1–T3</code><h2>Page templates</h2><p>Open the dialog to walk the real flow (step 1 → step 2 → review → preview notice). Page templates are listed in docs/components.md; T1 is the home page itself.</p></header>
+    <div class="lib-row"><button class="btn" type="button" data-open-dialog>Open enquiry dialog</button></div>
+    <div class="lib-grid" style="margin-block-start:24px">
+      <div class="block block--white" style="margin:0"><b>T1 · Home</b><p class="t-small t-muted">Header → Hero → Why → World → Audience → Opportunities → Themes → Process → Status → FAQ → Closing → Footer + Dialog</p></div>
+      <div class="block" style="margin:0"><b>T2 · Utility</b><p class="t-small t-muted">Header (back link) → one white block, prose ≤ 70ch → Footer. Privacy, Credits.</p></div>
+      <div class="block block--pink" style="margin:0"><b>T3 · Not found</b><p class="t-small t-muted">"This page wandered off." + Back to PinkOut Partners.</p></div>
+    </div>
+  </section>
+
+  <dialog class="dialog" id="enquiry" aria-labelledby="enq-title">
+    <div class="dialog__head">
+      <span class="door__icon" data-dlg-icon hidden></span>
+      <div style="flex:1"><h2 id="enq-title">Partnership enquiry</h2><p class="dialog__intro" data-dlg-intro hidden></p><span class="dialog__progress-bar" aria-hidden="true"><i></i></span></div>
+      <span class="dialog__progress" data-progress>1 of 2</span>
+      <button class="btn btn--secondary btn--icon" type="button" aria-label="Close" data-close>✕</button>
+    </div>
+    <div class="dialog__body" data-step="1">
+      <fieldset class="choices"><legend>Partnership type <span class="req">*</span></legend><div class="choices__list" data-toggle-single><button class="chip" type="button" aria-pressed="true">Sponsorship</button><button class="chip" type="button" aria-pressed="false">Brand activation</button><button class="chip" type="button" aria-pressed="false">Not sure yet</button></div></fieldset>
+      <fieldset class="choices"><legend>What do you want to achieve? (optional)</legend><div class="choices__list" data-toggle-multi><button class="chip" type="button" aria-pressed="true">Launch a product</button><button class="chip" type="button" aria-pressed="false">Product trial</button><button class="chip" type="button" aria-pressed="false">Awareness</button><button class="chip" type="button" aria-pressed="false">Content</button><button class="chip" type="button" aria-pressed="false">Community</button></div></fieldset>
+      <fieldset class="choices"><legend>Zones (optional)</legend><div class="choices__list" data-toggle-multi>
+        <button class="chip chip--dot" type="button" aria-pressed="false" style="--zone-c:var(--zone-passage)">Pink Passage</button><button class="chip chip--dot" type="button" aria-pressed="false" style="--zone-c:var(--zone-hub)">Rose Hub</button><button class="chip chip--dot" type="button" aria-pressed="false" style="--zone-c:var(--zone-beauty)">Beauty Lab</button><button class="chip chip--dot" type="button" aria-pressed="false" style="--zone-c:var(--zone-make)">Make Studio</button><button class="chip chip--dot" type="button" aria-pressed="false" style="--zone-c:var(--zone-market)">Pink Market</button><button class="chip chip--dot" type="button" aria-pressed="false" style="--zone-c:var(--zone-move)">Move Studio</button><button class="chip chip--dot" type="button" aria-pressed="true" style="--zone-c:var(--zone-live)">PinkOut Live</button>
+      </div></fieldset>
+      <fieldset class="choices"><legend>Timing</legend><div class="choices__list" data-toggle-single><button class="chip" type="button" aria-pressed="true">Opening season</button><button class="chip" type="button" aria-pressed="false">Later</button><button class="chip" type="button" aria-pressed="false">Exploring</button></div></fieldset>
+    </div>
+    <div class="dialog__body" data-step="2" hidden>
+      <div class="form-row"><label class="field"><span class="field__label">Company <span class="req">*</span></span><input class="field__control" type="text"></label><label class="field"><span class="field__label">Full name <span class="req">*</span></span><input class="field__control" type="text"></label></div>
+      <div class="form-row"><label class="field"><span class="field__label">Job title</span><input class="field__control" type="text"></label><label class="field"><span class="field__label">Work email <span class="req">*</span></span><input class="field__control" type="email"></label></div>
+      <label class="check"><input type="checkbox" checked><span class="check__box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg></span><span class="check__text">Send me the partner deck</span></label>
+      <label class="check"><input type="checkbox"><span class="check__box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg></span><span class="check__text">I agree to the privacy notice <span class="req">*</span></span></label>
+    </div>
+    <div class="dialog__body" data-step="3" hidden>
+      <dl class="review">
+        <div><dt>Interest</dt><dd>Sponsorship</dd></div>
+        <div><dt>Goal</dt><dd>Launch a product</dd></div>
+        <div><dt>Zones</dt><dd>PinkOut Live</dd></div>
+        <div><dt>Timing</dt><dd>Opening season</dd></div>
+        <div><dt>Company</dt><dd>[as entered]</dd></div>
+        <div><dt>Partner deck</dt><dd>Yes, please send it</dd></div>
+      </dl>
+    </div>
+    <div class="dialog__body" data-step="4" hidden>
+      <div class="notice" role="status" data-dlg-done>Enquiries open soon. This was a preview; nothing was sent.</div>
+    </div>
+    <div class="dialog__foot"><button class="btn btn--secondary" type="button" data-back hidden>Back</button><button class="btn" type="button" data-next>Next</button></div>
+  </dialog>
+
+<script>
+  /* Library-only demo behaviour; the site's real logic lives in assets/js/. */
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  document.addEventListener('click', (e) => {
+    const chip = e.target.closest('button.chip');
+    if (chip) {
+      const single = chip.closest('[data-toggle-single]');
+      if (single) $$('button.chip', single).forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      else if (chip.closest('[data-toggle-multi]')) chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));
+    }
+    const t = e.target.closest('[data-toast]');
+    if (t) {
+      const el = Object.assign(document.createElement('div'), { className: 'toast', role: 'status', textContent: t.dataset.toast });
+      document.body.append(el); setTimeout(() => el.remove(), 2400);
+    }
+  });
+
+  // Type cards behave as a radio group
+  $$('[data-typecards] .typecard').forEach((c, _, all) => c.addEventListener('click', () => all.forEach((x) => x.setAttribute('aria-checked', String(x === c)))));
+
+  // ?only=c8,c14 shows just those sections (for review screenshots)
+  const only = new URLSearchParams(location.search).get('only');
+  if (only) { const keep = only.split(','); $$('.lib-sec').forEach((s) => (s.hidden = !keep.includes(s.id))); }
+
+  // Goal picker: dim offers that don't serve the chosen goal (click again to clear)
+  const goalLabels = { launch: 'launching a product', trial: 'driving product trial', awareness: 'building awareness', content: 'creating content', community: 'connecting with a community' };
+  $$('[data-goal]').forEach((g) => g.addEventListener('click', () => {
+    const on = g.getAttribute('aria-pressed') !== 'true';
+    $$('[data-goal]').forEach((x) => x.setAttribute('aria-pressed', String(on && x === g)));
+    const offers = $$('[data-fit] .offer');
+    let n = 0;
+    offers.forEach((o) => {
+      const match = !on || o.dataset.goals.split(' ').includes(g.dataset.goal);
+      if (match) n++;
+      o.toggleAttribute('data-dim', !match);
+      o.toggleAttribute('data-match', on && match);
+    });
+    $('[data-fit-summary]').innerHTML = on ? `<b>${n}</b> formats fit ${goalLabels[g.dataset.goal]}.` : 'Showing all <b>7</b> brand activations.';
+  }));
+
+  // Dialog walk-through
+  const dlg = $('#enquiry'); let step = 1;
+  const show = (n) => {
+    step = n;
+    $$('[data-step]', dlg).forEach((s) => (s.hidden = +s.dataset.step !== n));
+    $('[data-progress]', dlg).textContent = n <= 2 ? `${n} of 2` : n === 3 ? 'Review' : 'Done';
+    dlg.style.setProperty('--progress', `${[0, 50, 100, 100, 100][n]}%`);
+    $('[data-back]', dlg).hidden = n === 1 || n === 4;
+    $('[data-next]', dlg).textContent = ['', 'Next', 'Review', 'Send', 'Close'][n];
+  };
+  const PERSONAL = {
+    event:  { title: 'Event partner enquiry', intro: "Let's put your brand inside her world.", done: "Thank you. Your event enquiry is ready; applications open soon, so nothing was sent yet. We'll send the event partner deck as soon as they do.", icon: '<svg viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18"/></svg>' },
+    beauty: { title: 'Beauty partner application', intro: "Let's get your craft in front of her.", done: "Thank you. Your beauty partner application is ready; applications open soon, so nothing was sent yet. We'll review your portfolio as soon as they do.", icon: '<svg viewBox="0 0 24 24"><path d="M9 3h6v4H9zM8 7h8l1 14H7z"/></svg>' },
+    shop:   { title: 'Seller application', intro: "Let's get your products on her shelf.", done: "Thank you. Your seller application is ready; applications open soon, so nothing was sent yet. We'll look at your catalogue as soon as they do.", icon: '<svg viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v11H4z"/></svg>' },
+  };
+  $$('[data-open-dialog]').forEach((b) => b.addEventListener('click', () => {
+    const p = PERSONAL[b.dataset.type || document.body.dataset.for || ''];
+    dlg.dataset.type = p ? (b.dataset.type || document.body.dataset.for) : '';
+    $('#enq-title').textContent = p ? p.title : 'Partnership enquiry';
+    $('[data-dlg-intro]').hidden = !p; $('[data-dlg-intro]').textContent = p ? p.intro : '';
+    $('[data-dlg-icon]').hidden = !p; $('[data-dlg-icon]').innerHTML = p ? p.icon : '';
+    $('[data-dlg-done]').textContent = p ? p.done : 'Enquiries open soon. This was a preview; nothing was sent.';
+    show(1); dlg.showModal();
+  }));
+
+  // C42 personal welcome (?for=event|beauty|shop)
+  const WELCOME = {
+    '':     { eyebrow: 'PinkOut Partners · Coming soon to Riyadh', l1: 'Her own world.', l2: 'Room for partners who belong in it.', lead: 'A women-first destination opening in Riyadh, with an app on the way. Partner with PinkOut at the event, through beauty services, or by selling your products.', cta: 'Become a partner', deck: 'Request a partner deck', c: 'var(--c-butter)' },
+    event:  { eyebrow: 'Welcome, sponsors & brands', l1: 'Her own world.', l2: 'Your brand, inside it.', lead: 'Seven experience zones in Riyadh, built for launches, trials and sponsorships that people take part in, not just walk past.', cta: 'Start a partnership', deck: 'Request the event deck', c: 'var(--track-event)' },
+    beauty: { eyebrow: 'Welcome, beauty artists & salons', l1: 'Her own world.', l2: 'Your craft, at the heart of it.', lead: 'Work our Beauty Lab stations and themed days, and meet new clients at home when the PinkOut app launches.', cta: 'Apply as beauty partner', deck: 'Request the beauty deck', c: 'var(--track-beauty)' },
+    shop:   { eyebrow: 'Welcome, brands & sellers', l1: 'Her own world.', l2: 'Your products, on her shelf.', lead: 'Sell at Pink Market during the event, and in the PinkOut app when it launches.', cta: 'Apply as seller', deck: 'Request the e-commerce deck', c: 'var(--track-shop)' },
+  };
+  function setWelcome(type) {
+    const w = WELCOME[type] || WELCOME[''];
+    document.body.dataset.for = type || '';
+    const e = $('[data-w-eyebrow]'); e.textContent = w.eyebrow; e.style.background = w.c;
+    $('[data-w-line1]').textContent = w.l1; $('[data-w-line2]').textContent = w.l2; $('[data-w-lead]').textContent = w.lead;
+    $('[data-w-cta]').textContent = w.cta; $('[data-w-deck]').textContent = w.deck;
+    $('[data-w-cta]').dataset.type = type || ''; $('[data-w-deck]').dataset.type = type || '';
+    $$('[data-door]').forEach((d) => d.toggleAttribute('data-for-me', d.dataset.door === type));
+    $$('[data-welcome-switch] .chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.for === (type || ''))));
+  }
+  $$('[data-welcome-switch] .chip').forEach((c) => c.addEventListener('click', () => setWelcome(c.dataset.for)));
+  setWelcome(new URLSearchParams(location.search).get('for') || '');
+  $('[data-next]', dlg).addEventListener('click', () => (step === 4 ? dlg.close() : show(step + 1)));
+  $('[data-back]', dlg).addEventListener('click', () => show(step - 1));
+  $$('[data-close]').forEach((b) => b.addEventListener('click', () => b.closest('dialog').close()));
+  $$('[data-open-menu]').forEach((b) => b.addEventListener('click', () => $('#menu-sheet').showModal()));
+
+  // Film pause
+  $('[data-pause]').addEventListener('click', (e) => {
+    const v = $('.hero__film'); const b = e.currentTarget;
+    if (v.paused) { v.play(); b.setAttribute('aria-label', 'Pause film'); } else { v.pause(); b.setAttribute('aria-label', 'Play film'); }
+  });
+
+  // Motion toggle demo
+  $('[data-motion]').addEventListener('click', (e) => {
+    const off = document.documentElement.dataset.motion !== 'off';
+    document.documentElement.dataset.motion = off ? 'off' : 'on';
+    e.currentTarget.setAttribute('aria-pressed', String(off));
+    e.currentTarget.textContent = off ? 'Motion: off' : 'Motion: on';
+  });
+
+  // EN ↔ AR
+  $$('[data-ar]').forEach((el) => (el.dataset.en = el.textContent));
+  $('[data-lang]').addEventListener('click', (e) => {
+    const ar = document.documentElement.dir !== 'rtl';
+    document.documentElement.dir = ar ? 'rtl' : 'ltr';
+    document.documentElement.lang = ar ? 'ar' : 'en';
+    $$('[data-ar]').forEach((el) => (el.textContent = ar ? el.dataset.ar : el.dataset.en));
+    e.currentTarget.textContent = ar ? 'English' : 'العربية';
+  });
+</script>
+</body>
+</html>

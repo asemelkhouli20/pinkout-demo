@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- Card: app line doodles, replacing the earlier dot pattern. -->
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(10 10) rotate(-12 13 13) scale(1.1)"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 5h3M11 18.5h2"/></g>
+    <g transform="translate(72 20) rotate(8 13 13) scale(1.1)"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15zM10 20.5a2 2 0 0 0 4 0M12 3v2"/></g>
+    <g transform="translate(134 8) rotate(0 13 13) scale(1.1)"><path d="M12 20.5s-7.5-4.6-7.5-10.4A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.5c0 5.8-7.5 10.4-7.5 10.4z"/></g>
+    <g transform="translate(192 18) rotate(14 13 13) scale(1.1)"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2"/></g>
+    <g transform="translate(36 72) rotate(-6 13 13) scale(1.1)"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></g>
+    <g transform="translate(100 80) rotate(10 13 13) scale(1.1)"><path d="M4 5.5h16v10.5H10l-4.5 3.5V16H4z"/><path d="M8.5 11h.1M12 11h.1M15.5 11h.1"/></g>
+    <g transform="translate(160 66) rotate(-8 13 13) scale(1.1)"><path d="M3 7h18v3.2a1.8 1.8 0 0 0 0 3.6V17H3v-3.2a1.8 1.8 0 0 0 0-3.6zM14.5 7v10"/></g>
+    <g transform="translate(8 134) rotate(6 13 13) scale(1.1)"><path d="M12 3c.7 4.5 2.5 6.3 7 7-4.5.7-6.3 2.5-7 7-.7-4.5-2.5-6.3-7-7 4.5-.7 6.3-2.5 7-7z"/></g>
+    <g transform="translate(70 142) rotate(0 13 13) scale(1.1)"><path d="M6.5 3.5h11V21L12 17l-5.5 4z"/></g>
+    <g transform="translate(132 128) rotate(-14 13 13) scale(1.1)"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 5h3M11 18.5h2"/></g>
+    <g transform="translate(194 140) rotate(10 13 13) scale(1.1)"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.8z"/></g>
+    <g transform="translate(96 196) rotate(-10 13 13) scale(1.1)"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15zM10 20.5a2 2 0 0 0 4 0M12 3v2"/></g>
+    <g opacity=".8"><circle cx="170" cy="206" r="1.4"/><circle cx="40" cy="206" r="1.4"/><circle cx="222" cy="96" r="1.4"/><circle cx="60" cy="58" r="1.4"/><circle cx="128" cy="112" r="1.4"/><circle cx="214" cy="226" r="1.4"/><circle cx="14" cy="104" r="1.4"/><circle cx="150" cy="180" r="1.4"/></g>
+  </g>
+</svg>

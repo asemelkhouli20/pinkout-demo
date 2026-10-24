@@ -1,0 +1,251 @@
+<!doctype html>
+<!--
+  PINK OUT — Breast Cancer Awareness Month campaign (demo)
+  Techniques used (epic-design catalogue):
+    Split converge · Bleed typography · Masked line reveal · Word-by-word scroll lighting
+    Circle iris expand · Pinned horizontal scroll · Cascading card stack · Stagger grid + tilt
+    Scroll-speed reactive marquee · Inter-section floating object (Three.js ribbon) · Curtain loader
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pink Out</title>
+  <meta name="description" content="Pink Out — this October, wear pink, learn the signs of breast cancer, and share them with the people you love." />
+  <meta name="theme-color" content="#14070e" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 6c-9 0-13 8-10 17l8 16-12 19h9l9-14 9 14h9L42 39l8-16c3-9-1-17-10-17h-8zm0 8c5 0 6 4 4 9l-4 9-4-9c-2-5-1-9 4-9z' fill='%23ff3d8b'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body class="is-loading">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- LOADER — curtain that lifts once the scene is ready -->
+  <div class="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <span class="loader__label">Pink Out · October</span>
+      <span class="loader__count"><span data-count>0</span>%</span>
+    </div>
+  </div>
+
+  <!-- DEPTH 3 — the fixed WebGL stage. The ribbon travels through every section. -->
+  <canvas id="gl" class="gl depth-3" data-depth="3" aria-hidden="true"></canvas>
+  <div class="gl-fallback" aria-hidden="true"></div>
+
+  <!-- Cursor (fine pointers only) -->
+  <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span></div>
+
+  <header class="nav">
+    <a class="nav__logo" href="#top" aria-label="Pink Out, back to top">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 6c-9 0-13 8-10 17l8 16-12 19h9l9-14 9 14h9L42 39l8-16c3-9-1-17-10-17h-8zm0 8c5 0 6 4 4 9l-4 9-4-9c-2-5-1-9 4-9z"/></svg>
+      <span>Pink<em>·</em>Out</span>
+    </a>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#why">Why</a>
+      <a href="#signs">Signs</a>
+      <a href="#checks">Checks</a>
+      <a href="#join">Join</a>
+    </nav>
+    <a class="btn btn--small magnetic" href="#pledge"><span>Take the pledge</span></a>
+  </header>
+
+  <main id="main">
+
+    <!-- ===================== 1. HERO ===================== -->
+    <section class="scene hero" id="top" data-scene="hero">
+      <div class="layer depth-0 hero__bg" data-depth="0" aria-hidden="true"></div>
+      <div class="layer depth-1 glow glow--a" data-depth="1" aria-hidden="true"></div>
+      <div class="layer depth-1 glow glow--b" data-depth="1" aria-hidden="true"></div>
+
+      <!-- DEPTH 2 — bleed typography sits BEHIND the 3D ribbon -->
+      <h1 class="hero__title depth-2" data-depth="2" aria-label="Pink Out">
+        <span class="hero__word hero__word--l" aria-hidden="true">Pink</span>
+        <span class="hero__word hero__word--r" aria-hidden="true">Out</span>
+      </h1>
+
+      <!-- DEPTH 4 — UI -->
+      <div class="hero__ui depth-4" data-depth="4">
+        <p class="eyebrow hero__eyebrow"><span class="dot"></span> October · Breast Cancer Awareness Month</p>
+        <p class="hero__tag">One day. One colour.<br /><em>A million reasons to check.</em></p>
+        <div class="hero__cta">
+          <a class="btn magnetic" href="#pledge"><span>Join the Pink Out</span></a>
+          <a class="btn btn--ghost magnetic" href="#signs"><span>Learn the signs</span></a>
+        </div>
+      </div>
+
+      <div class="hero__scroll depth-4" data-depth="4" aria-hidden="true">
+        <span>Scroll</span><i></i>
+      </div>
+    </section>
+
+    <!-- ===================== 2. MANIFESTO ===================== -->
+    <section class="scene manifesto" id="why" data-scene="manifesto">
+      <div class="layer depth-1 glow glow--c" data-depth="1" aria-hidden="true"></div>
+      <div class="manifesto__inner depth-4" data-depth="4">
+        <p class="eyebrow">01 — Why we wear pink</p>
+        <p class="manifesto__text" data-words>
+          Breast cancer is the most commonly diagnosed cancer in women worldwide. Found
+          <mark>early</mark>, most people go on to live full, long lives. Pink Out is one day to make
+          <mark>checking</mark> normal — to talk about it, look for it, and show up for everyone facing it.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== 3. NUMBERS (iris reveal) ===================== -->
+    <section class="scene numbers" id="numbers" data-scene="numbers">
+      <div class="numbers__panel depth-0" data-depth="0">
+        <div class="layer depth-1 numbers__glow" data-depth="1" aria-hidden="true"></div>
+        <div class="numbers__inner depth-4" data-depth="4">
+          <p class="eyebrow eyebrow--dark">02 — The numbers</p>
+          <h2 class="section-title section-title--dark" data-reveal>Why every <em>check</em> counts.</h2>
+          <ul class="stats" role="list">
+            <li class="stat">
+              <span class="stat__num"><span data-counter="1">1</span><small> in </small><span data-counter="8">8</span></span>
+              <span class="stat__label">women in the U.S. will develop invasive breast cancer in their lifetime.</span>
+              <span class="stat__src">American Cancer Society</span>
+            </li>
+            <li class="stat">
+              <span class="stat__num"><span data-counter="99">99</span><small>%</small></span>
+              <span class="stat__label">five-year relative survival when it’s found while still localised.</span>
+              <span class="stat__src">American Cancer Society</span>
+            </li>
+            <li class="stat">
+              <span class="stat__num"><span data-counter="2.3" data-decimals="1">2.3</span><small>M</small></span>
+              <span class="stat__label">women were diagnosed worldwide in 2022 — each one someone’s person.</span>
+              <span class="stat__src">World Health Organization</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 4. SIGNS (horizontal) ===================== -->
+    <section class="scene signs" id="signs" data-scene="signs">
+      <div class="layer depth-1 glow glow--d" data-depth="1" aria-hidden="true"></div>
+      <div class="signs__head depth-4" data-depth="4">
+        <p class="eyebrow">03 — Know the signs</p>
+        <h2 class="section-title" data-reveal>Six changes worth <em>a&nbsp;check.</em></h2>
+        <p class="signs__note">Most changes aren’t cancer. But every change deserves a conversation with a doctor.</p>
+      </div>
+      <div class="signs__viewport depth-4" data-depth="4">
+        <ol class="signs__track" role="list">
+          <li class="sign"><span class="sign__n">01</span><h3>A new lump</h3><p>In the breast or the underarm — even if it doesn’t hurt.</p><span class="sign__icon" aria-hidden="true">◍</span></li>
+          <li class="sign"><span class="sign__n">02</span><h3>Size or shape</h3><p>A change in how one breast looks or sits compared to before.</p><span class="sign__icon" aria-hidden="true">◐</span></li>
+          <li class="sign"><span class="sign__n">03</span><h3>Dimpling</h3><p>Skin that puckers, dimples or looks like orange peel.</p><span class="sign__icon" aria-hidden="true">⁘</span></li>
+          <li class="sign"><span class="sign__n">04</span><h3>Nipple changes</h3><p>Turning inward, a new shape, or any unexpected discharge.</p><span class="sign__icon" aria-hidden="true">◉</span></li>
+          <li class="sign"><span class="sign__n">05</span><h3>Redness or scaling</h3><p>Rash, flaky or thickened skin on the breast or nipple.</p><span class="sign__icon" aria-hidden="true">✺</span></li>
+          <li class="sign"><span class="sign__n">06</span><h3>Pain that stays</h3><p>New, persistent pain in one spot that doesn’t go away.</p><span class="sign__icon" aria-hidden="true">✦</span></li>
+        </ol>
+      </div>
+      <div class="signs__progress depth-4" aria-hidden="true"><i></i></div>
+    </section>
+
+    <!-- ===================== 5. THREE CHECKS (stack) ===================== -->
+    <section class="scene checks" id="checks" data-scene="checks">
+      <div class="layer depth-1 glow glow--e" data-depth="1" aria-hidden="true"></div>
+      <div class="checks__head depth-4" data-depth="4">
+        <p class="eyebrow">04 — Three checks</p>
+        <h2 class="section-title" data-reveal>Small habits.<br /><em>Big difference.</em></h2>
+      </div>
+      <div class="stack depth-4" data-depth="4">
+        <article class="card" style="--i:0">
+          <span class="card__n">01</span>
+          <div>
+            <h3>Know your normal</h3>
+            <p>Look and feel, once a month. You’re not searching for cancer — you’re learning what’s usual for you, so a change stands out.</p>
+          </div>
+          <span class="card__tag">Monthly</span>
+        </article>
+        <article class="card" style="--i:1">
+          <span class="card__n">02</span>
+          <div>
+            <h3>Get screened</h3>
+            <p>Mammograms find changes before they can be felt. Ask your doctor when you should start — for many women it’s every two years from age 40.</p>
+          </div>
+          <span class="card__tag">Ask your doctor</span>
+        </article>
+        <article class="card" style="--i:2">
+          <span class="card__n">03</span>
+          <div>
+            <h3>Speak up</h3>
+            <p>Noticed something? Book the appointment. Know a family history? Share it. Then remind one person you love to do the same.</p>
+          </div>
+          <span class="card__tag">Today</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== 6. HOW TO PINK OUT ===================== -->
+    <section class="scene join" id="join" data-scene="join">
+      <div class="layer depth-1 glow glow--f" data-depth="1" aria-hidden="true"></div>
+      <div class="join__inner depth-4" data-depth="4">
+        <p class="eyebrow">05 — How to Pink Out</p>
+        <h2 class="section-title" data-reveal>Four ways to <em>show up.</em></h2>
+        <ul class="ways" role="list">
+          <li class="way tilt"><span class="way__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 4l4 2 4-2 4 3-2 4-2-1v10H8V10l-2 1-2-4z"/></svg></span><h3>Wear pink</h3><p>Pick a day this October. Shirt, scarf, laces, lipstick — the louder the better.</p></li>
+          <li class="way tilt"><span class="way__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10v4h3l7 4V6l-7 4H3z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M18.5 6.5a8 8 0 0 1 0 11"/></svg></span><h3>Host a Pink Out</h3><p>Turn a school game, office floor or team practice pink, and make it a talking point.</p></li>
+          <li class="way tilt"><span class="way__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span><h3>Share the signs</h3><p>Send the six signs to the group chat. One message can be the reminder someone needed.</p></li>
+          <li class="way tilt"><span class="way__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></span><h3>Give</h3><p>Support a local breast cancer charity, screening program or patient support group.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== 7. MARQUEE ===================== -->
+    <section class="marquee depth-5" data-depth="5" aria-label="Wear it. Check it. Share it.">
+      <div class="marquee__row" aria-hidden="true"><div class="marquee__track"><span>Wear it ✦ Check it ✦ Share it ✦ Wear it ✦ Check it ✦ Share it ✦ </span><span>Wear it ✦ Check it ✦ Share it ✦ Wear it ✦ Check it ✦ Share it ✦ </span></div></div>
+      <div class="marquee__row marquee__row--alt" aria-hidden="true"><div class="marquee__track"><span>Pink Out ✦ October ✦ Pink Out ✦ October ✦ Pink Out ✦ October ✦ </span><span>Pink Out ✦ October ✦ Pink Out ✦ October ✦ Pink Out ✦ October ✦ </span></div></div>
+    </section>
+
+    <!-- ===================== 8. PLEDGE ===================== -->
+    <section class="scene pledge" id="pledge" data-scene="pledge">
+      <div class="layer depth-0 pledge__bg" data-depth="0" aria-hidden="true"></div>
+      <div class="pledge__inner depth-4" data-depth="4">
+        <p class="eyebrow">06 — The pledge</p>
+        <h2 class="pledge__title" data-reveal>Wear it.<br />Check it.<br /><em>Share it.</em></h2>
+        <p class="pledge__sub">Promise one pink day, one self-check, and one reminder to someone you love.</p>
+        <div class="pledge__actions">
+          <button class="btn btn--big magnetic" type="button" data-pledge><span>I’m in — count me pink</span></button>
+          <button class="btn btn--ghost magnetic" type="button" data-share><span>Share the signs</span></button>
+        </div>
+        <p class="pledge__status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="confetti depth-5" data-depth="5" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__big" aria-hidden="true">Pink Out</div>
+    <div class="footer__grid">
+      <p class="footer__note"><strong>This is a demo campaign site, not medical advice.</strong> If you notice a change, talk to a doctor or nurse.</p>
+      <div class="footer__src">
+        <p class="eyebrow">Sources</p>
+        <ul role="list">
+          <li><a href="https://www.who.int/news-room/fact-sheets/detail/breast-cancer" target="_blank" rel="noopener">WHO — Breast cancer fact sheet</a></li>
+          <li><a href="https://www.cancer.org/cancer/types/breast-cancer/about/how-common-is-breast-cancer.html" target="_blank" rel="noopener">ACS — Key statistics</a></li>
+          <li><a href="https://www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-diagnosis/breast-cancer-survival-rates.html" target="_blank" rel="noopener">ACS — Survival rates</a></li>
+          <li><a href="https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/breast-cancer-screening" target="_blank" rel="noopener">USPSTF — Screening</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- GSAP (core + ScrollTrigger + SplitText) and Lenis -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

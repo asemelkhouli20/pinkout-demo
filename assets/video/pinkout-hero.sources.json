@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-22",
+  "note": "Client-selected clips: matcha, sunglasses try-on, stretching, DJ, festival stage, clapping crowd. Illustrative stock, not PinkOut events.",
+  "files": {
+    "desktop": "assets/video/hero-pinkout-fun.mp4",
+    "mobile": "assets/video/hero-pinkout-fun-mobile.mp4",
+    "poster": "assets/images/hero-pinkout-fun-poster.jpg",
+    "mobilePoster": "assets/images/hero-pinkout-fun-mobile-poster.jpg"
+  },
+  "dimensions": {
+    "desktop": [
+      1280,
+      720
+    ],
+    "mobile": [
+      540,
+      960
+    ]
+  },
+  "duration": 10.1,
+  "fps": 25,
+  "audio": false,
+  "grade": "contrast 1.08, saturation 1.25, magenta colour balance; punch-in per shot; 0.14s pink/white flash on accent cuts; last shot fades to pink so the loop restarts cleanly on the matcha shot",
+  "replaces": "hero-pinkout-hype (archived in place)",
+  "clips": [
+    {
+      "title": "Preparing refreshing matcha green tea drinks",
+      "creator": "Anh Nguyen",
+      "source": "https://www.pexels.com/video/preparing-refreshing-matcha-green-tea-drinks-33050650/",
+      "license": "https://www.pexels.com/license/",
+      "sourceStart": 0.0,
+      "duration": 1.4,
+      "speed": 1.0,
+      "mobileCentreX": 0.5,
+      "flashIn": "pink"
+    },
+    {
+      "title": "Women wearing sunglasses",
+      "creator": "cottonbro studio",
+      "source": "https://www.pexels.com/video/women-wearing-sunglasses-6120785/",
+      "license": "https://www.pexels.com/license/",
+      "sourceStart": 20.5,
+      "duration": 0.9,
+      "speed": 1.2,
+      "mobileCentreX": 0.3,
+      "flashIn": "pink"
+    },
+    {
+      "title": "Women wearing trendy sunglasses while looking at camera",
+      "creator": "cottonbro studio",
+      "source": "https://www.pexels.com/video/women-wearing-trendy-sunglasses-while-looking-at-camera-6120778/",
+      "license": "https://www.pexels.com/license/",
+      "sourceStart": 0.3,
+      "duration": 0.9,
+      "speed": 1.2,
+      "mobileCentreX": 0.45
+    },
+    {
+      "title": "Women stretching on a mat",
+      "creator": "Pavel Danilyuk",
+      "source": "https://www.pexels.com/video/women-stretching-on-a-mat-6326792/",
+      "license": "https://www.pexels.com/license/",
+      "sourceStart": 0.0,
+      "duration": 1.2,
+      "speed": 1.5,
+      "mobileCentreX": 0.5,
+      "flashIn": "pink"
+    },
+    {
+      "title": "Vibrant nightclub DJ performance scene",
+      "creator": "Joshua Lim",
+      "source": "https://www.pexels.com/video/vibrant-nightclub-dj-performance-scene-30665567/",
+      "license": "https://www.pexels.com/license/",
+      "sourceStart": 1.0,
+      "duration": 1.1,
+      "speed": 1.2,
+      "mobileCentreX": 0.58,
+      "flashIn": "white"
+    },
+    {
+      "title": "Vibrant nightclub DJ performance scene",
+      "creator": "Joshua Lim",
+      "source": "https://www.pexels.com/video/vibrant-nightclub-dj-performance-scene-30665567/",
+      "license": "https://www.pexels.com/license/",
+      "sourceStart": 7.0,
+      "duration": 0.9,
+      "speed": 1.2,
+      "mobileCentreX": 0.5
+    },
+    {
+      "title": "Vibrant outdoor music festival at night",
+      "creator": "setengah lima sore",
+      "source": "https://www.pexels.com/video/vibrant-outdoor-music-festival-at-night-35323903/",
+      "license": "https://www.pexels.com/license/",
+      "sourceStart": 1.0,
+      "duration": 1.2,
+      "speed": 1.5,
+      "mobileCentreX": 0.5,
+      "flashIn": "pink"
+    },
+    {
+      "title": "Vibrant outdoor music festival at night",
+      "creator": "setengah lima sore",
+      "source": "https://www.pexels.com/video/vibrant-outdoor-music-festival-at-night-35323903/",
+      "license": "https://www.pexels.com/license/",
+      "sourceStart": 11.0,
+      "duration": 0.9,
+      "speed": 1.5,
+      "mobileCentreX": 0.5
+    },
+    {
+      "title": "Close-up of girls hands clapping at a music show",
+      "creator": "Mixkit",
+      "source": "https://mixkit.co/free-stock-video/close-up-of-girls-hands-clapping-at-a-music-show-48481/",
+      "license": "https://mixkit.co/license/#videoFree",
+      "sourceStart": 2.0,
+      "duration": 1.5,
+      "speed": 1.0,
+      "mobileCentreX": 0.4,
+      "flashIn": "white"
+    }
+  ]
+}

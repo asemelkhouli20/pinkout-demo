@@ -35,7 +35,7 @@ References: Museum of Ice Cream (colour blocks, white invitation panel) and SWSH
 | `--c-pink` | `#ffc9de` | Pink Passage |
 | `--c-butter` | `#fff0aa` | Rose Hub |
 | `--c-lavender` | `#ddcffb` | Beauty Lab |
-| `--c-mint` | `#c7efdf` | Make Studio |
+| `--c-mint` | `#c7efdf` | Craft Studio |
 | `--c-peach` | `#ffd9c2` | Pink Market |
 | `--c-sky` | `#d8ecff` | Move Studio |
 | `--c-rose` | `#ffb8d2` | PinkOut Live |

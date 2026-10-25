@@ -34,7 +34,7 @@ export const ZONES = [
     offers: { event: { sponsorship: { en: ['Zone sponsor'], ar: ['راعي المنطقة'] }, items: { en: ['Product trials', 'Personalisation', 'Brand boutique', 'Launches'], ar: ['تجربة المنتجات', 'التخصيص', 'متجر العلامة', 'الإطلاقات'] } } },
   },
   {
-    id: 'make', name: 'Make Studio', colour: '--zone-make', hex: '#c7efdf', image: 'make',
+    id: 'make', name: 'Craft Studio', colour: '--zone-make', hex: '#c7efdf', image: 'make',
     plan: { rects: [[5.6, 0.9, 29.9, 12.0]], label: [17.7, 6.4], size: '18 × 10 m' },
     stations: { en: ['Bracelets & Charms', 'Phone Case Customisation', 'Laser Engraving', 'Embroidery & Textiles', 'Custom Candy'], ar: ['الأساور والتعليقات', 'تخصيص أغطية الجوال', 'النقش بالليزر', 'التطريز والأقمشة', 'حلوى مخصّصة'] },
     tag: { en: 'Make & personalise', ar: 'صنع وتخصيص' },

@@ -62,7 +62,7 @@ Interactive: `wireframe.html` (v2).
 Wireframe: `docs/wireframe-event.html`. Client answers: one continuous 3D tour (journey and map merged), detailed-miniature model, each zone shows *what the brand can do*, *what the brand gets* and an *Enquire about this zone* button.
 
 1. Hero: brand-name input, "Take the tour", aerial still of the venue
-2. The tour (pinned): overview → Pink Passage → Rose Hub → Make Studio → Pink Market → PinkOut Live → Beauty Lab → Move Studio → finale (free explore). Mini floor plan + progress rail.
+2. The tour (pinned): overview → Pink Passage → Rose Hub → Craft Studio → Pink Market → PinkOut Live → Beauty Lab → Move Studio → finale (free explore). Mini floor plan + progress rail.
 3. Ways to partner (4 packages)
 4. Themed days (goal picker removed: folded into the tour)
 5. How it works · 6. FAQ · 7. Other ways · 8. Closing

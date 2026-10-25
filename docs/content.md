@@ -51,7 +51,7 @@ Every visitor sees the shared proof once (why, world, audience), then reads only
   - Launch on stage (PinkOut Live)
   - Product trials and personalisation (Beauty Lab)
   - Hub takeover and signature drink (Rose Hub)
-  - Branded make-and-take (Make Studio)
+  - Branded make-and-take (Craft Studio)
   - Entrance installation (Pink Passage)
   - Launch pop-up and limited drop (Pink Market)
   - Sponsored class series (Move Studio)

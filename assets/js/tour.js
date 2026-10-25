@@ -119,7 +119,7 @@ export function initTour() {
     // (y 12), Beauty (y 30.7) and Move (y 30) on its south wall; PinkOut Live opens onto the hall.
     const nodes = [
       [2.8, -2, 0, 12], [2.8, 10, 0, 12], [7.4, 17.6, 9, 2],                        // in, down the passage, into the hall
-      [12.9, 17.6, 7, -15], [17.7, 5.6, 17, 0], [22.5, 17.6, 7, 15],                 // up through Make Studio and back
+      [12.9, 17.6, 7, -15], [17.7, 5.6, 17, 0], [22.5, 17.6, 7, 15],                 // up through Craft Studio and back
       [28.6, 20.6, 12, 0],                                                           // a dip along the hall
       [35, 17.6, 7, -15], [39.8, 5.6, 17, 0], [44.6, 17.6, 4, 15],                   // Pink Market
       [46.4, 22.4, -1, 9],                                                           // swinging past the PinkOut Live stage

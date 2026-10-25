@@ -9,8 +9,8 @@
 // for the theme's centrepiece. More props sit in the passages, at PinkOut Live and around the hall (plan metres).
 // Each theme's props are built the first time it is picked; switching pops them in and out, and the light eases over.
 import * as THREE from './vendor/three.module.min.js?v=1';
-import { toX, toZ, U, W, D, back, LOOK } from './venue.js?v=32';
-import { particles, dotTexture } from './crowd.js?v=38';
+import { toX, toZ, U, W, D, back, LOOK } from './venue.js?v=33';
+import { particles, dotTexture } from './crowd.js?v=39';
 
 const M = (m) => m / U;
 const rand = (a, b) => a + Math.random() * (b - a);

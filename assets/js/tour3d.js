@@ -9,8 +9,8 @@
 // Kept light: pixel density steps down by itself when frames run slow, layout is measured on resize (and twice a second
 // at a stop, for the bubbles), never every frame, and the themed days load on the first theme click.
 import * as THREE from './vendor/three.module.min.js?v=1';
-import { buildVenue, studioEnvironment, toX, toZ, U } from './venue.js?v=32';
-import { liveLayer } from './crowd.js?v=38';
+import { buildVenue, studioEnvironment, toX, toZ, U } from './venue.js?v=33';
+import { liveLayer } from './crowd.js?v=39';
 import { buildPark } from './park.js?v=13';
 
 const P = ([x, y, h]) => new THREE.Vector3(toX(x), h, toZ(y)); // plan metres + height (units) → scene
@@ -68,7 +68,7 @@ export function mount(stageEl, { zones, data, get, on, onPick, onReady }) {
   const useTheme = (id) => {
     wantTheme = id;
     if (!themes && id === 'default') return;
-    loadingThemes ||= import('./themes3d.js?v=11').then((m) => { themes = m.mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); });
+    loadingThemes ||= import('./themes3d.js?v=12').then((m) => { themes = m.mountThemes({ scene, renderer, hemi, sun, fill, venue, live, stageEl, coarse, reduced }); });
     loadingThemes.then(() => { themes.set(wantTheme); if (reduced() || !running) draw(0); });
   };
 
@@ -284,7 +284,8 @@ export function mount(stageEl, { zones, data, get, on, onPick, onReady }) {
   let ringNext = 0;
   const ripple = (at, colour = '#ff8fc8', size = 1.6) => {
     const r = rings[ringNext++ % rings.length];
-    r.m.position.set(at.x, at.y + 0.04, at.z); // a clear step above whatever was touched r.m.material.color.set(colour); r.size = size; r.life = 1; r.m.visible = true;
+    r.m.position.set(at.x, at.y + 0.04, at.z); // a clear step above whatever was touched
+    r.m.material.color.set(colour); r.size = size; r.life = 1; r.m.visible = true;
   };
   // a name that pops up for a moment where you clicked (and one that follows the mouse)
   const chip = (cls) => { const el = document.createElement('span'); el.className = cls; el.toggleAttribute('data-hidden', true); labelsLayer.append(el); return el; };

@@ -680,7 +680,8 @@ export function buildVenue(zoneData) {
   const sk = makeKit(shell, toX, toZ, spots, 'passage');
   sk.R(25, 22.5, 51.2, 46.2, 0.75, '#f3d9e1', -0.75, GLOSS, 0.15);
   const lobby = new THREE.Mesh(new THREE.BoxGeometry(5.1 / U, 0.008, 12.4 / U), mat('#ffffff', marble('#f8d3df', '#ffffff')));
-  lobby.position.set(toX(2.8), 0.014, toZ(22.3)); // over the passage floor, never level with it lobby.userData.keep = true; shell.add(lobby);
+  lobby.position.set(toX(2.8), 0.014, toZ(22.3)); // over the passage floor, never level with it
+  lobby.userData.keep = true; shell.add(lobby);
   // outer walls: the west wall is solid; the entrance door is in the north wall, the exit door in the south wall
   const wall = (mx, my, w, d) => { sk.B(mx, my, w, d, 2.6, P.white, 0, GLOSS); sk.B(mx, my, w + 0.04, d + 0.04, 0.06, P.gold, 2.6, GOLD); };
   wall(-0.25, 22.5, 0.5, 46); wall(50.25, 22.5, 0.5, 46);

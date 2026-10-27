@@ -1,5 +1,5 @@
 # PinkOut Partners
-
+done
 Partner website for PinkOut (Riyadh). The home page `index.html` is the **event partners' page** (it opens on the venue tour); `beauty.html` and `shop.html` are the other partner types. Static HTML/CSS/JS, GSAP + Three.js vendored, English-first with Arabic (RTL).
 
 Who belongs where: **event partners** get the whole event (the venue tour: `tour.js` + `tour3d.js` over the miniature in `venue.js`, content in `src/tour.json`); **beauty service** and **e-commerce** partners work in the PinkOut app, so their pages tell the story on a phone (`assets/js/phone.js`, screens in `src/partials/phone-*.html`).
